@@ -1,0 +1,3 @@
+import(learnr)
+import(ReacTran, deSolve, rootSolve, plot3D)
+export(RTMtutorial)

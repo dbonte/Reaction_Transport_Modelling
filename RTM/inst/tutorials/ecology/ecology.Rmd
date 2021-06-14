@@ -1,0 +1,249 @@
+---
+title: "Reaction Transport Modelling Course - Ecological Rate Laws"
+author: "Karline Soetaert and Lubos Polerecky"
+date: "June-2021"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(learnr)
+```
+
+## Tutorial
+
+You are advised to watch the following video first 
+
+![](https://www.youtube.com/watch?v=CUckCAwNj1s&list=PLx8PHcDdmF-uD1Pr07TU9SzlhlGpfrxqn&index=9)
+
+and/or read the following sections of the book:
+
+* Chapter 2.5. Basic Formulation of Ecological Interactions
+* Chapter 2.6. Coupled Model Equations
+* Chapter 2.7. Model Simplifications
+
+(You can download each chapter of this book via the e-book University library for free!)
+
+## Ecological interactions: algal N-uptake
+
+```{r Nuptake, echo=FALSE}
+question("Algal N-uptake is stimulated by nitrate (NO3) and inhibited by ammonia (NH3) concentrations. What would be a suitable expression for the rate of algal growth?", type = "learnr_checkbox",
+ answer(sprintf("$r \\times \\frac{[NO3]}{[NO3]+K_{NO3}} \\times [ALGAE] + \\frac{K_{NH3}}{[NH3]+K_{NH3}} \\times [ALGAE]$")),
+ answer(sprintf("$r \\times \\frac{[NO3]}{[NO3]+K_{NO3}} \\times \\frac{K_{NH3}}{[NH3]+K_{NH3}} \\times [ALGAE]$"), correct=TRUE),
+ answer(sprintf("$r \\times \\frac{[NO3]}{[NO3]+K_{NO3}} \\times \\frac{K_{NH3}}{[NH3]+K_{NH3}}$")),
+ answer(sprintf("$r \\times \\frac{[NO3]}{[NO3]+K_{NO3}} \\times [NH3]$")),
+ answer(sprintf("$r \\times \\frac{[NO3]}{[NO3]+K_{NO3}} \\times (1 - \\frac{[NH3]}{[NH3]+K_{NH3}}) \\times [ALGAE])$"), correct=TRUE),
+ answer(sprintf("$r \\times \\frac{K_{NO3}}{[NO3]+K_{NO3}} \\times [ALGAE]$"))
+  )
+```
+
+## Ecological interactions: predation
+
+```{r predation, echo=FALSE}
+question("Foxes (F) predate on rabbits (R). What is a suitable expression for the predation rate?", type = "learnr_checkbox",
+ answer(sprintf("$r \\times F \\times R$"), correct=TRUE),
+ answer(sprintf("$r \\times F \\times R^2$"), correct=FALSE),
+ answer(sprintf("$r \\times F \\times (1-\\frac{F}{R})$"), correct=FALSE),
+ answer(sprintf("$r \\times F \\times \\frac{R}{R+ K_R}$"), correct=TRUE),
+ answer(sprintf("$r \\times F \\times \\frac{R^2}{R^2+ K_R^2}$"), correct=TRUE),
+ answer(sprintf("$r \\times F \\times (1-\\frac{F}{K}) \\times R$"), correct=FALSE),
+ incorrect =  "there are several correct answers; answer 1 assumes a linear functional response (type I); answer 4 assumes a type II and answer 5 a type III functional response",  
+correct =  "there are several correct answers; answer 1 assumes a linear functional response (type I); answer 4 assumes a type II and answer 5 a type III functional response")
+
+```
+
+## Simple differential equations
+
+
+```{r diffeq1, echo=FALSE}
+question(sprintf("The change in time of a quantity M (in moles) is described by the differential equation: $\\frac{dM}{dt} = -r \\times M$, where r > 0. Which of the following statements is true"), type = "learnr_checkbox",
+ answer("this describes zero-order dynamics"),
+ answer("this describes first-order dynamics", correct = TRUE),
+ answer("this describes second-order dynamics"),
+ answer("this is a mix of first-order and second-order dynamics"),
+ answer(sprintf("the unit of the rate parameter $r$ is $day$")),
+ answer(sprintf("the unit of the rate parameter $r$ is $/day$"), correct=TRUE),
+ answer(sprintf("the unit of the rate parameter $r$ is $mol/day$")),
+ answer(sprintf("the unit of the rate parameter $r$ is $day/mol$")),
+ answer("M does not grow"),
+ answer("M decreases linearly with time"),
+ answer("M decreases exponentially with time", correct=TRUE),
+ answer("M increases linearly with time"),
+ answer("M increases exponentially with time"),
+ answer("M has logistic growth")
+)  
+```
+
+```{r diffeq2, echo=FALSE}
+question(sprintf("The change in time of a quantity M (in moles) is described by the differential equation: $\\frac{dM}{dt} = -r$, where r > 0. Which of the following statements is true"), type = "learnr_checkbox",
+ answer("this describes zero-order dynamics", correct = TRUE),
+ answer("this describes first-order dynamics"),
+ answer("this describes second-order dynamics"),
+ answer("this is a mix of first-order and second-order dynamics"),
+ answer(sprintf("the unit of the rate parameter $r$ is $day$")),
+ answer(sprintf("the unit of the rate parameter $r$ is $/day$")),
+ answer(sprintf("the unit of the rate parameter $r$ is $mol/day$"), correct=TRUE),
+ answer(sprintf("the unit of the rate parameter $r$ is $day/mol$")),
+ answer("M does not grow"),
+ answer("M decreases linearly with time", correct=TRUE),
+ answer("M decreases exponentially with time"),
+ answer("M increases linearly with time"),
+ answer("M increases exponentially with time"),
+ answer("M has logistic growth")
+)  
+```
+
+```{r diffeq3, echo=FALSE}
+question(sprintf("The change in time of a quantity M (in moles) is described by the differential equation: $\\frac{dM}{dt} = r \\times M \\times (1-\\frac{M}{K})$, where r > 0. Which of the following statements is true"), type = "learnr_checkbox",
+ answer("this describes zero-order dynamics"),
+ answer("this describes first-order dynamics"),
+ answer("this describes second-order dynamics"),
+ answer("this is a mix of first-order and second-order dynamics", correct = TRUE),
+ answer(sprintf("the unit of the rate parameter $r$ is $day$")),
+ answer(sprintf("the unit of the rate parameter $r$ is $/day$"), correct=TRUE),
+ answer(sprintf("the unit of the rate parameter $r$ is $mol/day$")),
+ answer(sprintf("the unit of the rate parameter $r$ is $day/mol$")),
+ answer("M does not grow"),
+ answer("M decreases linearly with time"),
+ answer("M decreases exponentially with time"),
+ answer("M increases linearly with time"),
+ answer("M increases exponentially with time"),
+ answer("M has logistic growth", correct=TRUE)
+)  
+```
+
+## Interactive differential equations
+
+```{r, echo=FALSE}
+radioButtons("type", label = "Differential equation:", choices = list("dM/dt = -r" = "a" , "dM/dt = r" = "b", "dM/dt = -r M" = "c", "dM/dt = r M"= "d", "dM/dt = r M (1-M/K)"="e"))
+sliderInput("r", "Rate parameter:", min = 0, max = 1, value = 0.1)
+
+plotOutput("eqType")
+```
+
+```{r, context="server"}
+output$eqType <- renderPlot({
+  r  <- 0.5
+  r2 <- input$r 
+  K  <- 1e6
+  M0 <- 1
+  times <- seq(0 , 10, length.out = 100)
+ 
+  Type <- input$type
+  if (Type == "a"){
+    M <- M0 - r*times
+    M2 <- M0 - r2*times
+    Lab <- c("Zero-order differential equation dM/dt= -r", 
+             "Linear decrease")
+  } else if (Type == "b"){
+    M  <- M0 + r*times
+    M2 <- M0 + r2*times
+    Lab <- c("Zero-order differential equation dM/dt= r", 
+             "Linear increase")
+  } else if (Type == "c") {
+
+    M <- M0*exp(- r*times)
+    M2 <- M0*exp(- r2*times)
+    
+    Lab <- c("First-order differential equation dM/dt= -r M", 
+             "Exponential decrease")
+  } else if (Type == "d") {
+    M <- M0*exp(r*times)
+    M2 <- M0*exp(r2*times)
+    Lab <- c("First-order differential equation dM/dt= r M", 
+             "Exponential increase")
+  } else if (Type == "e")  {
+    times <- seq(0 , 100, length.out = 100)
+
+    A  <- (K -M0)/M0
+    M  <- K/(1 +A*exp(-r*times))
+    M2 <- K/(1 +A*exp(-r2*times))
+    Lab <- c("Carrying capacity formulation dM/dt = r M(1-M/K)",
+    "Logistic growth")
+  }
+
+  par(mfrow = c(1,1), las = 1, oma= c(0,0,2,0))
+  matplot(times, cbind(M, M2), type="l", lwd=2, lty=1, main = Lab[2])
+  legend (col = 1:2, lwd = 2, legend = c(r, r2), title = "r", x = "left")
+  mtext(outer = TRUE, line = -1, Lab[1], cex = 2)
+})
+```
+
+## Logistic model
+
+A population is growing according to the logistic model characterised by the carrying capacity of $K=10^6$ ind $km^{-2}$.
+
+```{r logistic1, echo=FALSE}
+question(sprintf("How would you best characterize the growth of the population when the population density is about $10^5$ ind $km^{-2}$?"), type = "learnr_radio",
+ answer("The population growth is approximately linear", correct=FALSE),
+ answer("The population growth is approximately exponential", correct=TRUE),
+ answer("The population stays relatively constant"), 
+ answer("The population shrinks exponentially towards K")
+)  
+```
+
+```{r logistic2, echo=FALSE}
+question(sprintf("How would you best characterize the growth of the population when the population density is about $5~10^5$ ind $km^{-2}$?"), type = "learnr_radio",
+ answer("The population growth is approximately linear", correct=TRUE),
+ answer("The population growth is approximately exponential"),
+ answer("The population stays relatively constant"), 
+ answer("The population shrinks exponentially towards K")
+)  
+```
+
+
+```{r logistic3, echo=FALSE}
+question(sprintf("How would you best characterize the growth of the population when the population density is about $8.9~10^5$ ind $km^{-2}$?"), type = "learnr_radio",
+ answer("The population growth is approximately linear"),
+ answer("The population growth is approximately exponential"),
+ answer("The population stays relatively constant", correct=TRUE), 
+ answer("The population shrinks exponentially towards K")
+)  
+```
+
+```{r logistic4, echo=FALSE}
+question(sprintf("How would you best characterize the growth of the population when the population density is  $0$ ind $km^{-2}$?"), type = "learnr_radio",
+ answer("The population growth is approximately linear"),
+ answer("The population growth is approximately exponential"),
+ answer("The population stays relatively constant", correct=TRUE), 
+ answer("The population shrinks exponentially towards K")
+)  
+```
+
+## logistic curve
+
+Select a value of P0 and see how the population changes initially
+
+```{r, echo=FALSE}
+sliderInput("P0", "Population Size:", min = 0, max = 2e6, value = 5e5, step=1e5)
+plotOutput("carcapPlot")
+```
+
+```{r, context="server"}
+output$carcapPlot <- renderPlot({
+  r  <- 1
+  K  <- 1e6
+  P0 <- input$P0
+  A  <- (K -P0)/P0
+  times <- seq(0 , 1, length.out = 100)
+  times2 <- seq(0 , 10, length.out = 100)
+  P  <- K/(1 +A*exp(-r*times))
+  P2 <- K/(1 +A*exp(-r*times2))
+  par(mfrow = c(1,2), las = 1, oma= c(0,0,2,0))
+  plot(times, P, type="l", lwd=2, main="initial")
+  plot(times2, P2, type="l", lwd=2, main="longterm")
+  mtext(outer = TRUE, line = -1, paste("Logistic model, P0 = ", P0), cex = 2)
+})
+```
+
+
+## Finally
+
+```{r feedback, echo = FALSE}
+question("give your feedback ", type = "learnr_text", answer(" ", correct=TRUE), correct="thank you", incorrect = "thank you")
+```
+

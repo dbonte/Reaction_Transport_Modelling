@@ -1,0 +1,130 @@
+---
+title: "Reaction Transport Modelling Course - transport processes"
+author: "Karline Soetaert and Lubos Polerecky"
+date: "June-2021"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(learnr)
+```
+
+## Tutorial
+
+You are advised to watch the following video first 
+
+![](https://www.youtube.com/watch?v=4ZwKZiobm0Y&list=PLx8PHcDdmF-uD1Pr07TU9SzlhlGpfrxqn&index=10)
+
+and/or read the following sections of the book:
+
+* Chapter 3. Spatial Components and transport
+
+(You can download each chapter of this book via the e-book University library for free!)
+
+## General transport equation
+
+
+$$
+\frac{\partial{C}}{\partial t} = R - \frac{1}{A}\cdot \frac{\partial{A\cdot J}}{\partial x}
+$$
+
+The differential equation above describes the variation of the concentration of a substance in time and space along 1 dimension. 
+
+
+```{r GTE2, echo=FALSE}
+question("Which of the following sentences is true?", type = "learnr_checkbox",
+answer("We call this equation the one-dimensional reaction equation"),
+answer("We call this equation the one-dimensional transport equation"),
+answer("We call this equation the one-dimensional reaction-transport equation", correct=TRUE),
+answer("The reaction term is the first on the right hand side", correct=TRUE),  
+answer("The reaction term is the second on the right hand side"),  
+answer("The transport term is the first on the right hand side"),  
+answer("The transport term is the second on the right hand side", correct=TRUE)  
+)
+```
+
+$$
+\frac{\partial{C}}{\partial t} = R - \frac{1}{A}\cdot \frac{\partial{A\cdot J}}{\partial x}
+$$
+
+
+```{r GTE, echo=FALSE}
+question("Which of the following sentences is true?", type = "learnr_checkbox",
+ answer(sprintf("C is the flux of the substance")),
+ answer(sprintf("C is the concentration of the substance"), correct = TRUE),
+ answer(sprintf("t is time in s"), correct = TRUE),
+ answer(sprintf("t is space in m"), correct = FALSE),
+ answer(sprintf("x is time in s"), correct = FALSE),
+ answer(sprintf("x is space in m"), correct = TRUE),
+ answer(sprintf("R denotes the concentration in mmol/m3"), correct = FALSE),
+ answer(sprintf("R denotes the net production rate in mmol/m3"), correct = FALSE),
+ answer(sprintf("R denotes the net production rate in mmol/m2/s"), correct = FALSE),
+ answer(sprintf("R denotes the net production rate in mmol/m3/s"), correct = TRUE),
+ answer(sprintf("R denotes the flux in x-direction, in mmol/m2/s"), correct = FALSE),
+ answer(sprintf("J denotes the concentration in mmol/m3"), correct = FALSE),
+ answer(sprintf("J denotes the net production rate in mmol/m3"), correct = FALSE),
+ answer(sprintf("J denotes the net production rate in mmol/m2/s"), correct = FALSE),
+ answer(sprintf("J denotes the net production rate in mmol/m3/s"), correct = FALSE),
+ answer(sprintf("J denotes the flux in x-direction, in mmol/m2/s"), correct = TRUE),
+ answer(sprintf("A is the length, in m, through which the substance is transported"), correct = FALSE),
+ answer(sprintf("A is the surface area, in m2, through which the substance is transported"), correct = TRUE),
+ answer(sprintf("A is the volume, in m3, through which the substance is transported"), correct = FALSE)
+)  
+```  
+
+## Fluxes
+
+$$
+\frac{\partial{C}}{\partial t} = R - \frac{1}{A}\cdot \frac{\partial{A\cdot J}}{\partial x}
+$$
+
+```{r transport, echo=FALSE}
+question("Which of the following sentences is true?", type = "learnr_checkbox",
+ answer(sprintf("The transport flux J describes the volume of substance transported per volume per time")),
+ answer(sprintf("The transport flux J describes the amount of substance transported per unit area per time"), correct=TRUE),
+ answer(sprintf("The transport flux J describes the amount of substance transported per unit volume per time")),
+ answer(sprintf("The transport flux J describes the amount of substance transported per unit length per time")),
+ answer(sprintf("The SI unit of the transport flux is  $s^{-1}$")),  
+ answer(sprintf("The SI unit of the transport flux is mol $m^{-2}$ $s^{-1}$"), correct=TRUE),
+ answer(sprintf("The SI unit of the transport flux is mol $m^{-3}$ $s^{-1}$")),
+ answer(sprintf("The SI unit of the transport flux is mol $m^{-1}$ $s^{-1}$")),  
+incorrect=sprintf("each of the terms in the equation has a SI unit of mol  $m^{-3}$ $s^{-1}$, as the SI unit of C is mol $m^{-3}$, and the SI unit of t is $s$ (second). The nominator in the second term on the right therefore has to have the unit of mol $m^{-2}$ $s^{-1}$, which is indeed the correct unit of flux"),
+correct=sprintf("each of the terms in the equation has a SI unit of mol  $m^{-3}$ $s^{-1}$, as the SI unit of C is mol $m^{-3}$, and the SI unit of t is $s$ (second). The nominator in the second term on the right therefore has to have the unit of mol $m^{-2}$ $s^{-1}$, which is indeed the correct unit of flux")  
+)
+```
+
+## Simplified equation
+
+Starting from 
+
+$$
+\frac{\partial{C}}{\partial t} = R - \frac{1}{A}\cdot \frac{\partial{A\cdot J}}{\partial x}
+$$
+
+we rather use:
+
+$$
+\frac{\partial{C}}{\partial t} = R - \frac{\partial{J}}{\partial x}
+$$
+```{r transport2, echo=FALSE}
+question("The above equation applies when", type = "learnr_checkbox",
+ answer(sprintf("The transport flux J is zero")),
+ answer(sprintf("The area A is zero")),
+ answer(sprintf("The area A is constant"), correct=TRUE),
+incorrect="mathematically, when A is constant, it can be taken out of the integral of the first formula, which gives rise to the second equation",
+correct="mathematically, when A is constant, it can be taken out of the integral of the first formula, which gives rise to the second equation"  
+)
+```
+
+
+## Finally
+
+```{r feedback, echo = FALSE}
+question("give your feedback ", type = "learnr_text", answer(" ", correct=TRUE), correct="thank you", incorrect = "thank you")
+```
+

@@ -1,0 +1,151 @@
+---
+title: "Reaction Transport Modelling Course - partitioning between phases"
+author: "Karline Soetaert and Lubos Polerecky"
+date: "June-2021"
+description: "learning tutorial in preparation for the exam"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: false
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(learnr)
+```
+
+## Tutorial
+
+You are advised to watch the following video first 
+
+![](https://www.youtube.com/watch?v=CPme0Qz3L7Y&list=PLx8PHcDdmF-uD1Pr07TU9SzlhlGpfrxqn&index=8)
+
+(there are no corresponding chapters in the book)
+
+## Mineral dissolution - quiz
+
+```{r statements, echo=FALSE}
+question(sprintf("The rate constant describing the dissolution of a mineral in water is $k_d$ = 2 mol $m^{-2} yr^{-1}$, and the rate constant describing the precipitation of that mineral is $k_p$ = 5 m $yr^{-1}$. What is the equilibrium concentration of the dissolved mineral in water?"), type = "learnr_checkbox",
+ answer(sprintf("0.4 mol $m^{-3}$"), correct=TRUE),
+ answer(sprintf("2.5 mol $m^{-3}$")),
+ answer(sprintf("1 mol $m^{-3}$")),
+ answer(sprintf("10 mol $m^{-3}$")),
+ answer(sprintf("400 $\\mu$ mol"), correct=TRUE),
+ incorrect = sprintf("the answer is $k_d$/$k_p$ - tip:if you do not remember if this would be $k_p/k_d$ or  $k_d$/$k_p$, think about the units: concentrations are in mol $m^{-3}$, and this unit is obtained with  $k_d$/$k_p$, not with $k_p$/$k_d$"),
+ correct = sprintf("the answer is $k_d$/$k_p$ - tip:if you do not remember if this would be $k_p/k_d$ or  $k_d$/$k_p$, think about the units: concentrations are in mol $m^{-3}$, and this unit is obtained with  $k_d$/$k_p$, not with $k_p$/$k_d$")   
+  )
+```
+
+
+## Mineral dissolution - exercise
+
+There are [N] spherical amorphous silica particles suspended in a well-mixed volume of water ([V] liters). Initially, the silicic acid concentration is [Cini] $\mu mol~L^{-1}$, and all particles have the same diameter (Dini) um. Assume the rate constant for silica dissolution of kd = 1 mol m-2 yr-1 and for silica precipitation of kp = 1.5 m yr-1. Silica density is 2200 kg m-3, molar weight of silica is 60 g mol-1.
+
+The R-code chunk below introduces the values of the parameter you will need. 
+
+```{r dSidt-setup}
+N    <- 400
+V    <- 1
+Cini <- 100  # umol/L
+Dini <- 90   # um
+kd   <- 1    # mol/m2/yr
+kp   <- 1.5  # m/yr
+dens <- 2200 # kg/m3
+mW   <- 60   # g/mol
+```
+
+What is the initial rate of increase in the silicic acid concentration (dC/dt) in the water with the silica particles? Give your value in $\mu mol~L^{-1} yr^{-1}$.
+Use R to estimate it - you will need to do this in different steps. 
+
+As a reminder: the change in Si concentration over time is given by:
+$$
+\frac{dSi}{dt} = -k_p \times \frac {A}{V} \times (Si - Si_{eq})
+$$
+where $Si_{eq}$ is the equilibrium Si concentration.
+
+tip: beware to use consistent units. Also think about the meaning of $A$.
+
+```{r dSidt, exercise=TRUE, exercise.cap = "Initial rate of increase of Si", exercise.lines = 4 }
+# fill in the equation
+dSi.dt <- 
+```
+
+```{r dSidt-hint}
+# This shows the sequence of calculations - replace NA with the correct formula 
+Ceq    <- NA                     # equilibrium concentration (umol/L)
+A      <- NA                     # initial total active surface (m2)
+A.V    <- NA                     # area density (/m)
+dSi.dt <- -kp*A.V*(Cini - Ceq)   # the change in time umol/L/yr
+```
+
+```{r dSidt-solution}
+Ceq    <- kd/kp*1000                # equilibrium concentration (umol/L)
+A      <- 4*pi*(Dini/2*1e-6)^2 * N  # initial total active surface (m2)
+A.V    <- A/(V*1e-3)                # area density (/m)
+dSi.dt <- -kp*A.V*(Cini - Ceq)      # the change in time umol/L/yr
+```
+
+
+## Air-sea exchange - quiz
+
+```{r statements2, echo=FALSE}
+question(sprintf("A well-mixed anoxic water column is in contact with the atmosphere. What is the initial rate of increase in the $O_2$ concentration in the water? Piston velocity is 1 m $d^{-1}$, $O_2$ solubility in the water is 300 $\\mu mol$ $L^{-1}$, water column height is 50 cm."), type = "learnr_checkbox",
+ answer(sprintf("300 $\\mu$ mol $L^{-1}d^{-1}$")),
+ answer(sprintf("150 $\\mu$ mol $L^{-1}d^{-1}$")),
+ answer(sprintf("600 $\\mu$ mol $L^{-1}d^{-1}$"), correct=TRUE),
+ incorrect = sprintf("this is calculated as $kp/h*(O2eq - 0)$"),
+ correct = sprintf("this is calculated as $kp/h*(O2eq - 0)$")
+  )
+```
+
+## Air-sea exchange - exercise
+
+You plan to install in your garden a pond with goldfish. By swimming in the pond, the fish will mix the water in the pond, and by respiration they will decrease the dissolved $O_2$ concentration in the pond. This decrease in dissolved $O_2$ will be compensated by air-water exchange. Assume that goldfish respiration is unaffected if the dissolved $O_2$ concentration does not decrease below [pSat] (80%) of the air saturated value. Additionally assume the piston velocity of [kp] m d-1, the area of the pond of 4 m2, the average height of the water column of [h] m, Henry’s constant [k0] for dissolved O2 of 770 L Atm mol-1, molar fraction of O2 in the atmosphere of 21%, atmospheric pressure of 1 Atm, and the average goldfish respiration rate of 400 $\mu$ mol fish$^{-1}$ $d^{-1}$.
+
+```{r Fish-setup}
+pSat  <- 0.9  # -
+kp    <- 1    # m/d
+h     <- 1    # m
+K0    <- 770  # L atm/mol
+P     <- 1    # atm
+pO2   <- 0.21 # molar fraction
+Resp  <- 400  # umol/fish/d  - I THINNK THIS IS ALREADY IN MMOL
+Area  <- 4    # m2
+```
+
+Tip: at the minimal oxygen concentration, the aeration rate and respiration rate should be the same.
+
+* Estimate the total air-water exchange (amount of oxygen added to the pond per day), at the minimal oxygen concentration (units mmol/day). 
+* You know the respiration of one fish. The total respiration of all fishes should equal the total air-water exchange.
+
+Use the R chunk below to add your answer (N is the number of fishes):
+
+```{r Fish, exercise=TRUE}
+N <-
+```
+
+
+```{r Fish-hint}
+# This shows the sequence of calculations - replace NA with the correct formula 
+O2sat   <-  NA              # saturated oxygen concentration, mmol/m3
+airsea  <-  NA              # mmol/m2/d - airsea flux
+airseaT <-  NA              # mmol/d - total O2 input per day
+Rmmol   <-  NA              # fish respiration, mmol/fish/day
+N       <-  NA              # number of fish    
+```
+
+```{r Fish-solution}
+O2sat   <- pO2/K0*P *1e6                # umol/L = mmol/m3
+airsea  <- kp*(O2sat - pSat*O2sat)      # mmol/m2/d - airsea flux
+airseaT <- airsea*Area                  # mmol/d - total O2 input per day
+Rmmol   <- Resp/1000                    # mmol/fish/day
+N       <- airseaT/Rmmol                # number of fish    
+```
+
+## Finally
+
+```{r feedback, echo = FALSE}
+question("give your feedback ", type = "learnr_text", answer(" ", correct=TRUE), correct="thank you", incorrect = "thank you")
+```
+

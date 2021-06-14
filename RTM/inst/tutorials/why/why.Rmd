@@ -1,0 +1,86 @@
+---
+title: "Reaction Transport Modelling Course - Why Modelling"
+author: "Karline Soetaert and Lubos Polerecky"
+date: "June-2021"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(learnr)
+```
+
+## Tutorial
+
+You are advised to watch the introduction video first 
+
+![](https://www.youtube.com/watch?v=uJTbH2XoQN0&list=PLx8PHcDdmF-uD1Pr07TU9SzlhlGpfrxqn&index=2)
+
+and/or read the following section of the book:
+Soetaert and Herman, a practical guide to ecological modelling. Springer.
+
+* Chapter 1. Introduction
+
+(You can download each chapter of this book via the e-book University library for free!)
+
+
+## Why modelling
+
+
+```{r why_modelling, echo=FALSE}
+question("Why do we develop scientific models?", type = "learnr_checkbox",
+answer("they allow us to test our understanding of real systems", correct=TRUE),
+answer("they allow us to extrapolate to larger spatial and temporal scales", correct=TRUE),
+answer("they can guide empirical research", correct=TRUE),
+answer("they allow us to invalidate empirical research", correct=FALSE),
+answer("they allow us to test hypotheses", correct=FALSE),
+answer("they allow us to generate hypotheses", correct=TRUE),
+answer("because it is a lot of fun", correct=FALSE),
+
+incorrect = "Modelling IS a lot of fun, but this is not our primary goal - we use models in addition to data gathering because it gives a different perspective of reality, it will increase our understanding, allows to extrapolate, it may guide our research and may be used to generate hypotheses",
+correct = "Modelling IS a lot of fun, but this is not our primary goal - we use models in addition to data gathering because it gives a different perspective of reality, it will increase our understanding, allows to extrapolate, it may guide our research and may be used to generate hypotheses" 
+  )
+```
+
+## Model focus
+
+```{r Model_focus, echo=FALSE}
+question("What is the focus of the models that we will develop in this course?", type = "learnr_checkbox",
+ answer("Exchange of mass", correct=TRUE),
+ answer("Exchange of energy", correct=TRUE),
+ answer("Biogeochemical processes in cells", correct=FALSE),
+ answer("Impact of biogeochemical processes on the environment", correct=TRUE),
+ answer("Predicting of human impacts on the environment", correct=TRUE),
+ answer("Predicting the weather", correct=FALSE),
+ answer("Predicting stock markets", correct=FALSE),
+
+  incorrect = "Although we can do all the things listed above with mechanistic models, in this course we restrict ourselves to exchanges of mass and energy and biogeochemistry/ecology relating to the environment",
+  correct = "Although we can do all the things listed above with mechanistic models, in this course we restrict ourselves to exchanges of mass and energy and biogeochemistry/ecology relating to the environment")
+```
+
+## What will we do
+
+```{r Course_do, echo=FALSE}
+question("In this course we will", type = "learnr_checkbox",
+ answer("Use existing models to generate predictions", correct=FALSE),
+ answer("Create models to generate predictions", correct=TRUE),
+ answer("Learn and practice how to write computer code", correct=TRUE),
+ answer("Practice communication of model results", correct=TRUE),
+ answer("Practice interpretation of model results", correct=TRUE),
+ answer("Learn how to choose an appropriate existing model and let the computer do the work", correct=FALSE),   
+ answer("Solve differential equations with pen and paper", correct=FALSE),
+ answer("Learn how to formulate differential equations", correct=TRUE),
+ incorrect = "This course is all about learning how to create a model, implement it, interprete it and communicate the results",
+ correct = "This course is all about learning how to create a model, implement it, interprete it and communicate the results"
+)
+```
+
+## Finally
+
+```{r feedback, echo = FALSE}
+question("give your feedback ", type = "learnr_text", answer(" ", correct=TRUE), correct="thank you", incorrect = "thank you")
+```
