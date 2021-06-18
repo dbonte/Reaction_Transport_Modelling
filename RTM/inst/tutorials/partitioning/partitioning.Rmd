@@ -40,11 +40,23 @@ question(sprintf("The rate constant describing the dissolution of a mineral in w
 
 ## Mineral dissolution - exercise
 
-There are [N] spherical amorphous silica particles suspended in a well-mixed volume of water ([V] liters). Initially, the silicic acid concentration is [Cini] $\mu mol~L^{-1}$, and all particles have the same diameter (Dini) um. Assume the rate constant for silica dissolution of kd = 1 mol m-2 yr-1 and for silica precipitation of kp = 1.5 m yr-1. Silica density is 2200 kg m-3, molar weight of silica is 60 g mol-1.
+There are [N] spherical amorphous silica particles suspended in a well-mixed volume of water ([V] liters). Initially, the silicic acid concentration is [Cini] $\mu mol~L^{-1}$, and all particles have the same diameter (Dini) $\mu m$. Assume the rate constant for silica dissolution of kd = 1 mol $m^{-2}~yr^{-1}$ and for silica precipitation of kp = 1.5 m $yr^{-1}$. Silica density is 2200 kg $m^{-3}$, molar weight of silica is 60 g $mol^{-1}$.
 
-The R-code chunk below introduces the values of the parameter you will need. 
+The R-code chunk below introduces the values of the parameters you will need. 
 
-```{r dSidt-setup}
+```{r dSidt-setup, echo=TRUE}
+N    <- 400
+V    <- 1
+Cini <- 100  # umol/L
+Dini <- 90   # um
+kd   <- 1    # mol/m2/yr
+kp   <- 1.5  # m/yr
+dens <- 2200 # kg/m3
+mW   <- 60   # g/mol
+```
+
+
+```{r, echo=TRUE}
 N    <- 400
 V    <- 1
 Cini <- 100  # umol/L
@@ -101,7 +113,7 @@ question(sprintf("A well-mixed anoxic water column is in contact with the atmosp
 
 ## Air-sea exchange - exercise
 
-You plan to install in your garden a pond with goldfish. By swimming in the pond, the fish will mix the water in the pond, and by respiration they will decrease the dissolved $O_2$ concentration in the pond. This decrease in dissolved $O_2$ will be compensated by air-water exchange. Assume that goldfish respiration is unaffected if the dissolved $O_2$ concentration does not decrease below [pSat] (80%) of the air saturated value. Additionally assume the piston velocity of [kp] m d-1, the area of the pond of 4 m2, the average height of the water column of [h] m, Henry’s constant [k0] for dissolved O2 of 770 L Atm mol-1, molar fraction of O2 in the atmosphere of 21%, atmospheric pressure of 1 Atm, and the average goldfish respiration rate of 400 $\mu$ mol fish$^{-1}$ $d^{-1}$.
+You plan to install in your garden a pond with goldfish. By swimming in the pond, the fish will mix the water in the pond, and by respiration they will decrease the dissolved $O_2$ concentration in the pond. This decrease in dissolved $O_2$ will be compensated by air-water exchange. Assume that goldfish respiration is unaffected if the dissolved $O_2$ concentration does not decrease below [pSat] (80%) of the air saturated value. Additionally assume the piston velocity of [kp] $m `d^{-1}$, the area of the pond of 4 $m^2$, the average height of the water column of [h] m, Henry’s constant [$k_0$] for dissolved O2 of 770 L Atm $mol^{-1}$, molar fraction of $O_2$ in the atmosphere of 21%, atmospheric pressure of 1 Atm, and the average goldfish respiration rate of 400 $\mu$ mol fish$^{-1}$ $d^{-1}$.
 
 ```{r Fish-setup}
 pSat  <- 0.9  # -
@@ -114,10 +126,11 @@ Resp  <- 400  # umol/fish/d  - I THINNK THIS IS ALREADY IN MMOL
 Area  <- 4    # m2
 ```
 
-Tip: at the minimal oxygen concentration, the aeration rate and respiration rate should be the same.
+TipS: 
 
-* Estimate the total air-water exchange (amount of oxygen added to the pond per day), at the minimal oxygen concentration (units mmol/day). 
-* You know the respiration of one fish. The total respiration of all fishes should equal the total air-water exchange.
+  - at the minimal oxygen concentration, the aeration rate and respiration rate should be the same.
+  - Estimate the total air-water exchange (amount of oxygen added to the pond per day), at the minimal oxygen concentration (units mmol/day). 
+  - You know the respiration of one fish. The total respiration of all fishes should equal the total air-water exchange.
 
 Use the R chunk below to add your answer (N is the number of fishes):
 
