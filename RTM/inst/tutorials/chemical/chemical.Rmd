@@ -16,7 +16,7 @@ library(learnr)
 
 ## Tutorial
 
-You are advised to watch the following video first - only the first part is relevant for this tutorial.
+You are advised to watch the following video first. Only the first part (0:00-5:21) is relevant for this tutorial.
 
 ![](https://www.youtube.com/watch?v=loHVpLNQBZE&list=PLx8PHcDdmF-uD1Pr07TU9SzlhlGpfrxqn&index=5)
 
