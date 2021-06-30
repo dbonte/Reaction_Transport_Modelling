@@ -45,11 +45,11 @@ $$
 
 ```{r elementary, echo=FALSE}
 question("Which of the following expressions correctly describe the reaction rate", type = "learnr_checkbox",
- answer(sprintf("$R=k \\times [A]^2 \\times [B]$"), correct=TRUE),
- answer(sprintf("$R=k \\times [A] \\times [B]^2$"), correct=FALSE),
- answer(sprintf("$R=-k \\times [A_2B]$"), correct=FALSE),
- answer(sprintf("$R=k \\times [A] \\times [B]^{1/2}$"), correct=TRUE),
- answer(sprintf("$R=k \\times [A]^{1/2} \\times [B]$"), correct=FALSE),
+ answer(sprintf("$R=r \\times [A]^2 \\times [B]$"), correct=TRUE),
+ answer(sprintf("$R=r \\times [A] \\times [B]^2$"), correct=FALSE),
+ answer(sprintf("$R=-r \\times [A_2B]$"), correct=FALSE),
+ answer(sprintf("$R=r \\times [A] \\times [B]^{1/2}$"), correct=TRUE),
+ answer(sprintf("$R=r \\times [A]^{1/2} \\times [B]$"), correct=FALSE),
  incorrect =  "There are two correct answers; answer 1 assumes that the rate R is expressed in mole of B per time; answer 4 assumes that R is expressed in mole of A per time - it is simplest to express the rate in terms of mole of B",  
 correct =  "There are two correct answers; answer 1 assumes that the rate R is expressed in mole of B per time; answer 4 assumes that R is expressed in mole of A per time - it is simplest to express the rate in terms of mole of B")
 ```
@@ -63,7 +63,7 @@ $$
 
 where concentrations of A, B and $A_2B$ are expressed in mol m$^{-3}$, and the reaction rate is: 
 $$
-R=k \times [A]^2 \times [B]
+R=r \times [A]^2 \times [B]
 $$
 
 ```{r rate, echo=FALSE}
@@ -76,7 +76,7 @@ question("What is the unit of R?", type = "learnr_checkbox",
 
 
 ```{r ct, echo=FALSE}
-question("What is the unit of rate constant k?", type = "learnr_checkbox",
+question("What is the unit of rate constant r?", type = "learnr_checkbox",
  answer(sprintf("$mol~m^{-3}$"), correct=FALSE),
  answer(sprintf("$mol~m^{-3} s^{-1}$"), correct=FALSE),
  answer(sprintf("$(mol~m^{-3})^{-2} s^{-1}$"), correct=TRUE)
@@ -110,7 +110,7 @@ $$
 \frac{d[A]}{dt}=-2 \times R; \qquad
 \frac{d[B]}{dt}= - R; \qquad
 \frac{d[A_2B]}{dt}= R \\
-R = k \times [A]^2 \times [B]
+R = r \times [A]^2 \times [B]
 $$
 
 It is quite easy to implement this chemical model in R, as shown here.
@@ -119,13 +119,13 @@ It is quite easy to implement this chemical model in R, as shown here.
 require(deSolve)   # package with the solution methods
 
 y.ini <- c(A=1, B=1, A2B=0)  # [mol/m3] initial concentrations of the state variables
-parms <- c(k=0.001)          # [(molA/m3)^{-2}/s] rate constant
+parms <- c(r=0.001)          # [(molA/m3)^{-2}/s] rate constant
 
 # derivative function
 elementaryReaction <- function(t, y, p){  #t=time, y=state variables, p=parameters
   with (as.list(c(y,p)),{
     # Rate expressions
-    R <- k * A^2 * B         # molB/m3/s
+    R <- r * A^2 * B         # molB/m3/s
     # Mass balance equations
     dA.dt   <- -2*R
     dB.dt   <- -  R
@@ -145,7 +145,7 @@ The model is run twice, with different values of the parameter (x 10):
 times <- seq(from=0, to=3600, length.out=100)  # seconds
 out   <- ode(y=y.ini, times=times, parms=parms, func=elementaryReaction)
 
-p2    <- c(k=0.01)  # [(molA/m3)^{-2}/s] rate constant 
+p2    <- c(r=0.01)  # [(molA/m3)^{-2}/s] rate constant 
 out2  <- ode(y=y.ini, times=times, parms=p2, func=elementaryReaction)
 
 plot(out, out2, lty=1)
@@ -159,10 +159,10 @@ TASK: Run the model for the rate that proceeds twice as slow as the default para
 times <- seq(from=0, to=3600, length.out=100)  # seconds
 out   <- ode(y=y.ini, times=times, parms=parms, func=elementaryReaction)
 
-p2    <- c(k=0.01)  # [(molA/m3)^{-2}/s] rate constant 
+p2    <- c(r=0.01)  # [(molA/m3)^{-2}/s] rate constant 
 out2  <- ode(y=y.ini, times=times, parms=p2, func=elementaryReaction)
 
-out3  <-     ### RUN WITH k=0.005
+out3  <-     ### RUN WITH r=0.005
 plot(out, out2, out3, lty=1)
 ```
 
