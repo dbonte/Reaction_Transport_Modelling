@@ -70,9 +70,9 @@ rBA <-
 rBA <- Z/Y
 ```
 
- What is the residence time of carbon in compartment A? 
+What is the residence time of carbon in compartment A? 
  
- Use R to estimate it - X, Y and Z have the values as given above:
+Use R to estimate it - X, Y and Z have the values as given above:
 
 ```{r rta, exercise=TRUE}
 # fill in the equation
@@ -84,12 +84,12 @@ rtA <- X/Z
 ```
 
 <div id="rta-hint">
-**Hint:** the residence time is the amount of material in the reservoir, divided by the outflow
+**Hint:** the residence time is the amount of material in the reservoir ([pgC]), divided by the outflow ([pgC yr$^{-1}$]).
 </div>
 
- What is the residence time of carbon in compartment B? 
+What is the residence time of carbon in compartment B? 
  
- Use R to estimate it - X, Y and Z have the values as given above:
+Use R to estimate it - X, Y and Z have the values as given above:
 
 
 ```{r rtb, exercise=TRUE}
@@ -98,13 +98,19 @@ rtB <-
 ```
 
 <div id="rtb-hint">
-**Hint:** the residence time is the amount of material in the reservoir, divided by the outflow
+**Hint:** the residence time is the amount of material in the reservoir ([pgC]), divided by the outflow ([pgC yr$^{-1}$]).
 </div>
 
 ```{r rtb-solution}
 rtB <- Y/Z
 ```
 
+## Implementation in R
+
+Based on the reader that has introduced you to solving dynamic models in R, it should be simple to understand the following code, that implements the two-box model in R:
+
+```{r, message=FALSE}
+```
 
 ## Challenging question 1
 

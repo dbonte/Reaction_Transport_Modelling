@@ -28,8 +28,20 @@ Soetaert and Herman, a practical guide to ecological modelling. Springer.
 (You can download each chapter of this book via the e-book University library for free!)
 
 
-## Why modelling
+```{r programming_platform, echo=FALSE}
+question("Which programming language are we going to use in this course to solve our models?", type = "learnr_radio",
+answer("R", correct=TRUE),
+answer("Rstudio"),
+answer("Rmarkdown"),
+answer("Matlab"),
+answer("Python"),
+answer("ReacTran"),
+incorrect = "In this list, only R, matlab and python are programming languages, and R is the one that we will use. Rmarkdown is a platform to merge R-code with text;  Rstudio provides an interface that facilitates using R; ReacTran is one of the many R-packages that we will use",
+correct = "In this list, only R, matlab and python are programming languages, and R is the one that we will use. Rmarkdown is a platform to merge R-code with text;  Rstudio provides an interface that facilitates using R; ReacTran is one of the many R-packages that we will use" 
+  )
+```
 
+## Why modelling
 
 ```{r why_modelling, echo=FALSE}
 question("Why do we develop scientific models?", type = "learnr_checkbox",

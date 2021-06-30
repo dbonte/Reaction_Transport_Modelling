@@ -133,3 +133,10 @@ question("What would be a good currency for a model that describes the dependenc
 ```{r feedback, echo = FALSE}
 question("give your feedback ", type = "learnr_text", answer(" ", correct=TRUE), correct="thank you", incorrect = "thank you")
 ```
+
+More exercises on creating conceptual models can be found in the RTM-package:
+
+```
+require(RTM)
+RTMexercise("conceptual")
+```

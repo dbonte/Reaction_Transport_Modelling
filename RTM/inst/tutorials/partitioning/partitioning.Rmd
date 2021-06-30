@@ -78,7 +78,7 @@ where $Si_{eq}$ is the equilibrium Si concentration.
 
 tip: beware to use consistent units. Also think about the meaning of $A$.
 
-```{r dSidt, exercise=TRUE, exercise.cap = "Initial rate of increase of Si", exercise.lines = 4 }
+```{r dSidt, exercise=TRUE, exercise.cap = "Initial rate of increase of Si", exercise.lines = 4}
 # fill in the equation
 dSi.dt <- 
 ```
@@ -126,27 +126,24 @@ Resp  <- 400  # umol/fish/d  - I THINNK THIS IS ALREADY IN MMOL
 Area  <- 4    # m2
 ```
 
-TipS: 
+Use the R chunk below to add your answer (N is the number of fishes):
+
+```{r Fish, exercise=TRUE, exercise.cap = "Number of fishes in a pond"}
+# This shows a possible sequence of calculations
+O2sat   <-                 # saturated oxygen concentration, mmol/m3
+airsea  <-                 # mmol/m2/d - airsea flux
+airseaT <-                 # mmol/d - total O2 input per day
+Rmmol   <-                 # fish respiration, mmol/fish/day
+N       <-                 # number of fish    
+```
+
+<div id="Fish-hint">
+Hint:
 
   - at the minimal oxygen concentration, the aeration rate and respiration rate should be the same.
   - Estimate the total air-water exchange (amount of oxygen added to the pond per day), at the minimal oxygen concentration (units mmol/day). 
   - You know the respiration of one fish. The total respiration of all fishes should equal the total air-water exchange.
-
-Use the R chunk below to add your answer (N is the number of fishes):
-
-```{r Fish, exercise=TRUE}
-N <-
-```
-
-
-```{r Fish-hint}
-# This shows the sequence of calculations - replace NA with the correct formula 
-O2sat   <-  NA              # saturated oxygen concentration, mmol/m3
-airsea  <-  NA              # mmol/m2/d - airsea flux
-airseaT <-  NA              # mmol/d - total O2 input per day
-Rmmol   <-  NA              # fish respiration, mmol/fish/day
-N       <-  NA              # number of fish    
-```
+</div>
 
 ```{r Fish-solution}
 O2sat   <- pO2/K0*P *1e6                # umol/L = mmol/m3
@@ -162,3 +159,15 @@ N       <- airseaT/Rmmol                # number of fish
 question("give your feedback ", type = "learnr_text", answer(" ", correct=TRUE), correct="thank you", incorrect = "thank you")
 ```
 
+An exercise on a model that assumes partitioning between phases, can be found in the RTM R-package:
+
+```
+require(RTM)
+RTMexercise("partitioning")
+```
+
+## References
+
+R Core Team (2020). R: A language and environment for statistical computing. R
+  Foundation for Statistical Computing, Vienna, Austria. URL
+  https://www.R-project.org/.

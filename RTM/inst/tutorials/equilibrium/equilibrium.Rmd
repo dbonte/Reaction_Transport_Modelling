@@ -1,0 +1,363 @@
+---
+title: "Reaction Transport Modelling Course - Reversible reactions and Equilibrium chemistry"
+author: "Karline Soetaert and Lubos Polerecky"
+date: "June-2021"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(learnr)
+```
+
+## Tutorial
+
+You are advised to watch the following video first - you can skip the first part.
+
+![](https://www.youtube.com/watch?v=loHVpLNQBZE&list=PLx8PHcDdmF-uD1Pr07TU9SzlhlGpfrxqn&index=5)
+
+and/or read the following sections of the book:
+
+* Chapter 8. Multiple time scales and Equilibrium Processes
+
+(You can download each chapter of this book via the e-book University library for free!)
+
+
+## Reversible reaction: rates
+
+Assume that the following reversible chemical reaction is the only process affecting ammonia ($NH_3$), ammonium ($NH_4^+$) and protons ($H^+$).
+
+$$
+NH_4^+(aq) \leftrightarrow NH_3(aq) + H^+
+$$
+
+* the rate constant for the forward reaction is called $k_f$
+* the rate constant for the backward reaction is called $k_b$
+
+```{r ammonia_eq, echo=FALSE}
+question("What is the correct expression for the rate of change of ammonia?", type = "learnr_radio",
+ answer(sprintf("$\\frac{d[NH_3]}{dt}=k_f \\times [NH_4] - k_b \\times [NH_3] \\times [H^+]$"), correct=TRUE),
+ answer(sprintf("$\\frac{d[NH_3]}{dt}=k_f \\times [NH_4]$"), correct=FALSE),
+ answer(sprintf("$\\frac{d[NH_3]}{dt}=k_f \\times [NH_4] - k_b \\times [NH_3]$"), correct=FALSE)
+)
+```
+
+```{r proton_diffeq, echo=FALSE}
+question("What is the correct expression for the rate of change of protons?", type = "learnr_radio",
+ answer(sprintf("$\\frac{d[H^+]}{dt}=k_f \\times [NH_4]$"), correct=FALSE),
+ answer(sprintf("$\\frac{d[H^+]}{dt}=k_f \\times [NH_4] - k_b \\times [NH_3]$"), correct=FALSE),
+ answer(sprintf("$\\frac{d[H^+]}{dt}=k_f \\times [NH_4] - k_b \\times [NH_3] \\times [H^+]$"), correct=TRUE)
+)
+```
+
+## Reversible reaction: units
+
+$$
+NH_4^+(aq) \leftrightarrow NH_3(aq) + H^+
+$$
+
+* the rate constant for the forward reaction is called $k_f$
+* the rate constant for the backward reaction is called $k_b$
+
+```{r unitsKf, echo=FALSE}
+question(sprintf("What are the units of $k_f$?"), type = "learnr_radio",
+ answer(sprintf("$(molN~ m^{-3})^{-1}~s^{-1}$"), correct=FALSE),
+ answer(sprintf("$s^{-1}$"), correct=TRUE),
+ answer(sprintf("$molN~m^{-3}~s^{-1}$"), correct=FALSE),
+ incorrect = sprintf("The unit of the rate is $molN~ m^{-3}~s^{-1}$, and it is expressed as $R_f = k_f \\cdot [NH_4^+]$ - with $[NH_4^+]$ in $molN~ m^{-3}$, $k_f$ must be in units of $s^{-1}$ "),
+   correct = sprintf("The unit of the rate is $molN~ m^{-3}~s^{-1}$, and it is expressed as $R_f = k_f \\cdot [NH_4^+]$ - with $[NH_4^+]$ in $molN~ m^{-3}$, $k_f$ must be in units of $s^{-1}$ ")
+)
+```
+
+```{r unitsKb, echo=FALSE}
+question(sprintf("What are the units of $k_b$?"), type = "learnr_radio",
+ answer(sprintf("$(molN~ m^{-3})^{-1}~s^{-1}$"), correct=TRUE),
+ answer(sprintf("$s^{-1}$"), correct=FALSE),
+ answer(sprintf("$molN~m^{-3}~s^{-1}$"), correct=FALSE),
+ incorrect = sprintf("The unit of the rate is $molN~ m^{-3}~s^{-1}$, and it is expressed as $R_b = k_b \\cdot [NH_3][H^+]$ - with $[NH_3]$ and $[H^+]$ in $molN~ m^{-3}$, $k_b$ must be in units of $(molN~ m^{-3})^{-1}~s^{-1}$ "),
+   correct = sprintf("The unit of the rate is $molN~ m^{-3}~s^{-1}$, and it is expressed as $R_b = k_b \\cdot [NH_3][H^+]$ - with $[NH_3]$ and $[H^+]$ in $molN~ m^{-3}$, $k_b$ must be in units of $(molN~ m^{-3})^{-1}~s^{-1}$ ")
+)
+```
+
+
+## Equilibrium constant
+
+Based on the following  reversible reaction, in equilibrium.
+$$
+NH_4^+(aq) \leftrightarrow NH_3(aq) + H^+
+$$
+
+with forward rate constant called $k_f$ and the backward $k_b$.
+
+Assume that 
+
+* the equilibrium constant for this reaction is called $K_{N}$, with units of $mol~N~m^{-3}$.
+* the concentration of total ammonia is defined as $\sum NH_x = [NH_3] + [NH_4^+]$.
+* the equilibrium concentration of ammonia and ammonium is denoted as $[NH_3]^*$ and $[NH_4^+]^*$.
+
+```{r KN, echo=FALSE}
+question("Which of the following statements is true", type = "learnr_checkbox",
+ answer(sprintf("$K_{N} = \\frac{k_f}{k_b}$"), correct=TRUE),
+ answer(sprintf("$K_{N} = \\frac{k_b}{k_f}$"), correct=FALSE),
+
+ incorrect=sprintf("if you find it difficult to remember this formula and do not want to derive it, think about the units of $K_N$ (mol $m^{-3}$), and the units of $k_b$ ($(molN~ m^{-3})^{-1}~s^-1$), and of $k_f$, ($s^{-1}$)). Units of both sides of the equality should be the same"), 
+  correct=sprintf("if you find it difficult to remember this formula and do not want to derive it, think about the units of $K_N$ (mol $m^{-3}$), and the units of $k_b$ ($(molN~ m^{-3})^{-1}~s^-1$), and of $k_f$, ($s^{-1}$). Units of both sides of the equality should be the same")
+ )
+```
+
+## Lump sums
+
+Based on the following equilibrium reversible reaction.
+$$
+NH_4^+(aq) \leftrightarrow NH_3(aq) + H^+
+$$
+
+```{r eqStatements, echo=FALSE}
+question("Which of the following statements is true at equilibrium", type = "learnr_checkbox",
+ answer(sprintf("$\\frac{d([H^+]+[NH_4^+])}{dt} =0$"), correct=TRUE),
+ answer(sprintf("$\\frac{d([NH_3]+[NH_4^+]}{dt} =0$"), correct=TRUE),
+ answer(sprintf("$\\frac{d([NH_3]-[NH_4^+]}{dt} =0$"), correct=FALSE),
+ answer(sprintf("$\\frac{d([NH_3]+[H^+]}{dt} =0$"), correct=FALSE),
+ answer(sprintf("$\\frac{d([NH_3]-[H^+]}{dt} =0$"), correct=TRUE),
+ incorrect=sprintf("The sums of species whose combined derivatives are 0 are good candidates as lumpsums to formulate the equilibrium reactions : these lumpsums are:  excess$H^+$ = $[H^+]+[NH_4^+]$, $\\sum NH_x = [NH_3]+[NH_4^+]$ and $NH_3alkalinity$ = $[NH_3] -[H^+]$ and excess_charge = $[NH_4^+]-[H^+]$. - Note that you will need only two of those lumpsums to reformulate the problem"), 
+  correct=sprintf("The sums of species whose combined derivatives are 0 are good candidates as lumpsums to formulate the equilibrium reactions : these lumpsums are:  excess$H^+$ = $[H^+]+[NH_4^+]$, $\\sum NH_x = [NH_3]+[NH_4^+]$ and $NH_3alkalinity$ = $[NH_3] -[H^+]$ and excess_charge = $[NH_4^+]-[H^+]$. Note that you will need only two of those lumpsums to reformulate the problem")
+ )
+```
+
+## Equilibrium formulation
+
+Based on the following equilibrium reversible reaction.
+$$
+NH_4^+(aq) \leftrightarrow NH_3(aq) + H^+
+$$
+
+where
+
+* the equilibrium constant for this reaction is called $K_{N}$, with units of $mol~N~m^{-3}$.
+* the concentration of total ammonia is defined as $\sum NH_x = [NH_3] + [NH_4^+]$.
+* the equilibrium concentration of ammonia and ammonium is denoted as $[NH_3]^*$ and $[NH_4^{+}]^*$.
+
+```{r eqStatements2, echo=FALSE}
+question("Which of the following statements is true", type = "learnr_checkbox",
+ answer(sprintf("$[NH_3]^* = \\frac{K_N}{K_N+[H^+]}$"), correct=FALSE),
+ answer(sprintf("$[NH_3]^* = \\frac{K_N}{K_N+[H^+]} \\sum NH_x$"), correct=TRUE),
+ answer(sprintf("$[NH_3]^* = \\frac{[H+]}{K_N+[H^+]}\\sum NH_x$"), correct=FALSE),
+ answer(sprintf("$[NH_4^+]^* = \\frac{K_N}{K_N+[H^+]}$"), correct=FALSE),
+ answer(sprintf("$[NH_4^+]^* = \\frac{K_N}{K_N+[H^+]}\\sum NH_x$"), correct=FALSE),
+ answer(sprintf("$[NH_4^+]^* = \\frac{[H+]}{K_N+[H^+]}\\sum NH_x$"), correct=TRUE),
+ incorrect=sprintf("if you find it difficult to remember which formula applies for which species, a menomnic we use is that the positively charged species has protons in the nominator"), 
+  correct=sprintf("if you find it difficult to remember which formula applies for which species, a menomnic we use is that the positively charged species has protons in the nominator")
+  
+ )
+```
+
+## Equilibrium concentration: bjerrum plot
+
+Bjerrum plots show how the concentration (or fraction) of the various ionic forms of a lumpsum change as a function of pH.  For ammonia we write, with $K_N = 5.380823e-10$ mol $kg^{-1}$:
+
+```{r, fig.width=6, fig.height=4}
+KN     <- 5.380823e-10
+pH     <- seq(from=2, to=12, length.out=50)
+H      <- 10^{-pH}
+NH3    <- KN/(KN+H)
+plot(pH, NH3, type = "l", ylab = "pNH3", main = "bjerrum")
+```
+
+Complete the R code to add the fraction of ammonium to this plot:
+
+```{r amm, exercise=TRUE, exercise.cap = "Bjerrum plot with NH3 and NH4+", exercise.lines = 6}
+plot(pH, NH3, type = "l", ylab = "fractions", main = "bjerrum NH4 <-> NH3 + H+")
+
+NH4 <-    ### ADD THE EQUATION HERE
+  
+lines(pH, NH4, col="red")
+legend("left", col=c("black","red"), lty=1, legend=c("NH3","NH4+"))
+```
+
+## Two reactions: equilibrium
+
+You are given the following two equilibrium reactions:
+
+$$
+Reaction~1: \qquad H_2CO_3 \leftrightarrow HCO_3^- + H^+
+$$
+
+
+$$
+Reaction~2: \qquad HCO_3^- \leftrightarrow CO_3^{2-} + H^+
+$$
+
+Equilibrium constants for the reactions 1 and 2 are $K_1$ and $K_2$, respectively. Assume that the concentration of the total dissolved inorganic carbon ($DIC = [H_2CO_3] + [HCO_3^-] + [CO_3^{2-}]$) is constant and equal to [DIC].
+
+
+```{r eq2Reactions, echo=FALSE}
+question("Which of the following equations correctly describe the relationships between carbonic acid, bicarbonate, carbonate and protons in equilibrium?", type = "learnr_checkbox",
+ answer(sprintf("$[HCO_3^-] = \\frac{K_1 \\times [H^+]}{[H^+] \\times [H^+] + K_1 \\times [H^+] + K_1 \\times K_2} DIC$"), correct=TRUE),
+ answer(sprintf("$DIC = \\frac{K_1 \\times [H^+]}{[H^+] \\times [H^+] + K_1 \\times [H^+] + K_1 \\times K_2} [HCO_3^-]$"), correct=FALSE),
+ answer(sprintf("$[HCO_3^-] = \\frac{K_2 \\times [H^+]}{[H^+] \\times [H^+] + K_1 \\times [H^+] + K_1 \\times K_2} DIC$"), correct=FALSE),
+ answer(sprintf("$[CO_3^{2-}] = \\frac{[H^+] \\times [H^+]}{[H^+] \\times [H^+] + K_1 \\times [H^+] + K_1 \\times K_2} DIC$"), correct=FALSE),
+ answer(sprintf("$[CO_3^{2-}] = \\frac{K_1 \\times K_2}{[H^+] \\times [H^+] + K_1 \\times [H^+] + K_1 \\times K_2} DIC$"), correct=TRUE),
+
+ incorrect=sprintf("The equilibrium equations all depend on the DIC concentration, so the second option cannot be true. Also, the sum of $[H_2CO_3]$ (carbonic acid conc), $[HCO_3^-]$ (bicarbonate) and $[CO_3^{2-}]$ carbonate have to be = DIC (by definition), so the third equation cannot be true as the nominator is not part of the denominator. As for carbonate, the correct formula can be remembered as follows: carbonate is the most negatively charged ion, so it has in the nominator the least charged combination (K1*K2) - the other nominators involving either one or two protons"), 
+  correct=sprintf("The equilibrium equations all depend on the DIC concentration, so the second option cannot be true. Also, the sum of $[H_2CO_3]$ (carbonic acid conc), $[HCO_3^-]$ (bicarbonate) and $[CO_3^{2-}]$ carbonate have to be = DIC (by definition), so the third equation cannot be true as the nominator is not part of the denominator. As for carbonate, the correct formula can be remembered as follows: carbonate is the most negatively charged ion, so it has in the nominator the least charged combination (K1*K2) - the other nominators involving either one or two protons") 
+  )
+```
+
+## Two reactions: lumpsums
+
+You are given the following two equilibrium reactions:
+
+$$
+Reaction~1: \qquad H_2CO_3 \leftrightarrow HCO_3^- + H^+
+$$
+
+
+$$
+Reaction~2: \qquad HCO_3^- \leftrightarrow CO_3^{2-} + H^+
+$$
+
+To make use of the fast reversible reactions, we need to find combinations of species that are not affected by the above reactions.
+
+```{r eq2Lumpsum, echo=FALSE}
+question("Which of the following lump sums would be suitable to reformulate a model that involves these equilbirum reactions?", type = "learnr_checkbox",
+ answer(sprintf("$[HCO_3^-] + 2 [CO_3^{2-}] - [H^+]$"), correct=TRUE),
+ answer(sprintf("$[HCO_3^-] + [CO_3^{2-}] - [H^+]$"), correct=FALSE),
+ answer(sprintf("$[HCO_3^-] - [CO_3^{2-}] + [H^+]$"), correct=FALSE),
+ answer(sprintf("$[HCO_3^-] - 2[CO_3^{2-}] + [H^+]$"), correct=FALSE),
+ answer(sprintf("$[H_2CO_3] + [HCO_3^-] + [CO_3^{2-}]$"), correct=TRUE),
+ answer(sprintf("$2[H_2CO_3] + [HCO_3^-] + [H^+]$"), correct=TRUE),
+  
+ incorrect=sprintf("$[HCO_3^-] + 2 [CO_3^{2-}] - [H^+]$ is unaffected by reaction 1 (production of $HCO_3^-$ =+1, production of $H^+$ = -1), and unaffected by reaction 2: (consumption of $HCO_3^-$ : -1, production of $H^+$ : -1, production of $CO_3^{2-}$ : +2).  This lump sum is called the 'carbonate alkalinity' or 'excess negative charge'. 
+ The fifth lump sum is the 'total dissolved inorganic carbon'.
+ The last lump sum ($2[H_2CO_3] + [HCO_3^-] + [H^+]$) is never used in models, but would also be suitable - it accounts for the excess protons.
+   "), 
+correct=sprintf("$[HCO_3^-] + 2 [CO_3^{2-}] - [H^+]$ is unaffected by reaction 1 (production of $HCO_3^-$ =+1, production of $H^+$ = -1), and unaffected by reaction 2: (consumption of $HCO_3^-$ : -1, production of $H^+$ : -1, production of $CO_3^{2-}$ : +2).  This lump sum is called the 'carbonate alkalinity' or 'excess negative charge'.  
+ The fifth lump sum is the 'total dissolved inorganic carbon'.
+ The last lump sum ($2[H_2CO_3] + [HCO_3^-] + [H^+]$) is never used in models, but would also be suitable - it accounts for the excess protons.
+   ")
+)
+```
+
+
+## Lump sums revisited.
+
+Based on the following equilibrium reversible reaction.
+$$
+Reaction~1: \qquad H_2CO_3 \leftrightarrow HCO_3^- + H^+ \\
+Reaction~2: \qquad HCO_3^- \leftrightarrow CO_3^{2-} + H^+
+$$
+
+The easiest (but rather elaborate) way to determine if a lumpsum is suitable (i.g. inaffected by the equilibrium reactions) is to expand its derivative. 
+
+If we define $R1_f$ and $R1_b$ the forward and backward reaction rate (in mol/m3/s) of reaction 1, and $R2_f$ and $R2_b$ the  forward and backward reaction rate of reaction 2, then we can write:
+
+$$\frac{d[H_2CO_3]}{dt}=-R1_f+R1_b;\quad \frac{d[HCO_3^-]}{dt}=R1_f-R1_b-R2_f+R2_b;\\ \frac{d[H^+]}{dt}=R1_f-R1_b+R2_f-R2_b; \quad \frac{[dCO_3^{2-}]}{dt}=R2_f-R2_b$$
+so, expanding the derivative of alkalinity: $\frac{d([HCO_3^-] + 2 [CO_3^{2-}] - [H^+])}{dt}$=$\frac{d[HCO_3^-]}{dt} + 2 \frac{d[CO_3^{2-}]}{dt} - \frac{d[H^+]}{dt}$ = 0.
+
+## Combined reversible and irreversible reactions
+
+You are given the following reactions:
+
+$$
+Reaction~1: \qquad H_2CO_3 \leftrightarrow HCO_3^- + H^+ \\
+Reaction~2: \qquad HCO_3^- \leftrightarrow CO_3^{2-} + H^+\\
+Reaction~3: \qquad NH_4^+ \leftrightarrow NH_3 + H^+\\
+Reaction~4: \qquad HNO_3 \leftrightarrow NO_3^- + H^+\\
+Reaction~5: \quad CH_2O(NH_3)_{NC} + O_2 \rightarrow H_2CO_3 + NC \cdot NH_3\\
+Reaction~6: \quad NH_3 + 2O_2 \rightarrow NO_3^- + H^+ + H_2O
+$$
+
+* Assume that reactions 1–4 are fast and reversible, whereas reactions 5–6 correspond to a slow irreversible process (mediated by microbes). 
+* Reaction 5, which corresponds to aerobic mineralization of organic matter, occurs at a rate *Raero*
+* Reaction 6, which corresponds to nitrification, occurs at a rate *Rnit*.
+
+```{r eqmultLumpsum, echo=FALSE}
+question("Which of the following lump sums would be suitable to reformulate a model that involves the equilbrium reactions 1-4?", type = "learnr_checkbox",
+ answer(sprintf("$[H_2CO_3] + [HCO_3^-] + [CO_3^{2-}]$"), correct=TRUE),
+ answer(sprintf("$[H_2CO_3] + [HCO_3^-] + [CO_3^{2-}] + [CH_2O]$"), correct=FALSE),
+ answer(sprintf("$[H_2CO_3] + [HCO_3^-] + [CO_3^{2-}] - [CH_2O]$"), correct=FALSE),
+ answer(sprintf("$[NH_4^+] + [NH_3]$"), correct=TRUE),
+ answer(sprintf("$[NO_3^-] + [NH_3]$"), correct=FALSE),
+ answer(sprintf("$[NO_3^-] + [HNO_3]$"), correct=TRUE),
+ answer(sprintf("$[HCO_3^-] + 2 [CO_3^{2-}] - [H^+]$"), correct=FALSE),
+ answer(sprintf("$[HCO_3^-] + 2 [CO_3^{2-}] +[NH_3] - [H^+]$"), correct=FALSE),
+ answer(sprintf("$[HCO_3^-] + 2 [CO_3^{2-}] +[NO_3^-] - [H^+]$"), correct=FALSE),
+ answer(sprintf("$[HCO_3^-] + 2 [CO_3^{2-}] +[NO_3^-] + [NH_3] - [H^+]$"), correct=TRUE),
+ answer(sprintf("$[HCO_3^-] + 2 [CO_3^{2-}] -[HNO_3] + [NH_3] - [H^+]$"), correct=TRUE),
+  
+ incorrect=sprintf("The lump sums should only include species that are affected by the fast equilibrium processes, which rules out answer 2 and 3.  The lump sum $[H_2CO_3] + [HCO_3^-] + [CO_3^{2-}]$ is the summed carbonate concentration that only features in the first 2 reactions (and is conserved by them), Similarly, $[NH_4^+] + [NH_3]$ and $[NO_3^-] + [HNO_3]$ are the summed ammonium and nitrate concentrations, who only feature and are conserved in the reactions 3 and 4. One more lump sum is needed to constrain the proton concentration. As protons feature in reactions 1, 2, 3, and 4 this lump sum should be conserved by all these equilibrium reactions. The lump sum $[HCO_3^-] + 2 [CO_3^{2-}] - [H^+]$ is not suitable, as it is not conserved in reactions 3 and 4; only the last 2 equations are suitable"),
+  
+correct=sprintf("The lump sums should only include species that are affected by the fast equilibrium processes, which rules out answer 2 and 3.  The lump sum $[H_2CO_3] + [HCO_3^-] + [CO_3^{2-}]$ is the summed carbonate concentration that only features in the first 2 reactions (and is conserved by them), Similarly, $[NH_4^+] + [NH_3]$ and $[NO_3^-] + [HNO_3]$ are the summed ammonium and nitrate concentrations, who only feature and are conserved in the reactions 3 and 4. One more lump sum is needed to constrain the proton concentration. As protons feature in reactions 1, 2, 3, and 4 this lump sum should be conserved by all these equilibrium reactions. The lump sum $[HCO_3^-] + 2 [CO_3^{2-}] - [H^+]$ is not suitable, as it is not conserved in reactions 3 and 4; only the last 2 equations are suitable")
+)
+```
+
+## combined equilibrium/slow reactions: full model
+ 
+You are given the following equilibrium reactions:
+
+$$
+Reaction~1: \qquad H_2CO_3 \leftrightarrow HCO_3^- + H^+ \\
+Reaction~2: \qquad HCO_3^- \leftrightarrow CO_3^{2-} + H^+\\
+Reaction~3: \qquad NH_4^+ \leftrightarrow NH_3 + H^+\\
+Reaction~4: \qquad HNO_3 \leftrightarrow NO_3^- + H^+
+$$
+and slow irreversible reactions:
+
+$$
+Reaction~5: \qquad CH_2O(NH_3)_{NC} + O_2 \rightarrow H_2CO_3 + NC \cdot NH_3\\
+Reaction~6: \qquad NH_3 + 2O_2 \rightarrow NO_3^- + H^+ + H_2O
+$$
+
+We use the lumpsums:
+
+$$
+DIC = [H_2CO_3] + [HCO_3^-] + [CO3^{2-}]\\
+NH_x = [NH_4^+] + [NH_3]\\
+H_xNO_3 = [HNO_3] + [NO_3^-]\\
+TA = [HCO_3^−] + 2 [CO_3^{2−}] + [NH_3] + [NO_3^-] − [H^+]
+$$
+
+```{r eqmultirrev, echo=FALSE}
+question("How would you account for the aerobic respiration rate, Raero and the nitrification rate Rnit?", type = "learnr_checkbox",
+ answer(sprintf("$\\frac{dDIC}{dt} = Raero$"), correct=TRUE),
+ answer(sprintf("$\\frac{dH2CO3}{dt} = Raero$"), correct=FALSE),
+ answer(sprintf("$\\frac{dCH_2O(NH_3)_{NC}}{dt} = -Raero$"), correct=TRUE),
+ answer(sprintf("$\\frac{dNH_3}{dt} = NC \\times Raero$"), correct=FALSE),
+ answer(sprintf("$\\frac{dNH_3}{dt} = NC \\times Raero - Rnit$"), correct=FALSE),
+ answer(sprintf("$\\frac{dNH_x}{dt} = NC \\times Raero - Rnit$"), correct=TRUE),
+ answer(sprintf("$\\frac{dH_xNO_3}{dt} = Rnit$"), correct=TRUE),
+ answer(sprintf("$\\frac{dTA}{dt} = Raero + Rnit$"), correct=FALSE),
+ answer(sprintf("$\\frac{dTA}{dt} = NC \\times Raero + Rnit$"), correct=FALSE),
+ answer(sprintf("$\\frac{dTA}{dt} = NC \\times Raero - Rnit$"), correct=TRUE),
+  
+ incorrect=sprintf("The slow reaction should be written as a function of the lump sums, which rules out answer 2, 4 and 5.  Answer 1 and 6 is written as a function of DIC, $NH_x$, and $H_xNO_3$ and is correct. The alkalinity definition used here is affected by the aerobic respiration only by the production of NH3. The effect of nitrification on the TA (as defined here) is via the consumption of $NH_3$ (-1TA), the production of $NO_3^-$ (+1TA), and the production of protons -as the latter contribute negatively to TA, this gives a net consumption of TA of 1."),
+  
+correct=sprintf("The slow reaction should be written as a function of the lump sums, which rules out answer 2, 4 and 5.  Answer 1 and 6 is written as a function of DIC, $NH_x$, and $H_xNO_3$ and is correct. The alkalinity definition used here is affected by the aerobic respiration only by the production of NH3. The effect of nitrification on the TA (as defined here) is via the consumption of $NH_3$ (-1TA), the production of $NO_3^-$ (+1TA), and the production of protons -as the latter contribute negatively to TA, this gives a net consumption of TA of 1.")
+)
+```
+
+
+## Finally
+
+```{r feedback, echo = FALSE}
+question("give your feedback ", type = "learnr_text", answer(" ", correct=TRUE), correct="thank you", incorrect = "thank you")
+```
+
+More extensive exercises on chemical models, more specifically on equilibrium formulations, can be found in the RTM R-package:
+
+```
+require(RTM)
+RTMexercise("equilibriumNH3")
+RTMexercise("equilibriumHCO3")
+RTMexercise("equilibriumOMD")
+```
+## References
+
+R Core Team (2020). R: A language and environment for statistical computing. R
+  Foundation for Statistical Computing, Vienna, Austria. URL
+  https://www.R-project.org/.
+

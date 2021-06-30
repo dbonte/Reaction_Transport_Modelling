@@ -56,8 +56,7 @@ correct =  "there are several correct answers; answer 1 assumes a linear functio
 
 ```
 
-## Simple differential equations
-
+## Simple differential equations - I
 
 ```{r diffeq1, echo=FALSE}
 question(sprintf("The change in time of a quantity M (in moles) is described by the differential equation: $\\frac{dM}{dt} = -r \\times M$, where r > 0. Which of the following statements is true"), type = "learnr_checkbox",
@@ -68,7 +67,12 @@ question(sprintf("The change in time of a quantity M (in moles) is described by 
  answer(sprintf("the unit of the rate parameter $r$ is $day$")),
  answer(sprintf("the unit of the rate parameter $r$ is $/day$"), correct=TRUE),
  answer(sprintf("the unit of the rate parameter $r$ is $mol/day$")),
- answer(sprintf("the unit of the rate parameter $r$ is $day/mol$")),
+ answer(sprintf("the unit of the rate parameter $r$ is $day/mol$"))
+)  
+```
+
+```{r diffeq1b, echo=FALSE}
+question(sprintf("The change in time of a quantity M (in moles) is described by the differential equation: $\\frac{dM}{dt} = -r \\times M$, where r > 0. Which of the following statements is true"), type = "learnr_checkbox",
  answer("M does not grow"),
  answer("M decreases linearly with time"),
  answer("M decreases exponentially with time", correct=TRUE),
@@ -77,6 +81,8 @@ question(sprintf("The change in time of a quantity M (in moles) is described by 
  answer("M has logistic growth")
 )  
 ```
+
+## Simple differential equations - II
 
 ```{r diffeq2, echo=FALSE}
 question(sprintf("The change in time of a quantity M (in moles) is described by the differential equation: $\\frac{dM}{dt} = -r$, where r > 0. Which of the following statements is true"), type = "learnr_checkbox",
@@ -87,7 +93,12 @@ question(sprintf("The change in time of a quantity M (in moles) is described by 
  answer(sprintf("the unit of the rate parameter $r$ is $day$")),
  answer(sprintf("the unit of the rate parameter $r$ is $/day$")),
  answer(sprintf("the unit of the rate parameter $r$ is $mol/day$"), correct=TRUE),
- answer(sprintf("the unit of the rate parameter $r$ is $day/mol$")),
+ answer(sprintf("the unit of the rate parameter $r$ is $day/mol$"))
+)  
+```
+
+```{r diffeq2b, echo=FALSE}
+question(sprintf("The change in time of a quantity M (in moles) is described by the differential equation: $\\frac{dM}{dt} = -r$, where r > 0. Which of the following statements is true"), type = "learnr_checkbox",
  answer("M does not grow"),
  answer("M decreases linearly with time", correct=TRUE),
  answer("M decreases exponentially with time"),
@@ -97,17 +108,33 @@ question(sprintf("The change in time of a quantity M (in moles) is described by 
 )  
 ```
 
+## Simple differential equations - III
+
 ```{r diffeq3, echo=FALSE}
 question(sprintf("The change in time of a quantity M (in moles) is described by the differential equation: $\\frac{dM}{dt} = r \\times M \\times (1-\\frac{M}{K})$, where r > 0. Which of the following statements is true"), type = "learnr_checkbox",
  answer("this describes zero-order dynamics"),
  answer("this describes first-order dynamics"),
  answer("this describes second-order dynamics"),
- answer("this is a mix of first-order and second-order dynamics", correct = TRUE),
+ answer("this is a mix of first-order and second-order dynamics", correct = TRUE))
+```
+
+```{r diffeq3b, echo=FALSE}
+question(sprintf("The change in time of a quantity M (in moles) is described by the differential equation: $\\frac{dM}{dt} = r \\times M \\times (1-\\frac{M}{K})$, where r > 0. Which of the following statements is true"), type = "learnr_checkbox",
  answer(sprintf("the unit of the rate parameter $r$ is $day$")),
  answer(sprintf("the unit of the rate parameter $r$ is $/day$"), correct=TRUE),
  answer(sprintf("the unit of the rate parameter $r$ is $mol/day$")),
  answer(sprintf("the unit of the rate parameter $r$ is $day/mol$")),
- answer("M does not grow"),
+ answer(sprintf("the unit of the rate parameter $r$ is $mol$")),
+ answer(sprintf("the unit of the parameter $K$ is $day$")),
+ answer(sprintf("the unit of the parameter $K$ is $/day$")),
+ answer(sprintf("the unit of the parameter $K$ is $mol/day$")),
+ answer(sprintf("the unit of the parameter $K$ is $day/mol$")),
+ answer(sprintf("the unit of the parameter $K$ is $mol$"), correct=TRUE)
+)  
+```
+
+```{r diffeq3c, echo=FALSE}
+question(sprintf("The change in time of a quantity M (in moles) is described by the differential equation: $\\frac{dM}{dt} = r \\times M \\times (1-\\frac{M}{K})$, where r > 0. Which of the following statements is true"), type = "learnr_checkbox",
  answer("M decreases linearly with time"),
  answer("M decreases exponentially with time"),
  answer("M increases linearly with time"),
@@ -240,6 +267,171 @@ output$carcapPlot <- renderPlot({
 })
 ```
 
+## Recognizing rate expressions
+
+```{r RateLim, echo=FALSE}
+question(sprintf("The rate expression that describes the uptake of nitrate (NO3) in the presence of ammonia (NH3) by marine microscopic algae (P) is $R = r \\times \\frac{[NO3]}{[NO3]+K_N} \\times \\frac{K_A}{[NH3] + K_A} \\times [P]$. Which of the following sentences is true"), type = "learnr_checkbox",
+ answer("The process is limited by nitrate",  correct = TRUE),
+ answer("The process is inhibited by nitrate"),
+ answer("The process is limited by ammonia"),
+ answer("The process is inhibited by ammonia",  correct = TRUE),
+ answer("The process is first-order with respect to algae",  correct = TRUE),
+ answer("The process is zero-order with respect to algae"),
+ incorrect=("Algal uptake of ammonia is less energy consuming than uptake of nitrate, and so the uptake is inhibited by the presence of ammonia. The nitrate concentration is rate limiting, while the work is performed by the algae, therefore the rate is first-order with respect to algae"),
+  correct=("Algal uptake of ammonia is less energy consuming than uptake of nitrate, and so the uptake is inhibited by the presence of ammonia. The nitrate concentration is rate limiting, while the work is performed by the algae, therefore the rate is first-order with respect to algae")
+ )
+```
+
+## Biochemistry: bacterial uptake of DOC
+
+The scheme below describes bacterial kinetics in a well-stirred closed system, and describes bacterial biomass (B) and dissolved organic carbon (DOC), in units of mol C $m^{-3}$. 
+
+![Bacterial-DOC dynamics](Bact_DOC.png)
+
+You are given a table with parameter values:
+
+parameter   |  value      | description                 | unit                        |
+------------|-------------|---------------------------- | --------------------------- |
+$g$         | 0.2         | uptake rate constant        |$hr^{-1}$                    |
+$k_s$       | 10          | half-saturation constant    |$mol C~m^{-3}$               |
+$\gamma$    | 0.5         | bacterial growh efficiency  | -                           |
+$r$         | 0.01        | basal respiration parameter |$hr^{-1}$                    |
+$m$         | 0.0005      | mortality parameter         |$(mol C~m^{-3})^{-1} hr^{-1}$| 
+
+and the initial conditions that are:
+$$ B_0 = 0.1; \qquad DOC_0=100 \quad mol~m^{-3}$$
+
+
+```{r bact1, echo=FALSE}
+question(sprintf("Based on the model scheme and parameter definitions, which is the correct equation of bacterial growth?"), type = "learnr_radio",
+ answer(sprintf("$g \\times \\frac{B}{B+k_s} \\times DOC$")),
+ answer(sprintf("$g \\times \\frac{DOC}{DOC+k_s} \\times B$")),
+ answer(sprintf("$\\gamma \\times g \\times \\frac{B}{B+k_s} \\times DOC$")),
+ answer(sprintf("$\\gamma \\times g \\times \\frac{DOC}{DOC+k_s} \\times B$"), correct=TRUE),
+ answer(sprintf("$\\gamma \\times g \\times \\frac{DOC}{DOC+k_s}$")),
+ answer(sprintf("$\\gamma \\times g \\times \\frac{DOC_0}{DOC_0+k_s}$"))
+)  
+```
+
+```{r bact2, echo=FALSE}
+question(sprintf("Based on the model scheme and parameter definitions, which is the correct equation of bacterial mortality?"), type = "learnr_radio",
+ answer(sprintf("$m \\times DOC$")),
+ answer(sprintf("$m \\times B$")),
+ answer(sprintf("$m \\times \\frac{DOC}{DOC+k_s} \\times B$")),
+ answer(sprintf("$m \\times B^2$"), correct=TRUE),
+ incorrect =  "The units of the mortality parameter indicate that the rate expression of mortality is quadratic",  
+correct =  "The units of the mortality parameter indicate that the rate expression of mortality is quadratic"
+)  
+```
+
+## Implementation in R
+
+By now you should be able to write the mass balance equations and rate expressions for this model. We do not give them in mathematical formalism but implement them directly in R. 
+
+```{r model, message=FALSE}
+require(deSolve)
+
+#         [/hr], [mol/m3],  [-]   , [/hr] , [/(molC/m3)/hr]
+parms <- c(g=0.2, ks=10, gamma=0.5, r=0.01, m=0.0005)  #          parameters
+y.ini <- c(B=0.1, DOC=100)                          #[molC/m3] initial conditions
+
+Bactmod <- function(t, y, p){        # derivative function
+  with (as.list(c(y,p)),{
+
+  # rates  
+    BactUptake   <- g * DOC/(DOC+ks) * B
+    BactGrowth   <- gamma * BactUptake
+    BactDeath    <- m * B^2
+    BasalResp    <- r * B
+    ActivityResp <- (1-gamma)*BactUptake
+  
+  # mass balance
+    dB.dt   <-  BactUptake - ActivityResp - BasalResp - BactDeath
+    dDOC.dt <- -BactUptake + BactDeath
+  
+  # return derivative vector and output variable  
+    list(c(dB.dt, dDOC.dt), 
+         TotalC=B+DOC)
+  })
+}
+
+times <- seq(from=0, to=100, by=1)
+out <- ode(y=y.ini, times=times, func=Bactmod, parms=parms)
+plot(out)
+```
+
+TASK
+
+You get as input the previous model. Your task is to add dissolved *in*organic carbon, DIC. (remember that this is produced by the bacterial respiration). The initial concentration of DIC = 0.
+
+```{r model3eq, exercise=TRUE}
+require(deSolve)
+
+#         [/hr], [mol/m3],  [-]   , [/hr] , [/(molC/m3)/hr]
+parms <- c(g=0.2, ks=10, gamma=0.5, r=0.01, m=0.0005)  #          parameters
+y.ini <- c(B=0.1, DOC=100)                          #[molC/m3] initial conditions
+
+Bactmod <- function(t, y, p){        # derivative function
+  with (as.list(c(y,p)),{
+
+  # rates  
+    BactUptake   <- g * DOC/(DOC+ks) * B
+    BactGrowth   <- gamma * BactUptake
+    BactDeath    <- m * B^2
+    BasalResp    <- r * B
+    ActivityResp <- (1-gamma)*BactUptake
+  
+  # mass balance
+    dB.dt   <-  BactUptake - ActivityResp - BasalResp - BactDeath
+    dDOC.dt <- -BactUptake + BactDeath
+  
+  # return derivative vector and output variable  
+    list(c(dB.dt, dDOC.dt), 
+         TotalC=B+DOC)
+  })
+}
+
+times <- seq(from=0, to=100, by=1)
+out <- ode(y=y.ini, times=times, func=Bactmod, parms=parms)
+plot(out)
+```
+
+
+```{r model3eq-solution}
+require(deSolve)
+parms <- c(g=0.2, ks=10, gamma=0.5, r=0.01, m=0.0005)  #          parameters
+y.ini <- c(B=0.1, DOC=100, DIC=0)                      #[molC/m3] initial conditions
+
+Bactmod <- function(t, y, p){        # derivative function
+  with (as.list(c(y,p)),{
+  # rates  
+    BactUptake   <- g * DOC/(DOC+ks) * B
+    BactGrowth   <- gamma * BactUptake
+    BactDeath    <- m * B^2
+    BasalResp    <- r * B
+    ActivityResp <- (1-gamma)*BactUptake
+  # mass balance
+    dB.dt   <-  BactUptake - ActivityResp - BasalResp - BactDeath
+    dDOC.dt <- -BactUptake + BactDeath
+    dDIC.dt <- ActivityResp + BasalResp
+
+    list(c(dB.dt, dDOC.dt, dDIC.dt), 
+         TotalC=B+DOC+DIC)
+  })
+}
+
+times <- seq(from=0, to=100, by=1)
+out <- ode(y=y.ini, times=times, func=Bactmod, parms=parms)
+plot(out)
+```
+
+<div id="model3eq-hint">
+**Hint:** you will need to add a new state variable called DIC in y.ini; in the derivative function you must specify the mass balance of DIC (call this dDIC.dt), and return this in the derivative vector.
+</div>
+
+<div id="model3eq-hint">
+**Hint:** you also need to include DIC in the total Carbon concentration, that should remain constant during the simulation.
+</div>
 
 ## Finally
 
