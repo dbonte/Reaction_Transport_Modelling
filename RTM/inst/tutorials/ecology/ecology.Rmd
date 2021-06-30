@@ -286,7 +286,7 @@ question(sprintf("The rate expression that describes the uptake of nitrate (NO3)
 
 The scheme below describes bacterial kinetics in a well-stirred closed system, and describes bacterial biomass (B) and dissolved organic carbon (DOC), in units of mol C $m^{-3}$. 
 
-![Bacterial-DOC dynamics](BactDOC.png)
+![Bacterial-DOC dynamics](images/BactDOC.png)
 
 You are given a table with parameter values:
 
