@@ -16,15 +16,15 @@ library(learnr)
 
 ## Tutorial
 
-You are advised to watch the following video first. Only the first part (0:00-5:21) is relevant for this tutorial. TEST.
+You are advised to watch the following video first. Only the first part (0:00-5:21) is relevant for this tutorial.
 
 ![](https://www.youtube.com/watch?v=loHVpLNQBZE&list=PLx8PHcDdmF-uD1Pr07TU9SzlhlGpfrxqn&index=5)
 
-and/or read the following sections of the book:
+You can also read the following section(s) of the textbook:
 
 * Chapter 2.3. Formulation of chemical reaction
 
-(You can download each chapter of this book via the e-book University library for free!)
+(You can download each chapter of the textbook via the e-book University library for free!)
 
 ## true/false statements
 
