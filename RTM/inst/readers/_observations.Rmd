@@ -1,0 +1,169 @@
+---
+title: "Observed Data in a Reaction Transport Model in R"
+subtitle: "Reader Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+author: "Karline Soetaert and Lubos Polerecky"
+date: "March-2021"
+output:
+  pdf_document: default
+  html_document: default
+vignette: >
+  %\VignetteIndexEntry{Observed Data in a Reaction Transport Model in R: accessory material}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{utf8}
+abstract: Here we show how to compare model outputs to observed data. This can be used to find those parameter values that best fit the data.
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message = FALSE}
+require(deSolve)    
+require(marelac)
+require(ReacTran)
+require(rootSolve)
+```
+
+# Data visualisation with model output
+
+It is relatively simple to visualise observed data together with model output, provided that:
+
+* The names of data columns are the same as the names of the (state) variables in the model.
+* The first column contains *time* for dynamic runs, or the *space* variable for 1D steady-state runs.
+
+To plot the data together with model output, all you need to do is to specify the name of the data object (matrix, data.frame) in argument "obs" when calling the plot function. You can also set the characteristics of the observed data by argument "obspar".
+
+## Dynamic model
+
+Consider the simple SIR model that you made in class:
+
+```{r, fig.width=10, fig.height=6, warning = FALSE, message = FALSE}
+state.SIR   <- c(S = 17500000, I = 1000, R = 0, Deceased = 0)
+
+parms.SIR   <- c(
+  b = 0.00000001,    # [1/ind/d], infection parameter 
+  g = 0.07,          # [1/d],     recovery rate of infected individuals
+  m = 0.007          # [1/d],     mortality rate of infected individuals
+)
+
+SIR <- function(t, state, parameters) {
+  with (as.list(c(state, parameters)), {
+
+    Infection  <- b*S*I
+    Recovery   <- g*I
+    Mortality  <- m*I
+
+    dS          <- -Infection 
+    dI          <-  Infection - Recovery - Mortality
+    dR          <-  Recovery
+    dDeceased   <-  Mortality    # to track number of deceased people
+
+    return (list(c(dS, dI, dR, dDeceased)))
+  }) 
+}
+time.seq   <- seq(from=0, to=100, by=1)   # time sequence, in days
+out <- ode(y=state.SIR, times=time.seq, func=SIR, parms=parms.SIR)
+plot(out, las=1, col=1:2, lty=1)
+```
+
+### Compare to data
+
+Assume we have the following records of people that died (cumulatively). 
+
+```{r}
+SIRdata <- data.frame(
+     time = seq(from = 0, to = 100, by = 10),
+     Deceased = c(0, 50, 150, 250, 350, 450, 600, 700, 850, 1050, 1250))
+head(SIRdata, n=2)
+```
+
+In the model this class is called "Deceased", so we use the same name in the data.frame.
+
+We run the model with different values of parameter b and compare the model output to these data:
+
+```{r, fig.width=6, fig.height=4, message = FALSE}
+p1 <- p2 <- p3 <- parms.SIR
+p1["b"] <- parms.SIR["b"]/2
+p2["b"] <- parms.SIR["b"]/5
+p3["b"] <- parms.SIR["b"]/10
+
+out1 <- ode(y=state.SIR, times=time.seq, func=SIR, parms=p1)
+out2 <- ode(y=state.SIR, times=time.seq, func=SIR, parms=p2)
+out3 <- ode(y=state.SIR, times=time.seq, func=SIR, parms=p3)
+
+plot(out, out1, out2, out3, obs=SIRdata, log="y", las=1, lty=1, lwd=2)
+legend("topleft", legend=c(parms.SIR["b"],p1["b"],p2["b"],p3["b"]), 
+      col=1:4, lty=1, lwd=2, title="b")
+```
+
+It is not so difficult to extract the best parameter value from the above figure.
+
+## A 1-D steady-state model
+
+Consider a very simple model that describes first-order consumption of oxygen in the sediment.
+
+```{r, fig.height=4, fig.width=4}
+N      <- 100           # number of boxes
+L      <- 0.1           # depth of sediment [m] 
+por    <- 0.8           # porosity
+
+Grid   <- setup.grid.1D(dx.1=0.0001, L=L, N=N)
+DiffO2 <- diffcoeff()$O2*86400   # molecular diffusion, m2/d
+tort   <- 1-log(por^2)           # tortuosity
+
+parms.O2 <- c(
+  rO2cons = 1.5,         # first-order Oxygen consumption rate, [/d]
+  por     = por,         # porosity, [-]
+  O2BW    = 0.3,         # BW concentration of O2, [mol/m3]
+  DO2     = DiffO2/tort  # Sediment diffusion coeff, [m2/d]
+)
+
+names    <- "O2"         # name of state variable
+nspec    <- 1            # number of species
+state    <- rep(0, times=N)  # initial condition
+
+O2func <- function(t, O2, parms){
+  with (as.list(parms), {
+    
+    O2.tran <- tran.1D(C=O2, C.up = O2BW, D = DO2, VF = por, dx = Grid)
+    O2cons  <- rO2cons*O2
+    
+    dO2 <- O2.tran$dC - O2cons
+    return(list(dO2))
+  })
+}
+
+std <- steady.1D(y=state, func=O2func, parms=parms.O2, 
+      nspec=nspec, dimens=N, names=names, positive=TRUE)
+plot(std, xyswap=TRUE, grid=Grid$x.mid, las=1, ylab="m")
+```
+
+Assume we have measured oxygen concentrations every cm.
+
+```{r}
+O2dat <- data.frame(x = seq(from = 0.0005, to = 0.0995, by = 0.01),
+                    O2 = c(0.289, 0.126, 0.06, 0.025, 0.015, 0.0046, 0.002,                                          0.0009, 0.0004, 0.0003))
+head(O2dat, n=2)
+```
+
+It is relatively simple to see the fit of the model to these data:
+
+```{r}
+p1 <- p2 <- p3 <- parms.O2
+p1["rO2cons"] <- parms.O2["rO2cons"]/2
+p2["rO2cons"] <- parms.O2["rO2cons"]/5
+p3["rO2cons"] <- parms.O2["rO2cons"]/10
+
+std1 <- steady.1D(y=state, func=O2func, parms=p1, 
+      nspec=nspec, dimens=N, names=names, positive=TRUE)
+std2 <- steady.1D(y=state, func=O2func, parms=p2, 
+      nspec=nspec, dimens=N, names=names, positive=TRUE)
+std3 <- steady.1D(y=state, func=O2func, parms=p3, 
+      nspec=nspec, dimens=N, names=names, positive=TRUE)
+plot(std, std1, std2, std3, xyswap=TRUE, grid=Grid$x.mid, 
+     obs=O2dat, lty=1, lwd=2, las=1, ylab="m", obspar = list(pch=16, col="red"))
+legend("bottomright", col=1:4, lty=1, lwd=2, title="rO2cons [/d]", 
+      legend=c(parms.O2["rO2cons"],p1["rO2cons"],p2["rO2cons"],p3["rO2cons"]))
+
+```
+
