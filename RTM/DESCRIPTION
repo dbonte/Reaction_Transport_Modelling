@@ -4,9 +4,11 @@ Title: Reaction Transport Model: Course Tutorials
 Version: 0.1.0
 Author: Karline Soetaert and Lubos Polerecky
 Maintainer: Karline Soetaert <Karline.Soetaert@nioz.nl>
-Depends: R (>= 3.0), learnr, ReacTran, deSolve, rootSolve, plot3D
+Depends: R (>= 3.0), learnr, ReacTran, deSolve, rootSolve, plot3D, marelac
+Suggests: knitr, rmarkdown
 Description: Tutorials for use in the modelling course taught at Utrecht and entitled
     Reaction Transport Modelling in the Hydrosphere. Lecturers are Lubos Polerecky and Karline Soetaert.
 License: GPL (>=3.0)
+VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
