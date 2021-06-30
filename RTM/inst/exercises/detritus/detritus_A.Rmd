@@ -1,0 +1,95 @@
+
+# Detritus decay by bacteria model - Answers
+
+## Mass balances
+
+Based on the flow chart, the mass balance equations are:
+
+$$\frac{dPOC}{dt} = FluxPOC-HydrolysisPOC+BactMortality$$
+$$\frac{dHMWC}{dt} = HydrolysisPOC - HydrolysisHMWC$$
+$$\frac{dLMWC}{dt} = HydrolysisHMWC - BactUptake$$
+$$\frac{dBACT}{dt} = BactUptake-GrowthRespiration-BasalRespiration-BactMortality$$
+
+## Rate expressions:
+
+For the rate expressions, it is important to realise that bacteria are doing ALL the work to dissolve POC into smaller (HMWC) and smaller (LMWC) chuncks, until they eventually take up the resource. Thus they are the worker for HydrolysisPOC, HydrolysisHMWC and BactUptake: 
+
+$$HydrolysisPOC  = rmaxPOC * \frac{POC} {(POC + ksPOC)} * BACT$$
+$$HydrolysisHMWC  = rmaxHMWC * \frac{HMWC} {(HMWC + ksHMWC)} * BACT$$
+$$BactUptake  = rupmax * \frac{LMWC} {(LMWC + ksLMWC)} * BACT$$
+
+Not all LMWC taken up by the bacteria is used to create new bacterial biomass. Part of this uptake is used to generate the energy for biomass creation, by respiration. This is called the GrowthRespiration (or the activity respiration). 
+
+$$GrowthRespiration = pResp * BactUptake$$
+In addition, there is a basal respiration term (also called maintenance respiration), which provides the energy for the basic body functions.  
+
+$$BasalRespiration = rBas * BACT$$
+The parameter that defines the bacterial mortality has units of $(molC~m^{-3})^{-1}~d^{-1}$, while the Bacterial mortality should have units of $molC~m^{-3}~d^{-1}$. This means that we need to multiply the mortality parameter with a concentration squared to obtain the correct units for the flux. Thus, the rate expression for the mortality is\footnote{The description of the parameter as a "quadratic mortality ct" also gives this away}:
+
+$$BactMortality = rClos * BACT^2$$
+
+Modelers often use a quadratic mortality for small organisms that grow very fast and whose predator also grows very fast, so that the predator has high concentration if the prey has high concentration and vice versa.
+
+## R-implementation
+
+Here is the code specifying the model:
+
+```{r, eval = TRUE, cache = FALSE, echo = TRUE, warning=FALSE, message=FALSE}
+require(deSolve)  # package with solution methods
+
+# state variables, units = mmolC/m3
+state <- c(POC = 100, HMWC = 5, LMWC = 0.15, BACT = 5)
+
+# parameters
+parms <- c(
+  rmaxPOC = 0.75, # [d-1]
+  rmaxHMWC = 0.5, # [d-1]
+  rupmax = 2,     # [d-1]
+  ksPOC = 100,    # [mmolC.m-3]
+  ksHMWC = 5,     # [mmolC.m-3]
+  ksLMWC = 0.5,     # [mmolC.m-3]
+  rbas = 0.1,     # [d-1]
+  ploss = 0.5,    # [-]
+  rclos = 0.05,   # [(mmolC.m-3)-1.d-1]
+  fluxPOC = 0.5   # [mmolC.m-3.d-1]
+)
+
+# Model function
+DetBact <- function(t, state, params) {
+  with (as.list(c(state, params)), {
+
+   # Rate expressions - all in units of [mmolC/m3/day]
+    HydrolysisPOC = rmaxPOC * POC / (POC + ksPOC) * BACT
+    HydrolysisHMWC = rmaxHMWC * HMWC / (HMWC + ksHMWC) * BACT
+    UptakeLMWC = rupmax * LMWC/(LMWC + ksLMWC) * BACT
+    BasalResp = rbas * BACT
+    ActivityResp = UptakeLMWC * ploss
+    MortBact = rclos * BACT^2
+
+   # Mass balances [molC/m3/day]
+    dPOC = fluxPOC - HydrolysisPOC + MortBact
+    dHMWC = HydrolysisPOC - HydrolysisHMWC 
+    dLMWC = HydrolysisHMWC - UptakeLMWC
+    dBACT = UptakeLMWC - BasalResp - ActivityResp - MortBact
+
+    list(c(dPOC, dHMWC, dLMWC, dBACT),
+         totalC = POC + HMWC + LMWC + BACT)
+  })
+
+}
+```
+
+and the model solution
+
+```{r, fig.height = 10, fig.width = 10}
+# output times
+outtimes <- seq(from = 0, to = 360, length.out = 100)  # run the model for 360 days
+
+# solve this model, using the ode function from deSolve
+out <- ode(y = state, parms = parms, func = DetBact, times = outtimes)  # solution
+
+# visualise output
+plot(out)
+
+```
+

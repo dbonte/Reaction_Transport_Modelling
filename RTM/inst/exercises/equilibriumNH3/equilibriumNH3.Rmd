@@ -1,0 +1,17 @@
+---
+title: "Local Equilibrium Chemistry in R --- part I: One Equilibrium Reaction"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+author: "Karline Soetaert and Lubos Polerecky"
+date: "March 2021"
+output:
+  pdf_document:
+    number_sections: true
+  html_document: default
+---
+
+```{r child = 'equilibriumNH3_Q.Rmd'}
+```
+
+```{r child = 'equilibriumNH3_A.Rmd'}
+```
+

@@ -1,0 +1,53 @@
+---
+title: "ANSWERS - Conceptual Model"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
+date: "2021"
+output: html_document
+---
+
+```{r setupA, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Exercise 1 ANSWER. Lake biomanipulation.
+
+![Conceptual scheme of the lake model.](images/conceptual_lake.png){width=70%}
+
+* Possible forcing function could be f1, the inflow of DIP
+* Suitable units: mol P $m^{-3}$
+* The effects of biomanipulation can be investigated by changing f10.
+
+# Exercise 2 ANSWER.	Bacterial decay of particulate organic matter in marine sediments.
+
+![Conceptual scheme of the detritus model.](images/conceptual_detritus.png){width=70%}
+
+Note the respiration that consists of two parts, basal respiration (a continuous process), and growth respiration (linked to bacterial growth).
+
+# Exercise 3 ANSWER. Spread of the Corona virus. 
+
+## Basic SIR model
+
+![Conceptual scheme of the simplest SIR model.](images/conceptual_SIR.png){width=70%}
+
+## SIR model with vaccination
+
+![Conceptual scheme of the SIR model including vaccination.](images/conceptual_SIR_vaccin.png){width=70%}
+
+## SIR model with British variant
+
+![Conceptual scheme of the SIR model including a new variant.](images/conceptual_SIR_variant.png){width=70%}
+
+The assumptions are:
+
+* immunity is gained for all variants whatever variant a person was infected with. 
+* vaccination protects against all corona variants.
+
+
+# Exercise 4 ANSWER.	Crops and weed.
+
+![Conceptual scheme of the crop and weed model.](images/conceptual_crops.png){width=70%}
+
+* fertilize once before planting can be implemented by increasing the initial concentratino of P in the upper layer
+* fertilize regularly after planting is implemented as a flux (called *Paddition* in the scheme)
+

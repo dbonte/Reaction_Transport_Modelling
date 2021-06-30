@@ -1,0 +1,17 @@
+---
+title: "Conceptual models"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+date: "June 2021"
+output: 
+  pdf_document:
+    toc: no 
+  header-includes: 
+    \usepackage{float} 
+    \floatplacement{figure}{H} 
+---
+
+```{r child = 'conceptual_Q.Rmd'}
+```
+
+```{r child = 'conceptual_A.Rmd'}
+```

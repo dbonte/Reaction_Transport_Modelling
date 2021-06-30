@@ -1,0 +1,17 @@
+---
+title: "Mass Balance Equations"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+date: "June 2021"
+output: 
+  pdf_document:
+    toc: no 
+  header-includes: 
+    \usepackage{float} 
+    \floatplacement{figure}{H} 
+---
+
+```{r child = 'massbalance_Q.Rmd'}
+```
+
+```{r child = 'massbalance_A.Rmd'}
+```
