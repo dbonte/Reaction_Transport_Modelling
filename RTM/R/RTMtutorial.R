@@ -21,7 +21,7 @@ RTMtutorial <- function(x = c("introduction", "why", "conceptual", "massbalance"
     return(tutorial)
   } else {
    if (is.character(x))
-     Which <- LL[pmatch(tolower(x), LL)]
+     Which <- LL[pmatch(tolower(x), tolower(LL))]
    else
      Which <- LL[x]
    if (length(Which) > 1)

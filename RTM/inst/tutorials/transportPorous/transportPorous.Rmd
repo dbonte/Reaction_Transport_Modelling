@@ -90,8 +90,8 @@ question("In water-saturated porous media such as sediments, solid volume fracti
 question("Which if the sentences is true?", type = "learnr_checkbox",
  answer("In porous media, the effective diffusion coefficient of solutes is [smaller] than the molecular diffusion coefficient.", correct=TRUE),
  answer("In porous media, the effective diffusion coefficient of solutes is [larger] than the molecular diffusion coefficient."),
-  incorrect = "the effective diffusion coefficient is defined as the molecular diffusion coefficient times porosity - and porosity is always < 1",
-  correct = "the effective diffusion coefficient is defined as the molecular diffusion coefficient times porosity - and porosity is always < 1"
+  incorrect = sprintf("the effective diffusion coefficient is defined as the molecular diffusion coefficient $\\times$ the porosity - and porosity is always < 1"),
+  correct = sprintf("the effective diffusion coefficient is defined as the molecular diffusion coefficient $\\times$ the porosity - and porosity is always < 1")
 )  
 ```
 
@@ -103,10 +103,12 @@ question(sprintf("Which of the following equations correctly describes the react
  answer(sprintf("$\\frac{\\partial \\phi C}{\\partial t} =  \\frac{\\partial}{\\partial x}(D \\frac{ \\partial (\\phi C)}{\\partial x}) + \\phi R$")),
  answer(sprintf("$\\frac{\\partial C}{\\partial t} =  \\frac{\\partial}{\\partial x}(\\phi D \\frac{ \\partial C}{\\partial x}) + \\phi R$")),
  answer(sprintf("$\\frac{\\partial \\phi C}{\\partial t} =  \\frac{\\partial}{\\partial x}(D \\frac{ \\partial C}{\\partial x}) + R$")),
- incorrect=sprintf("the mass balance equation is derived for the bulk concentration, $\\phi C$ (on left hand side) - but the diffusion takes place in the liquid phase, hence the term $\\phi D \\frac{ \\partial C}{\\partial x}$ for the diffusion term"),  
-  correct=sprintf("the mass balance equation is derived for the bulk concentration, $\\phi C$ (on left hand side) - but the diffusion takes place in the liquid phase, hence the term $\\phi D \\frac{ \\partial C}{\\partial x}$ for the diffusion term")
+ incorrect=sprintf("The mass balance equation is derived for the bulk concentration, $\\phi C$ (on left hand side). However, the diffusion takes place in the liquid phase, hence the term $\\phi D \\frac{ \\partial C}{\\partial x}$ for the diffusion, where $D \\frac{ \\partial C}{\\partial x}$ is diffusion in the liquid phase, and $\\phi D \\frac{ \\partial C}{\\partial x}$ is diffusion in the bulk phase"),  
+  correct=sprintf("The mass balance equation is derived for the bulk concentration, $\\phi C$ (on left hand side). However, the diffusion takes place in the liquid phase, hence the term $\\phi D \\frac{ \\partial C}{\\partial x}$ for the diffusion, where $D \\frac{ \\partial C}{\\partial x}$ is diffusion in the liquid phase, and $\\phi D \\frac{ \\partial C}{\\partial x}$ is diffusion in the bulk phase")
 )  
 ```
+
+## Reaction-transport in porous media-II
 
 ```{r rteqpor2, echo=FALSE}
 question(sprintf("The form of the reaction-diffusion equation in porous media is usually written as: $\\frac{\\partial C}{\\partial t} = \\frac{1}{\\phi_x}  \\frac{\\partial}{\\partial x}(\\phi_x D \\frac{ \\partial C}{\\partial x}) + R$ - this assumes: "), type = "learnr_checkbox",
