@@ -207,3 +207,12 @@ git config --global user.email "your_email_address"
 ssh-keygen -t rsa -C "your_email_address"
 ssh -T git@github.com
 ```
+
+To cache your Github authentication, so that you don't need to enter a password every time you want to push updates to the Github, type in the terminal:
+
+```
+git config --global credential.helper cache
+git config --global credential.helper 'cache --timeout=7200'
+```
+
+In this particular case, the password will need to be entered once at the beginning, and will "last" for 2 hrs (7200 s).
