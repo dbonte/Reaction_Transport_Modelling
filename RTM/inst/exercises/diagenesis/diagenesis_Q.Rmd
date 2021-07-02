@@ -18,9 +18,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Consider the following biogeochemical reactions occurring in the oxic zone of marine sediments, and that link the dynamics of organic Carbon ($(CH_2O)_1(NH_3)_{NC}(H_3PO_4)_{PC}$), oxygen ($O_2$), ammonia ($NH_3$), and nitrate ($NO_3^-$):
 
-$$OxicMin: \qquad (CH_2O)_1(NH_3)_{NC}(H_3PO_4)_{PC} + O_2  \rightarrow  CO_2 + _{NC} \cdot NH_3 + _{PC} \cdot H_3PO_4 + H_2O\\
-Nitri: \qquad NH_3 + 2 O_2   \rightarrow  H^+ + NO_3^- + H_2O
-$$
+$$OxicMin: \qquad (CH_2O)_1(NH_3)_{NC}(H_3PO_4)_{PC} + O_2  \rightarrow  CO_2 + _{NC} \cdot NH_3 + _{PC} \cdot H_3PO_4 + H_2O$$
+
+$$Nitri: \qquad NH_3 + 2 O_2   \rightarrow  H^+ + NO_3^- + H_2O$$
+
 where 
 
 * the oxic mineralisation is limited by oxygen (Monod kinetics, half-saturation parameter $k_{O_2}$ = 0.001 mol $m^{-3}$) and first-order to organic carbon (rate parameter rMin = 0.01 $d^{-1}$).
@@ -42,19 +43,19 @@ The upper boundary conditions for these species are imposed as concentrations, f
 
 Open the template file that describes the dynamics of Organic carbon and DIC. (in Rstudio: "File -> new file -> R markdown -> from template -> RTM porous 1D").
 
-Change this model so that it describes the oxic mineralisation and nitrification, and their effects on C, O2, NO3, NH3.
+Change this model so that it describes the oxic mineralisation and nitrification, and their effects on C, O2, NO3, NH3. 
 
-* Add ammonia, O2 and Nitrate as state variables - you can use the dynamics of DIC as a template as this is also a dissolved substance
+* Add ammonia, O2 and Nitrate as state variables - you can use the dynamics of DIC as a template as this is also a dissolved substance.
 
      - add the new parameters: rNit = 10 $d^{-1}$, kO2 = 0.001 mol $m^{-3}$, bwO2 = 0.3 mol $m^{-3}$, bwNO3 = 0.01 mol $m^{-3}$, bwNH3 = 0.001 mol $m^{-3}$.
-     - you will now model 4 species (rather than 2) => *nspec = 2*
+     - you will now model 4 species (rather than 2) => *nspec = 4*
      - you will need to change the species *names* (4 species), and unpack the new state variables at the beginning of the derivative function in the correct order
      - you will need to estimate the sediment diffusion coefficients for the new dissolved substances.
      - implement transport of O2, NH3, NO3, using these diffusion coefficients (note: they are dissolved substances)
      - implement the oxic mineralisation and nitrification, and use them to estimate the mass balances.
      - Remove the DIC state variable
 
-* run the model for two cases, C deposition (depoPOC) = 1$e^{-3}$ $m^{-2}d^{-1}$, the default, and depoPOC = 1$e^{-2}$ mol $m^{-2}d^{-1}$.
+* run the model for three cases, C deposition (depoPOC) = 1$e^{-3}$ $m^{-2}d^{-1}$, the default, and depoPOC = 1$e^{-2}$ mol $m^{-2}d^{-1}$ and depoPOC = 2$e^{-2}$ mol $m^{-2}d^{-1}$.
 
 
 * Plot the profiles of C, O2, NO3, NH3 versus sediment depth for these two runs.
@@ -88,4 +89,16 @@ Add these two processes to your model.
 * The sulphide reoxidation is limited by oxygen (half-saturation oxygen concentration ($k_{O_2}$) and first-order to sulphide, rate parameter rOX = 10 $d^{-1}$.
 * The bottom water concentrations for sulphate and sulphide are bwSO4 = 28 and bwHS = 0 mol $m^{-3}$ respectively.
 
-## Task 4: budgetting
+## Task 4: mineralisation pathways
+
+For each of the three runs : what is the relative contribution of the oxic mineralisation, denitrification and sulphate reduction to the total mineralisation.
+
+## Task 5: O2 budget
+
+Create a budget for $O_2$ for the three runs.
+
+Which processes consume most oxygen in the three runs?
+
+## Task 6: S budget
+
+If you have time, it is also interesting to create a S budget. Here you can for instance look at the amount of sulphate that is recycled within the sediment, in comparison with the amount of sulphate that fluxes in the sediment from the overlying water.

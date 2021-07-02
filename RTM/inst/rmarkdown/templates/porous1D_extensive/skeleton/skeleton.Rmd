@@ -71,9 +71,9 @@ porLiquid <- setup.prop.1D(func=porFun.L, grid=Grid, por.SWI=0.9, por.deep=0.7, 
 porSolid  <- setup.prop.1D(func=porFun.S, grid=Grid, por.SWI=0.9, por.deep=0.7, porcoef=100)
 
 # Sediment diffusion coefficient for HCO3^- (m2/d), defined at box interfaces!! (N+1 values)
-diffHCO3  <- diffcoeff(S=35, t=20)$HCO3 * 3600*24  # m2/s to m2/d
+diff.DIC  <- diffcoeff(S=35, t=20)$HCO3 * 3600*24  # m2/s to m2/d
 porInt    <- porLiquid$int                         # porosity at the box interfaces            
-diffDIC   <- diffHCO3/(1-log(porInt^2))            # corrected for tortuosity
+diffDIC   <- diff.DIC/(1-log(porInt^2))            # corrected for tortuosity
 ```
 
 Visualise these settings:
@@ -95,8 +95,8 @@ Next, we specify the model parameters that do *not* vary with depth in the sedim
 ```{r}
 parms <- c(
  Dbio     = 5e-4/365,   # [m2/d]      bioturbation mixing coefficient
- v_adv    = 0.00005,    # [m/d]       sediment advection velocity   
- rMin     = 0.01,       # [/d]        POC mineralisation rate constant
+ v_adv    = 5e-6,       # [m/d]       sediment advection velocity   
+ rMin     = 0.005,      # [/d]        POC mineralisation rate constant
  depoPOC  = 1e-3,       # [mol/m2/d]  POC deposition rate (flux at SWI)
  bwDIC    = 2           # [mol/m3]    DIC concentration at SWI
 )
@@ -232,12 +232,6 @@ To verify that our mass balances are correct, we construct the total C budget in
 c(BUDGET$POC.Deep.Flux - BUDGET$POC.SWI.Flux, -BUDGET$TotalMin)
 # net DIC rate is positive => DIC is net produced within the domain
 c(BUDGET$DIC.Deep.Flux - BUDGET$DIC.SWI.Flux,  BUDGET$TotalMin)
-```
-
-Based on the values above, we can draw a conceptual diagram of the modelled sediment column as shown in Figure 1.
-
-```{}
-![Carbon budget for the sediment column, shown for the POC deposition flux of $1e^{-3}~mol~m^{-2}~d^{-1}$.](Cbudget.png){width=50%}
 ```
 
 ## Dynamic solution
