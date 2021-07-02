@@ -1,5 +1,5 @@
 ---
-title: "RTM course Course - Conceptual Diagrams"
+title: "RTM course - Conceptual Diagrams"
 author: "Karline Soetaert and Lubos Polerecky"
 date: "June 2021"
 output: 
