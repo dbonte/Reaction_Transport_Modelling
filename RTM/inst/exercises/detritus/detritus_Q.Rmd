@@ -1,7 +1,7 @@
 ---
 title: 'Rate expressions in biogeochemistry: Detritus Mineralization by Bacteria'
 author: "Karline Soetaert and Lubos Polerecky"
-subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 date: "March 2021"
 output: 
   pdf_document:
