@@ -208,19 +208,19 @@ question(sprintf("Which of the following differential equations correctly descri
 
 ## Photosynthesis - conceptual model
 
-Oxygenic photosynthesis (oxy-PS) is a process used by plants, algae and cyanobacteria to convert light energy into chemical energy stored in carbohydrates. In this process, enzymes comprising the photosystems I and II capture photons, which energize electrons and ultimately produce NADPH (the source of a proton) and ATP (chemical energy). These two components are then used in the Calvin cycle to convert $CO_2$ into carbohydrates.
+Oxygenic photosynthesis (oxy-PS) is a process used by plants, algae and cyanobacteria to convert light energy into chemical energy stored in carbohydrates. In this process, enzymes comprising the photosystems I and II capture photons, which energize electrons and ultimately produce NADPH (the source of a proton) and ATP (chemical energy). These two components (NADPH and ATP) are then used in the Calvin cycle to convert $CO_2$ into carbohydrates.
 
-A simple representation of the PSI+PSII system considers three states: 
+In the overall flow of electrons through photosystems I and II, PSII can be in three states: 
 
 (1) an open (or reactive) state, 
 (2) a closed (or activated) state, and 
 (3) an inhibited state. 
 
-After being hit by photons, the PSI+PSII system transits from an open state to a closed one. The excited electrons are then transferred to the terminal electron acceptors, and the PSI+PSII system returns to the open state. Excessive absorption of light leads to photo-inhibition, that shifts the system from the closed to the inhibited state, from which it slowly recovers back to the closed state. 
+After being hit by photons, PSII transits from an open state to a closed one. The excited electrons are then transferred to PSI, and PSII returns to the open state. Excessive exposure to light leads to photo-inhibition, which shifts PSII from the closed state to the inhibited state. If the excessive light exposure stops (while the light exposure remains), PSII slowly recovers back to the closed state.
 
 ![](images/PS.png)
 
-In the scheme above, you find the three states that are used in this PSI+PSII model. Based on the above description, draw the arrows that represent the transitions from each state to the other state.  If we define with *Fab* the transition rate from state *a* to *b*, then tick the boxes that should be added in this conceptual scheme:
+In the scheme above, you find the three states that are used in this simplified PSII model. Based on the above description, draw the arrows that represent the transitions from each state to the other state.  If we define with *Fab* the transition rate from state *a* to *b*, then tick the boxes that should be added in this conceptual scheme:
 
 ```{r flows, echo=FALSE}
 question("If Fab denotes the transition flow from state a to b, toggle the correct fluxes", type = "learnr_checkbox",
@@ -236,7 +236,7 @@ question("If Fab denotes the transition flow from state a to b, toggle the corre
 
 ## Photosynthesis - mass balance
 
-You are given the following conceptual diagram of the PSI+PSII model.
+You are given the following conceptual diagram of the PSII model.
 ![](images/PS_MB.png)
 
 * Write the mass balance equations for the state variables [o], [c] and [i]:
