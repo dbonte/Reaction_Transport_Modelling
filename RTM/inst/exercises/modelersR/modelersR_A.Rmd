@@ -1,5 +1,6 @@
 ---
-title: "Introduction to R and Rmarkdown for reactive transport modelers --- solutions"
+title: "Introduction to R and Rmarkdown for reactive transport modellers"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 author: "Karline Soetaert and Lubos Polerecky"
 date: "February 2021"
 output:
@@ -9,6 +10,7 @@ output:
 abstract: This *markdown* document shows solutions to the exercises provided in the Reader *Introduction to R and Rmarkdown for reactive transport modellers*. Note that these solutions are *not* the only solutions possible. You may have found your own, and they can be just as good as those presented here. Nevertheless, we advise you to read through this document to learn where, and how, you could possibly *optimise* your *R*-coding.
 ---
 
+# Solution
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)

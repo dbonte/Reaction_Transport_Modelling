@@ -10,14 +10,6 @@ output:
     toc: yes
 ---
 
-```{echo = FALSE, include = FALSE}
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{The COVID19 pandemic: modeling exercise}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-```
-
 # The COVID-19 pandemic
 
 ## Problem formulation

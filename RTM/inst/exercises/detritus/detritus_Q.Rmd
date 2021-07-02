@@ -11,14 +11,6 @@ output:
     \floatplacement{figure}{H} 
 ---
 
-```{echo = FALSE, include = FALSE}
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Detritus Mineralisation by Bacteria: modeling exercise}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-```
-
 # Modelling detritus mineralization by bacteria
 
 In class you have seen how to write rate expressions for ecological interactions: you need to distinguish between compartments that are actively performing the task (the "worker"), and compartments that are taken up as a result (the "resource"). This exercise is meant to make you think about these different roles that compartments may play.

@@ -10,15 +10,6 @@ output:
     toc: yes
 ---
 
-
-```{echo = FALSE, include = FALSE}
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Cultivating crops in the presence of weeds: modeling exercise}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-```
-
 # Introduction
 
 In the chemical, biogeochemical and ecological models that you have solved thus far, state variables were defined in terms of *concentrations* (volumetric or areal) or *biomass*, and the models were formulated through differential equations that describe the rate of change in these state variables as a function of the sinks and sources.

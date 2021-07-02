@@ -12,14 +12,6 @@ output:
     toc: yes
 ---
 
-```{include = FALSE}
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Earth's global C cycle: the CO2 Problem and Mitigation Strategies: modeling exercise}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-```
-
 # Introduction
 
 In a seminal work, Sarmiento and Gruber (2002) published a global carbon budget of the Earth, where C is exchanged among 7 large compartments (Figure 1): atmosphere, marine biota, terrestrial biota (vegetation, soil and detritus), surface of the ocean, intermediate and deep ocean, surface sediments in the ocean, and sediments and rocks (comprising organic carbon, limestone and methane hydrate). 

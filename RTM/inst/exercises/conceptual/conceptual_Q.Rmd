@@ -9,14 +9,6 @@ subtitle: Exercises Accompanying the Course Reaction Transport Modelling in the 
 ---
 
 
-```{echo = FALSE, include = FALSE}
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Creating conceptual models: modeling exercises}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-```
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```

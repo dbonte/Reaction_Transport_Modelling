@@ -1,21 +1,12 @@
 ---
 title: 'Chemistry: Ozone Dynamics in the Troposphere'
 author: "Karline Soetaert and Lubos Polerecky"
-subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 date: "February 2021"
 output:
   pdf_document: default
   html_document: default
 ---
-
-
-```{echo = FALSE, include = FALSE}
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Chemistry: Ozone in the Troposphere: modeling exercise}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-```
 
 In class you have seen how to derive rate expressions for elementary chemical reactions. Here you will apply this to an important environmental problem, the ozone dynamics in the lower atmosphere, and how this is impacted by combustion or the burning of fuel. 
 

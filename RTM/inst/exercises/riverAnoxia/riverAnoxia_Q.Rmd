@@ -1,21 +1,12 @@
 ---
 title: 'Anoxia in the Scheldt estuary'
-subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 author: "Karline Soetaert and Lubos Polerecky"
 date: "March 2021"
 output: 
   pdf_document:
     toc: no 
 ---
-
-
-```{echo = FALSE, include = FALSE}
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Anoxia in a River: modeling exercise}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-```
 
 # Problem formulation
 

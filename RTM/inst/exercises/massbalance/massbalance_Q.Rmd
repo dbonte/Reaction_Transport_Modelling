@@ -1,20 +1,12 @@
 ---
 title: "Mass Balance Equations"
-subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 date: '2021'
 output:
   pdf_document: default
   html_document: default
 ---
-
-```{echo = FALSE, include = FALSE}
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Creating the Mass Balance Equations: modeling exercises}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
