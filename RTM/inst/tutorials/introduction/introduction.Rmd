@@ -1,7 +1,7 @@
 ---
-title: "Reaction Transport Modelling Course - Introduction"
+title: "RTM course - Introduction"
 author: "Karline Soetaert and Lubos Polerecky"
-date: "2-6-2021"
+date: "June 2021"
 output: 
   learnr::tutorial:
     progressive: true
@@ -16,22 +16,31 @@ library(learnr)
 
 ## Tutorial
 
-You are advised to watch the introduction video first 
+You are advised to watch the following video first.
 
-![](https://www.youtube.com/watch?v=r45xetHO8bI&t=283s)
+### Video timeline 
+* 0:17 Course philosophy and focus
+* 1:19 Professors
+* 2:12 Format of the course
+* 4:01 Requirements to pass the course
+* 5:57 Textbook
+* 6:26 Models covered in the course
+* 8:34 Topics of final projects
 
-and/or read the following section of the book:
-Soetaert and Herman, a practical guide to ecological modelling. Springer.
+![](https://www.youtube.com/watch?v=r45xetHO8bI&list=PLx8PHcDdmF-uD1Pr07TU9SzlhlGpfrxqn&index=1)
+
+You can also read the following section(s) of the textbook:
+Soetaert and Herman, A practical guide to ecological modelling.
 
 * Chapter 1. Introduction
 
-(You can download each chapter of this book via the e-book University library for free!)
+(You can download each chapter of the textbook via the e-book University library for free!)
 
 ## Model steps
 
 ```{r model_steps, echo=FALSE}
 question(" Models are typically made in a number of subsequent steps. 
-    Toggle the steps that are not correctly positioned:", type = "checkbox",
+    Toggle the steps that are *not* correctly positioned:", type = "checkbox",
   answer("1 Problem definition"),
   answer("2 Formulation of mathematical equations (differential equations)", correct  =TRUE),
   answer("3 Translation of the problem to a conceptual diagram", correct  =TRUE),
@@ -41,19 +50,18 @@ question(" Models are typically made in a number of subsequent steps.
 )
 ```
 
-
 ## Programming language
 
 ```{r programming_platform, echo=FALSE}
 question("Which programming language are we going to use in this course to solve our models?", type = "learnr_radio",
-answer("R", correct=TRUE),
 answer("Rstudio"),
+answer("R", correct=TRUE),
 answer("Rmarkdown"),
 answer("Matlab"),
 answer("Python"),
 answer("ReacTran"),
-incorrect = "In this list, only R, matlab and python are programming languages, and R is the one that we will use. Rmarkdown is a platform to merge R-code with text;  Rstudio provides an interface that facilitates using R; ReacTran is one of the many R-packages that we will use",
-correct = "In this list, only R, matlab and python are programming languages, and R is the one that we will use. Rmarkdown is a platform to merge R-code with text;  Rstudio provides an interface that facilitates using R; ReacTran is one of the many R-packages that we will use" 
+incorrect = "In this list, only R, matlab and python are programming languages, and R is the one that we will use in this course. Rmarkdown is a platform to merge an R-code with text;  Rstudio provides an integrated development environment (IDE), or an interface, that facilitates using R; ReacTran is one of the many R-packages that we will use.",
+correct = "In this list, only R, matlab and python are programming languages, and R is the one that we will use in this course. Rmarkdown is a platform to merge an R-code with text;  Rstudio provides an integrated development environment (IDE), or an interface, that facilitates using R; ReacTran is one of the many R-packages that we will use." 
   )
 ```
 
@@ -68,15 +76,15 @@ question("What are our recommendations to you to reach best learning outcomes in
 answer("Compare your computer code with those written by your classmates.", correct=TRUE),
 answer("Share your computer code with your classmates.", correct=FALSE),
 
-incorrect = "We recommend interaction with your class mates on the course topics - compare your model steps and model solutions with each other!",
-correct = "We recommend interaction with your class mates on the course topics - compare your model steps and model solutions with each other!")
+incorrect = "We recommend interaction with your classmates on the course topics - compare your model steps and model solutions with each other!",
+correct = "We recommend interaction with your classmates on the course topics - compare your model steps and model solutions with each other!")
 ```
 
 ## Course topics
 
 ```{r Course_topics, echo=FALSE}
 question("Which processes are we NOT going to cover in this course?", type = "learnr_checkbox",
- answer("Ecological interactions (e.g. predator-prey", correct=FALSE),
+ answer("Ecological interactions (e.g. predator-prey)", correct=FALSE),
  answer("Organic matter production", correct=FALSE),
  answer("Organic matter mineralisation", correct=FALSE),
  answer("Mineral dissolution/formation", correct=FALSE),
@@ -84,8 +92,8 @@ question("Which processes are we NOT going to cover in this course?", type = "le
  answer("Bio-economic interactions", correct=FALSE),   
  answer("Cryptocurrency transactions", correct=TRUE),
  answer("Viral outbreaks", correct=FALSE),
- incorrect = "We will cover a lot of different topics, from chemistry, ecology, physics, and even economy - but this does not include cryptocurrency",
- correct = "We will cover a lot of different topics, from chemistry, ecology, physics, and even economy - but this does not include cryptocurrency"
+ incorrect = "We will cover a lot of different topics, from chemistry, ecology, physics, and even economy - but this does not include cryptocurrency.",
+ correct = "We will cover a lot of different topics, from chemistry, ecology, physics, and even economy - but this does not include cryptocurrency."
 )
 ```
 
@@ -96,13 +104,13 @@ question("Which systems are we going to study in this course?", type = "learnr_c
  answer("Rivers", correct=TRUE),
  answer("Lakes and Oceans", correct=TRUE),
  answer("Aquifers", correct=TRUE),
- answer("Soil", correct=TRUE),
+ answer("Soils", correct=TRUE),
  answer("Lower atmosphere", correct=TRUE),
  answer("Earth's mantle", correct=FALSE),
  answer("Aquatic sediments", correct=TRUE),
  answer("Surface of planets in our Solar system", correct=FALSE),
- incorrect = "We will cover a lot of different systems, from the earth's surface to lower atmosphere - but we keep it to earth's system and not the deep mantle",
- correct = "We will cover a lot of different systems, from the earth's surface to lower atmosphere - but we keep it to earth's system and not the deep mantle"
+ incorrect = "We will cover a lot of different systems, but we will stay close to the Earth's surface.",
+ correct = "We will cover a lot of different systems, but we will stay close to the Earth's surface."
 )
 ```
 
@@ -110,10 +118,10 @@ question("Which systems are we going to study in this course?", type = "learnr_c
 
 ```{r Model_types, echo=FALSE}
 question("Which type of models are we going to develop in this course?", type = "learnr_radio",
+ answer("Qualitative models"),
  answer("Mechanistic models", correct=TRUE),
  answer("Statistical models"),
- answer("Black-box models"),
- answer("Qualitative models")
+ answer("Black-box models")
 )
 ```
 
@@ -122,3 +130,7 @@ question("Which type of models are we going to develop in this course?", type = 
 ```{r feedback, echo = FALSE}
 question("give your feedback ", type = "learnr_text", answer(" ", correct=TRUE), correct="thank you", incorrect = "thank you")
 ```
+
+## Textbook
+
+Karline Soetaert, Peter M.J. Herman (2009). A Practical Guide to Ecological Modelling. Springer Netherlands. DOI: 10.1007/978-1-4020-8624-3.
