@@ -30,7 +30,6 @@ You are advised to watch the following video first.
 ![](https://www.youtube.com/watch?v=r45xetHO8bI&list=PLx8PHcDdmF-uD1Pr07TU9SzlhlGpfrxqn&index=1)
 
 You can also read the following section(s) of the textbook:
-Soetaert and Herman, A practical guide to ecological modelling.
 
 * Chapter 1. Introduction
 
