@@ -124,3 +124,86 @@ This reader has been adapted for use in the class from  https://gitlab.com/tcox/
 
 Tom Cox, 2018. Git, GitLab & RStudio.
 
+# A short summary of steps
+
+## Project development in Rstudio using a repository on GITHUB
+
+The following steps are explained for Rstudio.
+
+### Link a remote repository on Github.com to a local project
+
+* File -> New project -> Version Control -> Git 
+* type in Repository URL and project directory name
+* specify the project folder
+
+These step should enable a Git tab in the top-right corner of Rstudio.
+
+* With the blue down-arrow, PULL the files from Github to the local computer.
+
+### Create a new branch
+
+Best way to start the development from an existing code is to create a new branch of the 'main' (or 'master') branch:
+
+* SELECT the 'main' branch using the pull-down menu in the Git tab
+* CREATE a new BRANCH by clicking the icon next to it (2 connected rectangles)
+* once the branch is created, SELECT it in the Git tab and work from there.
+
+Ensure that you only modify files in the newly created branch. Specifically, do not change branches and edit files there. You will avoid headaches later.
+
+### Push files from your local branch to the remote branch
+
+* click COMMIT in the Git tab
+* spicify a commit message
+* check a checkbox to specify which file should be changed
+* click commit
+* review the popup window to see that everything went smoothly, and close it
+
+* click PUSH (green up-arrow)
+* review the message to see that everything went smoothly
+
+### Merge a branch to the main branch
+
+Once you are satisfied with the code in the new branch, MERGE it with the main.
+
+* select the main branch in the Git tab
+* open terminal in Rstudio and type there the following command (we assume here that new_branch is the name of the new branch that you want to merge):
+```
+git merge new_branch
+```
+* PUSH changes to Github
+
+### Delete a branch
+After merging, you don't want to work on the new branch anymore. So you can just as well DELETE it.
+
+* open terminal in Rstudio and type there the following command (we assume here that new_branch is the name of the new branch that you want to delete):
+
+```
+git branch -d new_branch
+```
+or
+```
+git branch -D new_branch
+```
+Then clean it up on the github repository:
+
+```
+git remote prune -n origin
+git remote prune origin
+```
+
+## Other stuff
+
+### Install the RTM package from the edited source developed via Github
+In terminal, type
+```
+R CMD INSTALL RTM
+```
+
+### Configure authentication for Github
+In terminal, type
+```
+git config --global user.name "your_user_name"
+git config --global user.email "your_email_address"
+ssh-keygen -t rsa -C "your_email_address"
+ssh -T git@github.com
+```
