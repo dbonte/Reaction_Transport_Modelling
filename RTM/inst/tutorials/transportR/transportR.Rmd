@@ -1,0 +1,221 @@
+---
+title: "Reaction Transport Modelling Course - Implementing models in Porous media in R code"
+author: "Karline Soetaert and Lubos Polerecky"
+date: "June-2021"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(learnr)
+```
+
+## Tutorial
+
+You are advised to watch the following video first 
+
+![](https://www.youtube.com/watch?v=NXAnPCZUCyE&list=PLx8PHcDdmF-uD1Pr07TU9SzlhlGpfrxqn&index=14)
+
+for an explanation of how to implement a porous medium reaction-transport model in R.
+
+## Sediment carbon dynamics
+
+The following R-code implements simple dynamics of carbon in a fully saturated sediment.
+The constitutive equation is:
+
+$$
+\frac{\partial C}{\partial t} = \frac{1}{1-\phi_x} \frac{\partial}{\partial x}[(1-\phi_x) D_b \frac{ \partial C}{\partial x}] - r \times C
+$$
+where $C$ is in units of $mol~m^{-3}$ solid, $x$ is sediment depth in $m$, and $t$ is time in $days$.
+
+* With boundary conditions $(1-\phi_x) D_s \frac{ \partial C}{\partial x}= 1e^{-3}$ mol $m^{-2}d^{-1}$,  $\frac{\partial C}{\partial x}|_{x=\infty}= 0$.
+* and parameter values: r = 0.001 $d^{-1}$, $\phi$ = 0.8, $D_b$ = 1$e^{-6}$ $m^2 d^{-1}$.
+
+The following code specifies the grid, and the parameters:
+
+```{r Cdia_parms, echo = TRUE, message = FALSE}
+require(ReacTran)   # package with solution methods (includes deSolve, rootSolve)
+
+# spatial domain: total length of 20 cm, 200 boxes
+Length    <- 0.20   # [m]
+N         <- 200
+
+# grid with an exponentially increasing grid size, starting from 0.05 cm (5e-4m)
+Grid      <- setup.grid.1D(L = Length, N = N, dx.1 = 0.05/100)
+
+parms <- c(
+ Db     = 1e-6,   # [m2/d]    sediment bioturbation coefficient (mixing)
+ por    = 0.8,    # [-]       sediment porosity (constant)
+ r      = 0.001,  # [/d]      C consumption rate constant
+ depoC  = 0.3     # [mol/m3]  C flux at SWI
+)
+```
+
+and the derivative function:
+
+```{r Cdia_func, echo = TRUE}
+Cmodel <- function (t, C, pars)   # C is a LONG vector
+{
+  with (as.list(pars),{ 
+    
+    # transport of C, VF = solid volume fraction = 10porosity!
+    Tran.C <- tran.1D(C = C, flux.up = depoC,  # upper boundary: flux
+                      dx=Grid, VF=1-por, D=Db) # grid, volume fraction, mixing 
+ 
+    Decay  <- r * C                        # [mol/m3 SOLID/d] 
+
+    dC.dt  <- Tran.C$dC - Decay            # mass balance
+    
+    TotalDecay <- sum(Decay*Grid$dx*(1-por)) # depth-integrated rate
+  
+    return(list(c(dC.dt),                   # derivative vector
+          TotalDecay = TotalDecay))         # [mol/m2 BULK/d]
+ })
+}
+```
+
+```{r Cdia, echo = FALSE, message = FALSE}
+## NOTE: THIS NEEDS TO BE COPIED SOMEHOW ...
+require(ReacTran)   # package with solution methods (includes deSolve, rootSolve)
+Length    <- 0.20   # [m]
+N         <- 200
+Grid      <- setup.grid.1D(L = Length, N = N, dx.1 = 0.05/100)
+parms <- c(
+ Db     = 1e-6,   # [m2/d]    sediment bioturbation coefficient (mixing)
+ por    = 0.8,    # [-]       sediment porosity (constant)
+ r      = 0.001,  # [/d]      C consumption rate constant
+ depoC  = 0.3     # [mol/m3]  C flux at SWI
+)
+Cmodel <- function (t, C, pars)   # C is a LONG vector
+{
+  with (as.list(pars),{ 
+    Tran.C <- tran.1D(C = C, flux.up = depoC,  # upper boundary: flux
+                      dx=Grid, VF=1-por, D=Db) # grid, volume fraction, mixing 
+    Decay  <- r * C                        # [mol/m3 SOLID/d] 
+    dC.dt  <- Tran.C$dC - Decay      # mass balance
+    TotalDecay <- sum(Decay*Grid$dx*(1-por)) # depth-integrated rate
+    return(list(c(dC.dt), TotalDecay = TotalDecay)) 
+ })
+}
+```
+
+In the code below, the model is run twice with different carbon consumption rates (parameter $r$). Add another model run with r-value = 0.1 $d^{-1}$, and plot all three runs
+
+
+```{r Cex, exercise=TRUE, fig.height=4, fig.width=8, exercise.setup = "Cdia", exercise.lines = 15}
+state <- runif(n=N)   # initial guess of state variables
+
+std0 <- steady.1D (y=state, func=Cmodel, parms=parms, nspec=1, dimens=N,
+                   names="C", positive=TRUE) # to have only positive values! 
+
+p1       <- parms   # different parameter values
+p1["r"]  <- 0.5     # /day
+std1 <- steady.1D (y=state, func=Cmodel, parms=p1, nspec=1, dimens=N, 
+                   names="C", positive=TRUE)     
+###### FILL IN THIS PART #####
+std2 <-
+
+plot(std0, std1, std2, grid=Grid$x.mid, xyswap=TRUE, lty=1, ylab="m", las=1)
+```
+
+## Adding DIC
+
+As the organic carbon is being consumed, DIC is produced. 
+Add DIC (a dissolved substance) as a state variable to the model.
+
+* beware to convert from [mol solid] to [mol liquid] where appropriate.
+* mind the volume fraction for dissolved substances differs from solids
+* assume that the effective sediment diffusion coefficient of DIC = 5$e^{-5}m^{-2}d^{-1}$; the bottom water concentration = 0.2 mol $m^{-3}$ - add these to the parameter vector.
+
+Expand the following code to include DIC dynamics.
+
+```{r DICdia, exercise = TRUE, exercise.lines = 30}
+Length    <- 0.20   # sediment length [m]
+N         <- 200    # number of b oxes
+Grid      <- setup.grid.1D(L = Length, N = N, dx.1 = 0.05/100)
+
+parms <- c(
+ Db     = 1e-6,   # [m2/d]     sediment bioturbation coefficient (mixing)
+ por    = 0.8,    # [-]        sediment porosity (constant)
+ r      = 0.001,  # [/d]       C consumption rate constant
+ depoC  = 1e-3,   # [mol/m2/d] C flux at SWI
+ bwDIC  = 0.2,    # [mol/m3]   bottom water concentration DIC - NEW
+ dsDIC  = 5e-5    # [m2/d]     sediment diffusion coefficient for DIC - NEW
+)
+DICmodel <- function (t, y, pars)   # y is a LONG vector
+{
+  with (as.list(pars),{
+    C      <- y[1     :     N]   # first N values: organic C  - NEW
+    DIC    <- y[(N+1) : (2*N)]   # next N values: DIC         - NEW
+    
+    Tran.C   <- tran.1D(C = C, flux.up = depoC, # upper boundary: flux
+                      dx=Grid, VF=1-por, D=Db)  # grid, volume fraction, bioturbation 
+
+    ##### FILL IN THE CORRECT PARAMETERS  #####
+    Tran.DIC <- tran.1D(C = DIC, C.up =  ,  # upper boundary: concentration
+                      dx=Grid, VF=  , D=  ) # grid, volume fraction, diffusion
+    Decay  <- r * C                  # [mol/m3 SOLID/d] 
+    dC.dt  <- Tran.C$dC - Decay      # mass balance for organic C
+
+    ##### UPDATE THE MASS BALANCE for DIC #####
+    dDIC.dt <-    # [mol/m3 LIQUID/d]
+    
+    TotalDecay <- sum(Decay*Grid$dx*(1-por)) # depth-integrated rate
+    return(list(c(dC.dt, dDIC.dt), TotalDecay = TotalDecay)) 
+ })
+}
+state <- runif(n=2*N)
+std <- steady.1D (y=state, func=DICmodel, parms=parms, nspec=2, dimens=N,
+                   names=c("C","DIC"), positive = TRUE) 
+plot(std, xyswap=TRUE, grid=Grid$x.mid, xyswap=TRUE, lty=1, ylab="m", las=1)
+
+```
+
+```{r DICdia-solution}
+Length    <- 0.20   # [m]
+N         <- 200
+Grid      <- setup.grid.1D(L = Length, N = N, dx.1 = 0.05/100)
+
+parms <- c(
+ Db     = 1e-6,   # [m2/d]     sediment bioturbation coefficient (mixing)
+ por    = 0.8,    # [-]        sediment porosity (constant)
+ r      = 0.001,  # [/d]       C consumption rate constant
+ depoC  = 1e-3,   # [mol/m2/d] C flux at SWI
+ bwDIC  = 0.2,    # [mol/m3]   bottom water concentration DIC 
+ dsDIC  = 5e-5    # [m2/d]     sediment diffusion coefficient for DIC
+)
+DICmodel <- function (t, y, pars)   # y is a LONG vector
+{
+  with (as.list(pars),{
+    C      <- y[1     :     N]   # first N values: organic C
+    DIC    <- y[(N+1) : (2*N)]   # next N values: DIC
+    
+    Tran.C   <- tran.1D(C = C, flux.up = depoC, # upper boundary: flux
+                      dx=Grid, VF=1-por, D=Db)  # grid, volume fraction, bioturbation 
+    Tran.DIC <- tran.1D(C = DIC, C.up = bwDIC,  # upper boundary: concentration
+                      dx=Grid, VF=por, D=dsDIC) # grid, volume fraction, diffusion
+    Decay  <- r * C                  # [mol/m3 SOLID/d] 
+    dC.dt   <- Tran.C$dC - Decay      # mass balance for organic C
+
+    dDIC.dt <- Tran.DIC$dC + Decay*(1-por)/por  # mass balance for DIC - per volume liquid
+    
+    TotalDecay <- sum(Decay*Grid$dx*(1-por)) # depth-integrated rate
+    return(list(c(dC.dt, dDIC.dt), TotalDecay = TotalDecay)) 
+ })
+}
+state <- runif(n=2*N)
+std <- steady.1D (y=state, func=DICmodel, parms=parms, nspec=2, dimens=N,
+                   names=c("C","DIC"), positive = TRUE) 
+plot(std, xyswap=TRUE, grid=Grid$x.mid, xyswap=TRUE, lty=1, ylab="m", las=1)
+```
+
+## Finally
+
+```{r feedback, echo = FALSE}
+question("give your feedback ", type = "learnr_text", answer(" ", correct=TRUE), correct="thank you", incorrect = "thank you")
+```
+
