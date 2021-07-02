@@ -1,0 +1,334 @@
+---
+title: "The coupled cycles of carbon, nitrogen and oxygen in marine sediments"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
+date: '2021'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Answers - including Sulphate reduction
+
+## Rate expressions
+
+$$OxicMin = rMin \times \frac{[O_2]}{[O_2]+k_{O_2}} \times [C]$$
+$$Nitri = rNit \times \frac{[O_2]}{[O_2]+k_{O_2}} \times [NH_3]$$
+$$Denitri = rMin \times \frac{k_{O_2}}{[O_2]+k_{O_2}} \times \frac{[NO_3]}{[NO_3]+k_{NO_3}} \times [C]$$
+$$SO4reduction = rMin \times \frac{k_{O_2}}{[O_2]+k_{O_2}} \times \frac{k_{NO_3}}{[NO_3]+k_{NO_3}} \times \frac{[H_2SO_4]}{[H_2SO_4]+k_{H_2SO_4}} \times [C]$$
+$$Reox = rOx \times \frac{[O_2]}{[O_2]+k_{O_2}} \times [H_2S]$$
+
+# R implementation
+
+```{r, message = FALSE}
+require(marelac)
+require(ReacTran)
+```
+
+### The model grid and associated properties
+
+```{r}
+# spatial domain: total length of 20 cm, 200 boxes
+Length    <- 0.20   # [m]
+N         <- 200
+
+# grid with an exponentially increasing grid size, starting from 0.05 cm (5e-4m)
+Grid      <- setup.grid.1D(L = Length, N = N, dx.1 = 0.05/100)
+
+# function describing the variation of porosity (volume fraction of LIQUID) with depth
+porFun.L  <- function(x, por.SWI, por.deep, porcoef)
+  return( por.deep + (por.SWI-por.deep)*exp(-x*porcoef) )
+
+# function describing the SOLID volume fraction (svf = 1-porosity)
+porFun.S  <- function(x, por.SWI, por.deep, porcoef)
+  return( 1-porFun.L(x, por.SWI, por.deep, porcoef) )
+
+# calculate porosity and svf on the grid (mid-points and box interfaces, etc.)
+porLiquid <- setup.prop.1D(func=porFun.L, grid=Grid, por.SWI=0.9, por.deep=0.7, porcoef=100)
+porSolid  <- setup.prop.1D(func=porFun.S, grid=Grid, por.SWI=0.9, por.deep=0.7, porcoef=100)
+
+# Sediment diffusion coefficient for O2, NO3-, NH3, SO4 and HS (m2/d)
+diff.O2   <- diffcoeff(S=35, t=20)$O2  * 3600*24  # m2/s to m2/d
+diff.NH3  <- diffcoeff(S=35, t=20)$NH3 * 3600*24  # m2/s to m2/d
+diff.NO3  <- diffcoeff(S=35, t=20)$NO3 * 3600*24  # m2/s to m2/d
+diff.SO4  <- diffcoeff(S=35, t=20)$SO4 * 3600*24  # m2/s to m2/d
+diff.HS   <- diffcoeff(S=35, t=20)$HS  * 3600*24  # m2/s to m2/d
+porInt    <- porLiquid$int                         # porosity at the box interfaces            
+diffO2    <- diff.O2 /(1-log(porInt^2))            # corrected for tortuosity
+diffNO3   <- diff.NO3/(1-log(porInt^2))            # corrected for tortuosity
+diffNH3   <- diff.NH3/(1-log(porInt^2))            # corrected for tortuosity
+diffSO4   <- diff.SO4/(1-log(porInt^2))            # corrected for tortuosity
+diffHS    <- diff.HS /(1-log(porInt^2))            # corrected for tortuosity
+```
+
+## Other model parameters
+
+```{r}
+parms <- c(
+ Dbio     = 5e-4/365,   # [m2/d]      bioturbation mixing coefficient
+ v_adv    = 0.00005,    # [m/d]       sediment advection velocity   
+ rMin     = 0.01,       # [/d]        POC mineralisation rate constant
+ depoPOC  = 1e-3,       # [mol/m2/d]  POC deposition rate (flux at SWI)
+ rNit     = 10,         # [/d]        Nitrification rate constant
+ rOx      = 10,         # [/d]        HS reoxidation rate constant
+ kO2      = 0.001,      # [mol/m3]    half-saturation O2 concentration
+ kNO3     = 0.0001,     # [mol/m3]    half-saturation NO3 concentration  
+ kSO4     = 0.1,        # [mol/m3]    half-saturation SO4 concentration  
+ bwO2     = 0.300,      # [mol/m3]    O2 concentration at SWI
+ bwNO3    = 0.010,      # [mol/m3]    NO3 concentration at SWI
+ bwNH3    = 0.001,      # [mol/m3]    NH3 concentration at SWI
+ bwSO4    = 28,         # [mol/m3]    SO4 concentration at SWI
+ bwHS     = 0           # [mol/m3]    HS concentration at SWI
+)
+```
+
+## Definition and initialisation of state variables
+
+```{r}
+names    <- c("POC", "O2", "NH3", "NO3", "SO4", "HS")
+nspec    <- length(names)
+POC.ini  <- rep(0, length = N)      # initial conditions 
+O2.ini   <- rep(0, length = N)
+NH3.ini  <- rep(0, length = N)
+NO3.ini  <- rep(0, length = N)
+SO4.ini  <- rep(0, length = N)
+HS.ini   <- rep(0, length = N)
+state    <- c(POC.ini, O2.ini, NH3.ini, NO3.ini, SO4ini, HSini)
+```
+
+## Definition of the model function
+
+```{r}
+Diamodel <- function (t, state, pars)   # state is a LONG vector
+{
+  with (as.list(pars),{ 
+    
+    # unpack state variables
+    POC <- state[     1 :   N ]    # first N elements: POC
+    O2  <- state[  (N+1):(2*N)]    # next N elements:  O2
+    NH3 <- state[(2*N+1):(3*N)]    # next N elements:  NH3
+    NO3 <- state[(3*N+1):(4*N)]    # next N elements:  NO3
+    SO4 <- state[(4*N+1):(5*N)]    # next N elements:  SO4
+    HS  <- state[(5*N+1):(6*N)]    # next N elements:  HS
+
+    # === transport rates ===
+    # note: zero gradient by default at lower boundaries
+ 
+    # solid substances, VF = solid volume fraction = 1-porosity!    
+    tran.POC <- tran.1D(C = POC, flux.up = depoPOC,  # upper boundary: flux 
+                        dx = Grid, VF = porSolid,    # grid and volume fraction (1-por)
+                        D = Dbio, v = v_adv)         # mixing (bioturbation) and advection
+
+    # dissolved substances, VF = liquid volume fraction = porosity!
+    tran.O2 <- tran.1D(C = O2, C.up = bwO2,          # upper boundary: concentration
+                        dx = Grid, VF = porLiquid,   # grid and volume fraction (por)
+                        D = diffO2, v = v_adv)       # diffusive mixing and advection
+    
+    tran.NH3 <- tran.1D(C = NH3, C.up = bwNH3,       
+                        dx = Grid, VF = porLiquid,   
+                        D = diffNH3, v = v_adv)      
+    
+    tran.NO3 <- tran.1D(C = NO3, C.up = bwNO3,       
+                        dx = Grid, VF = porLiquid,   
+                        D = diffNO3, v = v_adv)      
+    
+    tran.SO4 <- tran.1D(C = SO4, C.up = bwSO4,       
+                        dx = Grid, VF = porLiquid,   
+                        D = diffSO4, v = v_adv)      
+    
+    tran.HS  <- tran.1D(C = HS,  C.up = bwHS,        
+                        dx = Grid, VF = porLiquid,   
+                        D = diffHS,  v = v_adv)      
+
+    # === reaction rates ===
+    
+    # [mol/m3 SOLID/d] (per volume of solid!)
+    OxicMin      <- rMin *  O2/(O2+kO2) * POC   
+    Denitri      <- rMin * kO2/(O2+kO2) *  NO3/(NO3+kNO3) * POC   
+    SO4reduction <- rMin * kO2/(O2+kO2) * kNO3/(NO3+kNO3) * SO4/(SO4+kSO4) *POC   
+    
+    # [mol/m3 LIQUID/d] (per volume of liquid!) 
+    Nitri   <- rNit * O2/(O2+kO2) *NH3     
+    Reox    <- rOx  * O2/(O2+kO2) *HS     
+    
+    # === mass balances : dC/dt = transport + reactions ===
+    
+    # solid substances [mol/m3 SOLID/d] !!
+    dPOC.dt   <- ( tran.POC$dC                          # transport
+                 - OxicMin - Denitri - SO4reduction)    # reactions, 
+    
+    # dissolved substances  [mol/m3 LIQUID/d]
+    poro      <- porLiquid$mid
+    f2Liquid  <- (1-poro)/poro  # to convert from /solid to /liquid
+    
+    dO2.dt    <- ( tran.O2$dC  - 2*Nitri - OxicMin*f2Liquid )
+    dNH3.dt   <- ( tran.NH3$dC - Nitri + 16/106*(OxicMin + Denitri + SO4reduction)*f2Liquid )  
+    dNO3.dt   <- ( tran.NO3$dC + Nitri - 4/5*Denitri*f2Liquid )
+    dSO4.dt   <- ( tran.SO4$dC - 0.5*SO4reduction*f2Liquid + Reox)
+    dHS.dt    <- ( tran.HS$dC  + 0.5*SO4reduction*f2Liquid - Reox)
+
+    # depth-integrated rates: [mol/m2 BULK/d] !!
+    TotalOxic  <- sum(OxicMin*Grid$dx*porSolid$mid)
+    TotalDenit <- sum(Denitri*Grid$dx*porSolid$mid)
+    TotalNit   <- sum(Nitri*Grid$dx*porLiquid$mid)
+  
+    return(list(c(dPOC.dt, dO2.dt, dNH3.dt, dNO3.dt),  # the time-derivatives, as a long vector
+          OxicMin = OxicMin,      # Mineralisation rates, as a vector
+             
+          # for creating budgets - all in [mol/m2 BULK/d]
+          TotalOxic      = TotalOxic,           
+          TotalNit       = TotalNit,           
+          TotalDenit     = TotalDenit,           
+          O2.SWI.Flux    = tran.O2$flux.up,    
+          O2.Deep.Flux   = tran.O2$flux.down,  
+          NH3.SWI.Flux   = tran.NH3$flux.up,    
+          NH3.Deep.Flux  = tran.NH3$flux.down,  
+          NO3.SWI.Flux   = tran.NO3$flux.up,    
+          NO3.Deep.Flux  = tran.NO3$flux.down,  
+          POC.SWI.Flux   = tran.POC$flux.up,   
+          POC.Deep.Flux  = tran.POC$flux.down))
+ })
+}
+```
+
+## Steady-state solution
+
+```{r}
+std <- steady.1D (y=state, func=Diamodel, parms=parms, 
+                  nspec=nspec, dimens=N, names=names,
+                  positive = TRUE)     # to have only positive values! 
+p1 <- parms
+p1["depoPOC"]  <- 1e-2 # [mol/m2/d]  POC deposition rate (flux at SWI)
+std1 <- steady.1D (y=state, func=Diamodel, parms=p1, 
+                  nspec=nspec, dimens=N, names=names,
+                  positive = TRUE)     # to have only positive values! 
+```
+
+### Plotting
+
+Here, we visualize the steady state solutions, including the depth profile of the process rate.
+
+```{r, fig.width=8, fig.height=8}
+plot(std, std1, xyswap=TRUE, grid=Grid$x.mid, lty=1, lwd=2)
+```
+
+### Budget
+
+First, we check the fluxes at the domain boundaries. We only do this for the steady-state solution std1.
+Note that although there is no DIC gradient at the lower boundary (default boundary condition, see graphs above), the efflux of DIC in the deep sediment is *not* zero. This efflux is due to *advective* transport, which is equal to $v\cdot C \cdot \phi$ (see lectures), so non-zero whenever the concentration *and* advective velocity are non-zero!
+
+```{r}
+toselect <- c("TotalMin", "DIC.SWI.Flux", "DIC.Deep.Flux", "POC.SWI.Flux", "POC.Deep.Flux")
+BUDGET   <- std1[toselect]
+unlist(BUDGET)    # show result
+```
+
+To verify that our mass balances are correct, we construct the total C budget in the modelled sediment column. What goes *out* at the *lower* boundary minus what comes *in* at the *upper* boundary must be equal to the total (i.e., depth-integrated) *net* production rate *within* the domain! Indeed, the output values confirm this.
+
+```{r}
+# should be the same:
+# net POC rate is negative => POC is net removed within the domain
+c(BUDGET$POC.Deep.Flux - BUDGET$POC.SWI.Flux, -BUDGET$TotalMin)
+# net DIC rate is positive => DIC is net produced within the domain
+c(BUDGET$DIC.Deep.Flux - BUDGET$DIC.SWI.Flux,  BUDGET$TotalMin)
+```
+
+Based on the values above, we can draw a conceptual diagram of the modelled sediment column as shown in Figure 1.
+
+```{}
+![Carbon budget for the sediment column, shown for the POC deposition flux of $1e^{-3}~mol~m^{-2}~d^{-1}$.](Cbudget.png){width=50%}
+```
+
+## Dynamic solution
+
+The model can be run dynamically with the function *ode.1D* from the package deSolve.
+This requires a good set of initial conditions. 
+
+We use the steady-state solution found above for the POC deposition flux of $1~10^{-3}~mol~m^{-2}~d^{-1}$ (*std1*). We then increase the deposition rate 10-fold and run the model for 2 years.
+
+```{r}
+times          <- seq(from = 0, to = 2*365, by = 10)
+p2             <- parms
+p2["depoPOC"]  <- parms["depoPOC"]*10         # mol/m2/day
+out            <- ode.1D( y=std1$y, func=Diamodel, parms=p2, times = times,
+                          nspec=nspec, dimens=N, names=names )
+```
+
+### Extracting variables
+
+We can use function *subset* to extract variables from the output. The object will have dimension (length(times), length(x)).
+
+The output times will not be returned by this function, but it is stored in the objects attributes.
+
+```{r}
+POC <- subset(out, which = "POC")
+dim(POC)
+times <- attributes(POC)$time 
+```
+
+Based on that, we can plot the times-series of POC at a particular depth, or the profile of POC at a certain time:
+
+```{r}
+POC_t <- POC[20,]
+plot(y=Grid$x.mid, x=POC_t, ylim=c(0.10,0), type="l", ylab="depth, m",
+  xlab="mol/m3 solid", main = paste("POC profile at day", times[20]))
+```
+
+```{r}
+POC_x <- POC[,20]
+plot(x=times, y=POC_x, type = "l", ylab="mol/m3 solid",
+  main=paste("POC dynamics at ",format(Grid$x.mid[20],digits=2),"m"))
+```
+
+### Plotting
+
+Output as an image.
+
+```{r, fig.width=8, fig.height=4}
+par(mar = c(4,4,4,4))
+image(out, legend = TRUE, grid = Grid$x.mid, ylim = c(Length,0), 
+      las = 1, ylab = "depth (m)", xlab="time (d)")
+```
+
+Output as lines showing the depth distribution for all time points.
+
+```{r, fig.width=8, fig.height=4}
+matplot.1D(out, type = "l", grid = Grid$x.mid, 
+      col = grey(seq(0.2,0.8,len=length(times))), # This will use a sequence of greyish colors
+                                                  # grey(1) = white, grey(0) = black
+      las = 1, xyswap = TRUE, lty = 1, ylab="depth (m)",
+      xlab = c("mol/m3 SOLID", "mol/m3 LIQUID"))
+```
+
+
+### simple plots
+
+We also plot the fluxes at the SWI and in the deep sediment as a function of time. The POC flux at the SWI should be constant, as specified by the boundary condition at the SWI.
+
+```{r, fig.width=10, fig.height=3}
+plot(out, which = c("DIC.SWI.Flux", "DIC.Deep.Flux", "POC.SWI.Flux", "POC.Deep.Flux"), 
+     mfrow=c(1,4), xlab="time (d)", ylab="mol/m2/d")
+```
+
+The miniscule but detectable increase in the POC flux at the lower boundary shows that for the given POC input at the SWI, not all POC is converted into DIC within the sediment column of 20 cm! The rest is self-explanatory.
+
+# References
+
+R Core Team (2020). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
+  
+Soetaert Karline (2009).  rootSolve: Nonlinear root finding, equilibrium and steady-state analysis of ordinary differential equations.  R-package version 1.6
+  
+Soetaert Karline, Thomas Petzoldt, R. Woodrow Setzer (2010). Solving Differential
+  Equations in R: Package deSolve. Journal of Statistical Software, 33(9), 1--25. URL
+  http://www.jstatsoft.org/v33/i09/ DOI 10.18637/jss.v033.i09
+  
+Soetaert, Karline and Meysman, Filip (2012). Reactive transport in aquatic ecosystems: Rapid model
+  prototyping in the open source software R Environmental Modelling & Software, 32, 49-60.
+
+Soetaert Karline and Thomas Petzoldt (2020). marelac: Tools for Aquatic Sciences. R package
+  version 2.1.10. https://CRAN.R-project.org/package=marelac
+  

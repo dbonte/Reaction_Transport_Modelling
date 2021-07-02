@@ -53,7 +53,7 @@ openRmdFile <- function(file, type) {
 RTMexercise <- function(x = c("modelersR", "conceptual", "massbalance",
     "carbonCycle", "ozone", "dissolutionSi", "equilibriumNH3", "equilibriumHCO3",
     "equilibriumOMD", "detritus", "COVID", "npzd", "crops_weeds", 
-    "riverAnoxia", "Pdiagenesis"), 
+    "riverAnoxia", "Pdiagenesis", "diagenesis"), 
     type = c("HTML", "PDF", "RMD", "WORD")) {
 
   LL <- as.character(formals(RTMexercise)$x[-1])
@@ -74,7 +74,8 @@ RTMexercise <- function(x = c("modelersR", "conceptual", "massbalance",
       "NPZD model (marine ecosystem model)",
       "Crops and weed competition (agricultural model) including economics",
       "Anoxia in a river (1-D reaction transport model)",    
-      "Simple phosphorus diagenesis in marine sediment (porous medium)"
+      "Simple phosphorus diagenesis in a marine sediment (porous medium)",
+      "Complex diagenesis in a marine sediment (C, N, O2, S)"
       ))
     return(exercise)
   } else {
@@ -97,30 +98,14 @@ RTMexercise <- function(x = c("modelersR", "conceptual", "massbalance",
 RTManswer <- function(x = c("modelersR", "conceptual", "massbalance",
     "carbonCycle", "ozone", "dissolutionSi", "equilibriumNH3", "equilibriumHCO3",
     "equilibriumOMD", "detritus", "COVID", "npzd", "crops_weed", 
-    "riverAnoxia", "Pdiagenesis"), 
+    "riverAnoxia", "Pdiagenesis", "diagenesis"), 
     type = c("HTML", "PDF", "RMD", "WORD")) {
 
   LL <- as.character(formals(RTMexercise)$x[-1])
   type <- match.arg(toupper(type), choices=c("HTML", "PDF", "RMD", "WORD"))
 
   if (x == "?") {
-    exercise <- data.frame(x=LL, description = c("Learning R for modellers",
-      "Translating problems into a conceptual scheme", 
-      "Creating mass balance equations", 
-      "An earth-system box model of the C-cycle",
-      "Ozone dynamics in the troposphere (elementary chemical reaction)", 
-      "Dissolution kinetics of silica particles (partitioning reaction)",
-      "Equilibrium chemistry - ammonium/ammonia", 
-      "Equilibrium chemistry - the carbonate system", 
-      "Mineralisation impact on pH (mixed equilibrium / biogeochemical reactions)", 
-      "Bacterial decay of detritus (biogeochemistry)",
-      "The COVID pandemic (population dynamics)", 
-      "NPZD model (marine ecosystem model)",
-      "Crops and weed competition (agricultural model) including economics",
-      "Anoxia in a river (1-D reaction transport model)",    
-      "Simple phosphorus diagenesis in marine sediment (porous medium)"
-      ))
-    return(exercise)
+    return(RTMexercise("?"))
   } else {
    if (is.character(x))
      Which <- LL[pmatch(tolower(x), tolower(LL))]
