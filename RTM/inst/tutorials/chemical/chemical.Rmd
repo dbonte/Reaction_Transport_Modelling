@@ -138,8 +138,8 @@ elementaryReaction <- function(t, y, p){  # t=time, y=state variables, p=paramet
     dA2B.dt <-    R
     # return vector of time-derivatives and ordinary variables
     list(c(dA.dt, dB.dt, dA2B.dt),  # NOTE: same order as the definition of y.ini!
-      sumA = A + 2*A2B,    # molA/m3
-      sumB = B +   A2B     # molB/m3
+      sumA = A + 2*A2B,    # lump-sum of A, molA/m3
+      sumB = B +   A2B     # lump-sum of B, molB/m3
       )
   })
 }
