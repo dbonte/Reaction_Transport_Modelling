@@ -1,23 +1,25 @@
 
 
-RTMtutorial <- function(x = c("introduction", "why", "conceptual", "massbalance",
+RTMtutorial <- function(x = c("introduction", "why", "conceptual", "massbalance", "Rmodels",
     "largescale","chemical", "equilibrium", "enzymatic", "partitioning", "ecology",
     "transportProcesses","transportFluxes", "transportPorous",
-    "transportBoundaries", "Rcode")) {
+    "transportBoundaries", "transportR")) {
 
   LL <- as.character(formals(RTMtutorial)$x[-1])
 
   if (x == "?") {
     tutorial <- data.frame(x=LL, description = c("About the course at Utrecht",
       "Why modelling is useful", "Making conceptual models",
-      "Creating mass balance equations", "Large-scale models (e.g. earth's C-cycle)",
+      "Creating mass balance equations", 
+      "Dynamic modelling in the R language",
+      "Large-scale models (e.g. earth's C-cycle)",
       "Elementary chemical reactions", 
       "Equilibrium (reversible) chemical reactions", 
       "Enzymatic reactions",
       "Chemical reactions partitioning between phases", "Ecological reactions",
       "The general transport equation", "Advection and diffusion/dispersion",
-      "Reaction tranport in porous media", "Boundary conditions in transport models",
-      "Modelling in the R language"))
+      "Reaction transport in porous media", "Boundary conditions in transport models",
+      "Modelling Reaction tranport in porous media in the R language"))
     return(tutorial)
   } else {
    if (is.character(x))
