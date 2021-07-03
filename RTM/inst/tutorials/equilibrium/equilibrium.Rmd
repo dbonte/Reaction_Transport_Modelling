@@ -104,7 +104,7 @@ where the forward and backward rate constants are $k_f$ and $k_b$, respectively.
 Assume that 
 
 * an equilibrium has been reached
-* the equilibrium constant for this reaction is denoted as $K_{N}$, with units of $mol~N~m^{-3}$
+* the equilibrium constant for this reaction is denoted as $K_{N}$, with units of $mol~m^{-3}$
 * the concentration of total ammonia is defined as $[\sum NH_x] = [NH_3] + [NH_4^+]$
 * the equilibrium concentration of ammonia and ammonium is denoted as $[NH_3]^*$ and $[NH_4^+]^*$, respectively.
 
@@ -112,8 +112,8 @@ Assume that
 question("Which of the following statements is true?", type = "learnr_radio",
  answer(sprintf("$K_{N} = \\frac{k_f}{k_b}$"), correct=TRUE),
  answer(sprintf("$K_{N} = \\frac{k_b}{k_f}$"), correct=FALSE),
- incorrect=sprintf("If you find it difficult to remember this formula and do not want to derive it, think about the units of $K_N$ ($mol~N~m^{-3}$), and the units of $k_b$ [$(mol~N~m^{-3})^{-1}~s^{-1}$] and $k_f$ [$s^{-1}$]. Units of both sides of the equation must be the same."), 
-  correct=sprintf("If you find it difficult to remember this formula and do not want to derive it, think about the units of $K_N$ ($mol~m^{-3}$), and the units of $k_b$ [$(mol~N~m^{-3})^{-1}~s^{-1}$] and $k_f$ [$s^{-1}$]. Units of both sides of the equation must be the same.")
+ incorrect=sprintf("If you find it difficult to remember this formula and do not want to derive it, think about the units of $K_N$ ($mol~m^{-3}$), and the units of $k_b$ [$(mol~m^{-3})^{-1}~s^{-1}$] and $k_f$ [$s^{-1}$]. Units of both sides of the equation must be the same."), 
+  correct=sprintf("If you find it difficult to remember this formula and do not want to derive it, think about the units of $K_N$ ($mol~m^{-3}$), and the units of $k_b$ [$(mol~m^{-3})^{-1}~s^{-1}$] and $k_f$ [$s^{-1}$]. Units of both sides of the equation must be the same.")
  )
 ```
 
@@ -150,7 +150,7 @@ where the forward and backward rate constants are $k_f$ and $k_b$, respectively.
 Assume that 
 
 * an equilibrium has been reached
-* the equilibrium constant for this reaction is denoted as $K_{N}$, with units of $mol~N~m^{-3}$
+* the equilibrium constant for this reaction is denoted as $K_{N}$, with units of $mol~m^{-3}$
 * the concentration of total ammonia is defined as $[\sum NH_x] = [NH_3] + [NH_4^+]$
 * the equilibrium concentration of ammonia and ammonium is denoted as $[NH_3]^*$ and $[NH_4^+]^*$, respectively.
 
@@ -162,8 +162,8 @@ question("Which of the following statements is true?", type = "learnr_checkbox",
  answer(sprintf("$[NH_4^+]^* = \\frac{K_N}{K_N+[H^+]}$"), correct=FALSE),
  answer(sprintf("$[NH_4^+]^* = \\frac{K_N}{K_N+[H^+]}[\\sum NH_x$]"), correct=FALSE),
  answer(sprintf("$[NH_4^+]^* = \\frac{[H+]}{K_N+[H^+]}[\\sum NH_x$]"), correct=TRUE),
- incorrect=sprintf("If you find it difficult to remember which formula applies for which species, a mnenomic we use is that the positively charged species has protons in the numerator."), 
-  correct=sprintf("If you find it difficult to remember which formula applies for which species, a mnenomic we use is that the positively charged species has protons in the numerator.")
+ incorrect=sprintf("If you find it difficult to remember which formula applies for which species, a mnemonic we use is that the positively charged species has protons in the numerator."), 
+  correct=sprintf("If you find it difficult to remember which formula applies for which species, a mnemonic we use is that the positively charged species has protons in the numerator.")
   
  )
 ```
@@ -227,7 +227,7 @@ question("Which of the following equations correctly describe the relationships 
 
 Similar to the total ammonia, we can display the Bjerrum plots for the equilibrium speciation of DIC as a function of pH. 
 
-Assuming that the first and second dissociation constants for the carbonic acid are, respectively, $pK_1 = 6$ and $pK_2 = 9.5$ (i.e., $K_2 = 10^{-6}~mol~kg^{-1}$ and $K_2 = 10^{-9.5}~mol~kg^{-1}$), we can calculate the equilibrium concentrations of the carbonic acid, bicarbonate and carbonate using the following R-code. Study the code and then run it to see the result.
+Assuming that the first and second dissociation constants for the carbonic acid are, respectively, $K_2 = 10^{-6}~mol~kg^{-1}$ and $K_2 = 10^{-9.5}~mol~kg^{-1}$ (i.e., $pK_1 = 6$ and $pK_2 = 9.5$), we can calculate the equilibrium concentrations of the carbonic acid, bicarbonate and carbonate using the following R-code. Study the code and then run it to see the result.
 
 ```{r dic, exercise=TRUE, exercise.cap = "Bjerrum plot for DIC", exercise.lines = 15, fig.width=6, fig.height=4}
 pK1    <- 6
@@ -247,9 +247,9 @@ abline(v=pK2,   lty=3)
 legend("left", legend=c("H2CO3","HCO3","CO3","pK1","pK2"), col=c(1,2,3,1,1), lty=c(1,1,1,2,3))
 ```
 
-The graph above shows that in an equilibrium at $pH=8$, which is approximately the pH of seawater, bicarbonate is the dominant DIC species. (You may be familiar with this idea from your aquatic chemistry or marine chemistry class.)
+The graph above shows that in an equilibrium at $pH=8$, which is approximately the pH of seawater, bicarbonate is the dominant DIC species. You may be familiar with this idea from your aquatic chemistry or marine chemistry class.
 
-You may experiment with the above R-code to explore how the DIC speciation shifts with changing values of $K_1$ and $K_2$, which occur if, e.g., with changing temperature or salinity.
+Experiment with the above R-code to explore how the DIC speciation shifts with changing values of $K_1$ and $K_2$. These parameters change, for instance, with changing temperature or salinity.
 
 ## Two reactions: lump-sums
 
@@ -274,13 +274,8 @@ question("Which of the following lump sums would be suitable to reformulate a mo
  answer(sprintf("$[HCO_3^-] - 2[CO_3^{2-}] + [H^+]$"), correct=FALSE),
  answer(sprintf("$[H_2CO_3] + [HCO_3^-] + [CO_3^{2-}]$"), correct=TRUE),
  answer(sprintf("$2[H_2CO_3] + [HCO_3^-] + [H^+]$"), correct=TRUE),
-  
- incorrect=sprintf("The lump sum $[HCO_3^-] + 2 [CO_3^{2-}] - [H^+]$ is unaffected by reaction 1 (because production of $HCO_3^-$: +1, production of $H^+$: -1) and unaffected by reaction 2 (because consumption of $HCO_3^-$: -1, production of $H^+$: -1, production of $CO_3^{2-}$: +2). This lump sum is called the *'carbonate alkalinity'* or *'excess negative charge'*. 
- The fifth lump sum is the *'total dissolved inorganic carbon' (DIC)*.
- The last lump sum ($2[H_2CO_3] + [HCO_3^-] + [H^+]$) would also be suitable - it accounts for the excess protons - but it is never used in models."), 
-correct=sprintf("The lump sum $[HCO_3^-] + 2 [CO_3^{2-}] - [H^+]$ is unaffected by reaction 1 (because production of $HCO_3^-$: +1, production of $H^+$: -1) and unaffected by reaction 2 (because consumption of $HCO_3^-$: -1, production of $H^+$: -1, production of $CO_3^{2-}$: +2). This lump sum is called the *'carbonate alkalinity'* or *'excess negative charge'*. 
- The fifth lump sum is the *'total dissolved inorganic carbon' (DIC)*.
- The last lump sum ($2[H_2CO_3] + [HCO_3^-] + [H^+]$) would also be suitable - it accounts for the excess protons - but it is never used in models.")
+ incorrect=sprintf("The lump sum $[HCO_3^-] + 2 [CO_3^{2-}] - [H^+]$ is unaffected by reaction 1 (because production of $HCO_3^-$: +1, production of $H^+$: -1) and unaffected by reaction 2 (because consumption of $HCO_3^-$: -1, production of $H^+$: -1, production of $CO_3^{2-}$: +2). This lump sum is called the *carbonate alkalinity* or *excess negative charge*. The fifth lump sum is the *total dissolved inorganic carbon (DIC)*. The last lump sum ($2[H_2CO_3] + [HCO_3^-] + [H^+]$) would also be suitable - it accounts for the excess protons - but it is never used in models."), 
+ correct=sprintf("The lump sum $[HCO_3^-] + 2 [CO_3^{2-}] - [H^+]$ is unaffected by reaction 1 (because production of $HCO_3^-$: +1, production of $H^+$: -1) and unaffected by reaction 2 (because consumption of $HCO_3^-$: -1, production of $H^+$: -1, production of $CO_3^{2-}$: +2). This lump sum is called the *carbonate alkalinity* or *excess negative charge*. The fifth lump sum is the *total dissolved inorganic carbon (DIC)*. The last lump sum ($2[H_2CO_3] + [HCO_3^-] + [H^+]$) would also be suitable - it accounts for the excess protons - but it is never used in models.")
 )
 ```
 
@@ -293,17 +288,15 @@ Reaction~1: \qquad H_2CO_3 \leftrightarrow HCO_3^- + H^+ \\
 Reaction~2: \qquad HCO_3^- \leftrightarrow CO_3^{2-} + H^+
 $$
 
-The most straight-forward (but rather elaborate) way to determine if a given sum of species is suitable as a lump sum (i.e., it is not affected by the reversible reactions) is to expand its time-derivative. 
+The most straight-forward (but rather elaborate) way to determine whether a given sum of species is suitable as a lump sum (i.e., it is not affected by the reversible reactions) is to expand its time-derivative. We will demonstrate it here.
 
-We denote by $R_{1f}$ and $R_{1b}$ the forward and backward reaction rate of reaction 1 (in mol/m3/s), and by $R_{2f}$ and $R_{2b}$ the forward and backward reaction rate of reaction 2 (in mol/m3/s), respectively. Thus, we can write:
+We denote by $R_{1f}$ and $R_{1b}$ the forward and backward reaction rate of reaction 1 (in $mol~m^{-3}~s^{-1}$), and by $R_{2f}$ and $R_{2b}$ the forward and backward reaction rate of reaction 2 (in $mol~m^{-3}~s^{-1}$), respectively. Thus, we can write:
 
 $$\frac{d[H_2CO_3]}{dt}=-R_{1f}+R_{1b}$$
 $$\frac{d[HCO_3^-]}{dt}=R_{1f} - R_{1b} - R_{2f} + R_{2b}$$
 $$\frac{d[H^+]}{dt}=R_{1f} - R_{1b} + R_{2f} - R_{2b}$$
 $$\frac{d[CO_3^{2-}]}{dt}=R_{2f} - R_{2b}$$
-If we define the lump sum 'carbonate alkalinity' as $$[ALK_C] = [HCO_3^-] + 2\cdot [CO_3^{2-}] - [H^+],$$
-it is straight-forward to see that its time derivative is zero:
-$$\frac{d[ALK_C]}{dt} = \frac{d[HCO_3^-]}{dt} + 2\cdot \frac{d[CO_3^{2-}]}{dt} - \frac{d[H^+]}{dt} = 0.$$
+If we define the lump sum *carbonate alkalinity* as $$[ALK_C] = [HCO_3^-] + 2\cdot [CO_3^{2-}] - [H^+],$$ it is straight-forward to see, by direct substitution, that its time derivative is zero: $$\frac{d[ALK_C]}{dt} = \frac{d[HCO_3^-]}{dt} + 2\cdot \frac{d[CO_3^{2-}]}{dt} - \frac{d[H^+]}{dt} = 0.$$
 
 ## Combined reversible and irreversible reactions
 
@@ -335,10 +328,8 @@ question("Which of the following lump sums would be suitable to reformulate a mo
  answer(sprintf("$[HCO_3^-] + 2 [CO_3^{2-}] +[NO_3^-] - [H^+]$"), correct=FALSE),
  answer(sprintf("$[HCO_3^-] + 2 [CO_3^{2-}] +[NO_3^-] + [NH_3] - [H^+]$"), correct=TRUE),
  answer(sprintf("$[HCO_3^-] + 2 [CO_3^{2-}] -[HNO_3] + [NH_3] - [H^+]$"), correct=TRUE),
-  
- incorrect=sprintf("The lump sums should only include species that participate in the fast reversible reactions. This rules out answer 2 and 3.  The sum $[H_2CO_3] + [HCO_3^-] + [CO_3^{2-}]$ is the total dissolved inorganic carbon (DIC) concentration comprising species that only feature in the first 2 reactions. DIC is conserved when those 2 reactions occur. Similarly, $[NH_4^+] + [NH_3]$ and $[NO_3^-] + [HNO_3]$ are the total ammonium and total nitrate concentrations, respectively, which only feature, and are conserved, in reactions 3 and 4. One more lump sum is needed to constrain the proton concentration. As protons feature in reactions 1, 2, 3, and 4, this lump sum should be conserved by all these equilibrium reactions. The sum $[HCO_3^-] + 2 [CO_3^{2-}] - [H^+]$ is not suitable, as it is not conserved in reactions 3 and 4. Only the last two lump sums are suitable, as can be verified by a similar approach as in the previous question."),
-  
-correct=sprintf("The lump sums should only include species that participate in the fast reversible reactions. This rules out answer 2 and 3.  The sum $[H_2CO_3] + [HCO_3^-] + [CO_3^{2-}]$ is the total dissolved inorganic carbon (DIC) concentration comprising species that only feature in the first 2 reactions. DIC is conserved when those 2 reactions occur. Similarly, $[NH_4^+] + [NH_3]$ and $[NO_3^-] + [HNO_3]$ are the total ammonium and total nitrate concentrations, respectively, which only feature, and are conserved, in reactions 3 and 4. One more lump sum is needed to constrain the proton concentration. As protons feature in reactions 1, 2, 3, and 4, this lump sum should be conserved by all these equilibrium reactions. The sum $[HCO_3^-] + 2 [CO_3^{2-}] - [H^+]$ is not suitable, as it is not conserved in reactions 3 and 4. Only the last two lump sums are suitable, as can be verified by a similar approach as in the previous question.")
+ incorrect=sprintf("The lump sums should only include species that participate in the fast reversible reactions. This rules out answer 2 and 3.  The sum $[H_2CO_3] + [HCO_3^-] + [CO_3^{2-}]$ is the total dissolved inorganic carbon (DIC) concentration comprising species that only feature in the first 2 reactions. DIC is conserved when those 2 reactions occur. Similarly, $[NH_4^+] + [NH_3]$ and $[NO_3^-] + [HNO_3]$ are the total ammonium and total nitrate concentrations, respectively, which only feature, and are conserved, in reactions 3 and 4. One more lump sum is needed to constrain the proton concentration. As protons feature in reactions 1, 2, 3, and 4, this lump sum should be conserved by all these equilibrium reactions. The sum $[HCO_3^-] + 2 [CO_3^{2-}] - [H^+]$ is not suitable, as it is not conserved in reactions 3 and 4. Only the last two lump sums are suitable, as can be verified by a similar approach (direct substitution of time derivatives) as in the previous question."),
+correct=sprintf("The lump sums should only include species that participate in the fast reversible reactions. This rules out answer 2 and 3.  The sum $[H_2CO_3] + [HCO_3^-] + [CO_3^{2-}]$ is the total dissolved inorganic carbon (DIC) concentration comprising species that only feature in the first 2 reactions. DIC is conserved when those 2 reactions occur. Similarly, $[NH_4^+] + [NH_3]$ and $[NO_3^-] + [HNO_3]$ are the total ammonium and total nitrate concentrations, respectively, which only feature, and are conserved, in reactions 3 and 4. One more lump sum is needed to constrain the proton concentration. As protons feature in reactions 1, 2, 3, and 4, this lump sum should be conserved by all these equilibrium reactions. The sum $[HCO_3^-] + 2 [CO_3^{2-}] - [H^+]$ is not suitable, as it is not conserved in reactions 3 and 4. Only the last two lump sums are suitable, as can be verified by a similar approach (direct substitution of time derivatives) as in the previous question.")
 )
 ```
 
@@ -381,9 +372,7 @@ question("Which of the following mass balance equations correctly account for th
  answer(sprintf("$\\frac{d[TA]}{dt} = NC \\times R_{aero} + R_{nit}$"), correct=FALSE),
  answer(sprintf("$\\frac{d[TA]}{dt} = NC \\times R_{aero} - R_{nit}$"), correct=TRUE),
  answer(sprintf("$\\frac{d[TA]}{dt} = 0$"), correct=FALSE),
-  
  incorrect=sprintf("The slow reaction only affects the lump sums, which rules out answer 2, 4 and 5.  Answers 1, 6, and 7 describe the effects on DIC, $NH_x$, and $H_xNO_3$, and are correct. TA as defined here is affected by two processes. First, aerobic organic matter mineralization produces $NH_3$ and thus increases TA at a rate $NC\\cdot R_{aero}$. Second, nitrification leads to the consumption of $NH_3$ (-1TA), production of $NO_3^-$ (+1TA), and production of protons (-1TA, because $[H^+]$ contributes negatively to TA). Thus, nitrification yields a net TA consumption of 1 ($-1+1-1=-1$)."),
-  
 correct=sprintf("The slow reaction only affects the lump sums, which rules out answer 2, 4 and 5.  Answers 1, 6, and 7 describe the effects on DIC, $NH_x$, and $H_xNO_3$, and are correct. TA as defined here is affected by two processes. First, aerobic organic matter mineralization produces $NH_3$ and thus increases TA at a rate $NC\\cdot R_{aero}$. Second, nitrification leads to the consumption of $NH_3$ (-1TA), production of $NO_3^-$ (+1TA), and production of protons (-1TA, because $[H^+]$ contributes negatively to TA). Thus, nitrification yields a net TA consumption of 1 ($-1+1-1=-1$).")
 )
 ```
