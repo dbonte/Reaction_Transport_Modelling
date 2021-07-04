@@ -152,6 +152,7 @@ question(sprintf("When sediment porosity is constant in time AND in space, the f
 ```
 
 ## Porosity conversions
+
 ```{r porconv1, echo = FALSE}
 question(sprintf("Select correct formulas for converting between concentrations per bulk volume ($C_b$), per volume of liquid ($C_L$), and per volume of solid ($C_S$). Porosity is denoted by $\\phi$."),
  answer(sprintf("$C_b = \\phi \\cdot C_L$"), correct=TRUE),
