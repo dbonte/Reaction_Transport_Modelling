@@ -1,13 +1,17 @@
 ---
-title: "Conceptual models"
-subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
+title: "Conceptual Diagram"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 date: "June 2021"
-output: 
+output:
+  html_document:
+    toc: no
+    df_print: paged
+  header-includes: \usepackage{float} \floatplacement{figure}{th}
   pdf_document:
-    toc: no 
-  header-includes: 
-    \usepackage{float} 
-    \floatplacement{figure}{H} 
+    toc: no
+subtitle: Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere
+fontsize: 11pt
+linestretch: 1.15
 ---
 
 ```{r child = 'conceptual_Q.Rmd'}
