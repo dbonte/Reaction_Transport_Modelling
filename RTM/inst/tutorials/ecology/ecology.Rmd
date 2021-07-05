@@ -79,7 +79,6 @@ question(sprintf("The change in time of a quantity M (in moles) is described by 
 
 ```{r diffeq1b, echo=FALSE}
 question(sprintf("The change in time of a quantity M (in moles) is described by the differential equation $$\\frac{dM}{dt} = -r \\times M,$$ where $r > 0$. Which of the following statements is true?"), type = "learnr_checkbox",
- answer("M does not grow"),
  answer("M decreases linearly with time"),
  answer("M decreases exponentially with time", correct=TRUE),
  answer("M increases linearly with time"),
@@ -105,7 +104,6 @@ question(sprintf("The change in time of a quantity M (in moles) is described by 
 
 ```{r diffeq2b, echo=FALSE}
 question(sprintf("The change in time of a quantity M (in moles) is described by the differential equation $$\\frac{dM}{dt} = -r,$$ where $r > 0$. Which of the following statements is true?"), type = "learnr_checkbox",
- answer("M does not grow"),
  answer("M decreases linearly with time", correct=TRUE),
  answer("M decreases exponentially with time"),
  answer("M increases linearly with time"),

@@ -194,13 +194,13 @@ Rmmol       <-                 # mmol/fish/d - fish respiration
 N           <-                 # number of fish    
 ```
 
-<div id="Fish-hint">
-Hints:
-
-  - At the minimal oxygen concentration, the aeration rate and respiration rate will be the same.
-  - Estimate the total air-water exchange (amount of oxygen added to the pond per day) at the minimal oxygen concentration (units mmol/day). 
-  - You know the respiration rate for one fish. The total respiration for all the fish should equal the total air-water exchange.
-</div>
+```{r Fish-hint}
+# Hints:
+#
+# - At the minimal oxygen concentration, the aeration rate and respiration rate will be the same.
+#  - Estimate the total air-water exchange (amount of oxygen added to the pond per day) at the minimal oxygen concentration (units mmol/day). 
+#  - You know the respiration rate for one fish. The total respiration for all the fish should equal the total air-water exchange.
+```
 
 ```{r Fish-solution}
 O2sat       <- pO2/K0*P *1e6            # umol/L = mmol/m3

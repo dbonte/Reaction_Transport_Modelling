@@ -132,8 +132,8 @@ question("Which of the following statements is true?", type = "learnr_checkbox",
  answer(sprintf("$\\frac{d([NH_3]-[NH_4^+]}{dt} =0$"), correct=FALSE),
  answer(sprintf("$\\frac{d([NH_3]+[H^+]}{dt} =0$"), correct=FALSE),
  answer(sprintf("$\\frac{d([NH_3]-[H^+]}{dt} =0$"), correct=TRUE),
- incorrect=sprintf("The sums of chemical species whose combined time derivatives are equal to 0 are good candidates for lump-sums when formulating local-equilibrium reactions. In this case, the lump-sums are: $$ExcessProtons \\equiv [H^+] + [NH_4^+],$$ $$TotalAmmonia \\equiv [\\sum NH_x] = [NH_3] + [NH_4^+],$$ $$AmmoniaAlkalinity \\equiv [NH_3] - [H^+],$$ and $$ExcessPositiveCharge \\equiv - [NH_4^+] - [H^+].$$ Note that you only need two of these lump-sums to reformulate the problem."),
- correct=sprintf("The sums of chemical species whose combined time derivatives are equal to 0 are good candidates for lump-sums when formulating local-equilibrium reactions. In this case, the lump-sums are: $$ExcessProtons \\equiv [H^+] + [NH_4^+],$$ $$TotalAmmonia \\equiv [\\sum NH_x] = [NH_3] + [NH_4^+],$$ $$AmmoniaAlkalinity \\equiv [NH_3] - [H^+],$$ and $$ExcessPositiveCharge \\equiv - [NH_4^+] - [H^+].$$ Note that you only need two of these lump-sums to reformulate the problem.")
+ incorrect=sprintf("The sums of chemical species whose combined time derivatives are equal to 0 are good candidates for lump-sums when formulating local-equilibrium reactions. In this case, the lump-sums are: $$ExcessProtons \\equiv [H^+] + [NH_4^+],$$ $$TotalAmmonia \\equiv [\\sum NH_x] = [NH_3] + [NH_4^+],$$ $$AmmoniaAlkalinity \\equiv [NH_3] - [H^+],$$ and $$ExcessNegativeCharge \\equiv - [NH_4^+] - [H^+].$$ Note that you only need two of these lump-sums to reformulate the problem."),
+ correct=sprintf("The sums of chemical species whose combined time derivatives are equal to 0 are good candidates for lump-sums when formulating local-equilibrium reactions. In this case, the lump-sums are: $$ExcessProtons \\equiv [H^+] + [NH_4^+],$$ $$TotalAmmonia \\equiv [\\sum NH_x] = [NH_3] + [NH_4^+],$$ $$AmmoniaAlkalinity \\equiv [NH_3] - [H^+],$$ and $$ExcessNegativeCharge \\equiv - [NH_4^+] - [H^+].$$ Note that you only need two of these lump-sums to reformulate the problem.")
  )
 ```
 
@@ -227,7 +227,7 @@ question("Which of the following equations correctly describe the relationships 
 
 Similar to the total ammonia, we can display the Bjerrum plots for the equilibrium speciation of DIC as a function of pH. 
 
-Assuming that the first and second dissociation constants for the carbonic acid are, respectively, $K_2 = 10^{-6}~mol~kg^{-1}$ and $K_2 = 10^{-9.5}~mol~kg^{-1}$ (i.e., $pK_1 = 6$ and $pK_2 = 9.5$), we can calculate the equilibrium concentrations of the carbonic acid, bicarbonate and carbonate using the following R-code. Study the code and then run it to see the result.
+Assuming that the first and second dissociation constants for the carbonic acid are, respectively, $K_1 = 10^{-6}~mol~kg^{-1}$ and $K_2 = 10^{-9.5}~mol~kg^{-1}$ (i.e., $pK_1 = -log_{10}(K_1) = 6$ and $pK_2 = -log_{10}(K_2) = 9.5$), we can calculate the equilibrium concentrations of the carbonic acid, bicarbonate and carbonate using the following R-code. Study the code and then run it to see the result.
 
 ```{r dic, exercise=TRUE, exercise.cap = "Bjerrum plot for DIC", exercise.lines = 15, fig.width=6, fig.height=4}
 pK1    <- 6
