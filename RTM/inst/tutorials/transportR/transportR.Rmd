@@ -46,9 +46,11 @@ You are advised to first watch the following video to learn about the *structure
 The R-code below implements simple dynamics of particulate organic carbon (POC) in a fully saturated sediment. The code is based on the following differential equation:
 
 $$
-\frac{\partial C}{\partial t} = \frac{1}{1-\phi_x} \frac{\partial}{\partial x}\left[(1-\phi_x) D_b \frac{ \partial C}{\partial x}\right] - r \cdot C
+\frac{\partial C}{\partial t} = \frac{1}{1-\phi_x} \cdot \frac{\partial}{\partial x}\left[(1-\phi_x) \cdot D_b \cdot \frac{ \partial C}{\partial x}\right] -
+\frac{1}{1-\phi_x} \cdot \frac{ \partial }{\partial x} \left[(1-\phi_x) \cdot v \cdot C\right]
+- r \cdot C
 $$
-where $C$ is in units of $mol~C~m^{-3}_S$, $x$ is sediment depth in $m$, $t$ is time in $days$, $\phi_x$ is the sediment porosity, $D_b$ is the bioturbation mixing coefficient, and $r$ is the rate constant describing POC mineralization (mineralization is assumed to be described by first-order kinetics).
+where $C$ is in units of $mol~C~m^{-3}_S$, $x$ is sediment depth in $m$, $t$ is time in $days$, $\phi_x$ is the sediment porosity, $D_b$ is the bioturbation mixing coefficient, $v$ is the advective velocity (in $m~day^{-1}$; equal to the sediment accretion velocity), and $r$ is the rate constant describing POC mineralization (mineralization is assumed to be described by first-order kinetics).
 
 The boundary conditions are as follows:
 
@@ -60,6 +62,7 @@ The parameter values are as follows (all are assumed to be depth-independent):
 * $r = 0.01~d^{-1}$
 * $\phi = 0.8$
 * $D_b = 1\times 10^{-6}~m^2~d^{-1}$
+* $v = 2\times 10^{-6}~m~d^{-1}$
 
 Our aim is to solve the model in a steady state in a sediment column with a depth of $L=20~cm$.
 
@@ -78,10 +81,10 @@ Grid      <- setup.grid.1D(L = Length, N = N, dx.1 = 0.05/100)
 
 pars <- c(
  Db      = 1e-6,   # [m2/d]           sediment bioturbation coefficient (mixing)
+ v       = 2e-6,   # [m/d]            sediment accretion velocity
  por     = 0.8,    # [-]              sediment porosity (constant)
  r       = 0.01,   # [/d]             POC consumption rate constant
- depoPOC = 0.001,   # [mol/m2 BULK/d]  POC flux at SWI
- v = 2e-6 # ~ 1mm/yr
+ depoPOC = 0.001   # [mol/m2 BULK/d]  POC flux at SWI
 )
 ```
 
@@ -93,19 +96,20 @@ Cmodel <- function (t, C, pars)   # C is a LONG vector
   with (as.list(pars),{ 
     
     # transport of POC, VF = solid volume fraction = 1-porosity!
-    Tran.C <- tran.1D(C = C, flux.up = depoPOC,  # upper boundary: flux
-                      dx=Grid, VF=1-por, D=Db, v=v)     # grid, volume fraction, mixing 
+    Tran.C <- tran.1D(C = C, flux.up = depoPOC, # upper boundary: flux
+                      dx = Grid, VF = 1-por,    # grid, volume fraction
+                      D = Db, v = v)            # mixing coef., advection velocity
  
     # reaction rate
-    Decay  <- r * C              # [mol/m3 SOLID/d] 
+    Decay  <- r * C                             # [mol/m3 SOLID/d] 
 
     # time derivative
-    dC.dt  <- Tran.C$dC - Decay  # mass balance
+    dC.dt  <- Tran.C$dC - Decay                 # mass balance
     
-    TotalDecay <- sum(Decay*Grid$dx*(1-por)) # depth-integrated decay rate
+    TotalDecay <- sum(Decay*Grid$dx*(1-por))    # depth-integrated decay rate
   
-    return(list(c(dC.dt),                    # time-derivative vector
-          TotalDecay = TotalDecay))          # [molC/m2 BULK/d]
+    return(list(c(dC.dt),                       # time-derivative vector
+          TotalDecay = TotalDecay))             # [molC/m2 BULK/d]
  })
 }
 ```
@@ -118,21 +122,22 @@ N         <- 200
 Grid      <- setup.grid.1D(L = Length, N = N, dx.1 = 0.05/100)
 pars <- c(
  Db      = 1e-6,   # [m2/d]           sediment bioturbation coefficient (mixing)
+ v       = 2e-6,   # [m/d]            sediment accretion velocity
  por     = 0.8,    # [-]              sediment porosity (constant)
  r       = 0.01,   # [/d]             POC consumption rate constant
- depoPOC = 0.001,   # [mol/m2 BULK/d]  POC flux at SWI
- v = 2e-6
+ depoPOC = 0.001   # [mol/m2 BULK/d]  POC flux at SWI
 )
 Cmodel <- function (t, C, pars)   # C is a LONG vector
 {
   with (as.list(pars),{ 
-    Tran.C <- tran.1D(C = C, flux.up = depoPOC,  # upper boundary: flux
-                      dx=Grid, VF=1-por, D=Db, v=v) # grid, volume fraction, mixing 
-    Decay  <- r * C                          # [mol/m3 SOLID/d] 
-    dC.dt  <- Tran.C$dC - Decay              # mass balance
-    TotalDecay <- sum(Decay*Grid$dx*(1-por)) # depth-integrated decay rate
-    return(list(c(dC.dt),                    # derivative vector
-          TotalDecay = TotalDecay))          # [mol/m2 BULK/d]
+    Tran.C <- tran.1D(C = C, flux.up = depoPOC, # upper boundary: flux
+                      dx = Grid, VF = 1-por,    # grid, volume fraction
+                      D = Db, v = v)            # mixing coef., advection velocity
+    Decay  <- r * C                             # [mol/m3 SOLID/d] 
+    dC.dt  <- Tran.C$dC - Decay                 # mass balance
+    TotalDecay <- sum(Decay*Grid$dx*(1-por))    # depth-integrated decay rate
+    return(list(c(dC.dt),                       # time-derivative vector
+          TotalDecay = TotalDecay))             # [molC/m2 BULK/d]
  })
 }
 ```
@@ -179,10 +184,10 @@ Grid      <- setup.grid.1D(L = Length, N = N, dx.1 = 0.05/100)
 
 pars <- c(
  Db      = 1e-6,   # [m2/d]     sediment bioturbation coefficient (mixing)
+ v       = 2e-6,   # [m/d]      sediment accretion velocity
  por     = 0.8,    # [-]        sediment porosity (constant)
  r       = 0.01,   # [/d]       POC consumption rate constant
  depoPOC = 1e-3,   # [mol/m2/d] POC flux at SWI
- v = 2e-6,
  bwDIC   = 0.002,  # [mol/m3]   NEW: bottom water concentration DIC
  dsDIC   = 5e-5    # [m2/d]     NEW: effective diffusion coefficient for DIC
 )
@@ -195,15 +200,17 @@ DICmodel <- function (t, y, pars)   # y is a LONG vector
     DIC    <- y[(N+1) : (2*N)]   # next  N values: DIC
     
     # POC: transport, reaction, mass balance
-    Tran.POC   <- tran.1D(C = POC, flux.up = depoPOC, # upper boundary: flux
-                      dx=Grid, VF=1-por, D=Db, v=v)  # grid, volume fraction, bioturbation 
-    Decay  <- r * POC                  # reaction rate, [mol/m3 SOLID/d]
+    Tran.POC <- tran.1D(C = POC, flux.up = depoPOC, # upper boundary: flux
+                      dx=Grid, VF=1-por,            # grid, volume fraction
+                      D=Db, v=v)                    # bioturbation, advection
+    Decay    <- r * POC                # reaction rate, [mol/m3 SOLID/d]
     dPOC.dt  <- Tran.POC$dC - Decay    # time-derivative for POC, [mol/m3 SOLID/d]
 
     # DIC: transport, time-derivative
     ##### FILL IN THE CORRECT PARAMETERS HERE #####
     Tran.DIC <- tran.1D(C = DIC, C.up =  ,  # upper boundary: concentration
-                      dx=Grid, VF=  , D=  ) # grid, volume fraction, diffusion
+                      dx=Grid, VF=  ,       # grid, volume fraction
+                      D=  , v= )            # bioturbation, advection
     ##### SPECIFY THE CORRECT MASS BALANCE for DIC #####
     dDIC.dt <-    # time-derivative for DIC, [mol/m3 LIQUID/d]
     
@@ -227,7 +234,7 @@ Grid      <- setup.grid.1D(L = Length, N = N, dx.1 = 0.05/100)
 
 pars <- c(
  Db      = 1e-6,   # [m2/d]     sediment bioturbation coefficient (mixing)
- v=2e-6,
+ v       = 2e-6,   # [m/d]      sediment accretion velocity
  por     = 0.8,    # [-]        sediment porosity (constant)
  r       = 0.01,   # [/d]       POC consumption rate constant
  depoPOC = 1e-3,   # [mol/m2/d] POC flux at SWI
@@ -244,14 +251,16 @@ DICmodel <- function (t, y, pars)   # y is a LONG vector
     
     # POC: transport, reaction, mass balance
     Tran.POC   <- tran.1D(C = POC, flux.up = depoPOC, # upper boundary: flux
-                      dx=Grid, VF=1-por, D=Db, v=v)  # grid, volume fraction, bioturbation 
+                      dx=Grid, VF=1-por,              # grid, volume fraction
+                      D=Db, v=v)                      # bioturbation, advection
     Decay  <- r * POC                  # reaction rate, [mol/m3 SOLID/d]
     dPOC.dt  <- Tran.POC$dC - Decay    # time-derivative for POC, [mol/m3 SOLID/d]
 
     # DIC: transport, time-derivative
     ##### FILL IN THE CORRECT PARAMETERS HERE #####
     Tran.DIC <- tran.1D(C = DIC, C.up = bwDIC,  # upper boundary: concentration
-                      dx=Grid, VF=por, D=dsDIC) # grid, volume fraction, diffusion
+                      dx=Grid, VF=por,          # grid, volume fraction
+                      D=dsDIC, v=v)             # bioturbation, advection
     ##### SPECIFY THE CORRECT MASS BALANCE for DIC #####
     dDIC.dt <-  Tran.DIC$dC + Decay*(1-por)/por # time-derivative for DIC, [mol/m3 LIQUID/d]
     
