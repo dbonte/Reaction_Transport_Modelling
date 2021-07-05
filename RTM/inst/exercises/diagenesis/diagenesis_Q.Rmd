@@ -1,5 +1,5 @@
 ---
-title: "The coupled cycles of carbon, nitrogen, oxygen and sulfur in marine sediments"
+title: "The coupled Cycles of Carbon, Nitrogen, Oxygen and Sulfur in Marine Sediments"
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 date: '2021'
@@ -12,9 +12,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# The coupled cycles of carbon, nitrogen and oxygen in marine sediments.
-
-## Oxic mineralisation
+## Oxic mineralisation and Nitrification
 
 Consider the following biogeochemical reactions occurring in the oxic zone of marine sediments, and that link the dynamics of organic Carbon ($(CH_2O)_1(NH_3)_{NC}(H_3PO_4)_{PC}$), oxygen ($O_2$), ammonia ($NH_3$), and nitrate ($NO_3^-$):
 
@@ -24,45 +22,45 @@ $$Nitri: \qquad NH_3 + 2 O_2   \rightarrow  H^+ + NO_3^- + H_2O$$
 
 where 
 
-* the oxic mineralisation is limited by oxygen (Monod kinetics, half-saturation parameter $k_{O_2}$ = 0.001 mol $m^{-3}$) and first-order to organic carbon (rate parameter rMin = 0.01 $d^{-1}$).
-* the nitrification is also limited by oxygen (Monod kinetics, same half-saturation parameter $k_{O_2}$ = 0.001 mol $m^{-3}$) and first-order to ammonia (rate parameter rNit = 10 $d^{-1}$).
+* the oxic mineralisation (*OxicMin*) is limited by oxygen (Monod kinetics, half-saturation parameter $k_{O_2}$ = 0.001 $mol~m^{-3}$) and first-order to organic carbon (rate parameter rMin = 0.01 $d^{-1}$).
+* the nitrification (*Nitri*) is also limited by oxygen (Monod kinetics, same half-saturation parameter $k_{O_2}$ = 0.001 $mol~m^{-3}$) and first-order to ammonia (rate parameter rNit = 10 $d^{-1}$).
 
-Based on these reactions, we can write the following mass balances for the solid substance organic Carbon C, (units of [molC $m^{-3}_S$]), and the dissolved substances $O_2$, $NO_3^-$ and $NH_3$ (in units of [mol $m^{-3}_L$]):
+Based on these reactions, we can write the following mass balances for the solid substance organic Carbon C, (units of [$molC~m^{-3}_S$]), and the dissolved substances $O_2$, $NO_3^-$ and $NH_3$ (in units of [$mol ~m^{-3}_L$]):
 
 $$\frac{\partial C}{\partial t} = \frac{1}{1-\phi} \frac{\partial}{\partial x}[(1-\phi) D_b \frac{ \partial C}{\partial x}] - OxicMin $$
 $$\frac{\partial O_2}{\partial t} = \frac{1}{\phi} \frac{\partial}{\partial x}[\phi D_{O2} \frac{ \partial O_2}{\partial x}]- OxicMin \times f_{2L} - 2 \times Nitri$$
-where $f_{2L}$ is the conversion factor to convert from mol $m^{-3}_S$ (solid) to molC $m^{-3}_L$ (liquid), i.e. $\frac{1-\phi}{\phi}$.
+where $f_{2L}$ is the conversion factor to convert from $mol~m^{-3}_S$ (solid) to $mol~m^{-3}_L$ (liquid), i.e. $\frac{1-\phi}{\phi}$.
 
 
 $$\frac{\partial NH_3}{\partial t} = \frac{1}{\phi} \frac{\partial}{\partial x}[\phi D_{NH_3} \frac{ \partial NH_3}{\partial x}] +16/106 \times OxicMin \times f_{2L} - Nitri$$
-$$\frac{\partial NO_3^-}{\partial t} = \frac{1}{\phi} \frac{\partial}{\partial x}[\phi D_{NO_3} \frac{ \partial NO_3^-}{\partial x}] + Nitri$$
+$$\frac{\partial NO_3^-}{\partial t} = \frac{1}{\phi} \frac{\partial}{\partial x}[\phi D_{NO_3^-} \frac{ \partial NO_3^-}{\partial x}] + Nitri$$
 
-The upper boundary conditions for these species are imposed as concentrations, for O2: $0.3$, NO3: $0.01$, NH3: $0.001$ mol $m^{-3}$.
+The upper boundary conditions for these species are imposed as concentrations, for O2: $0.3$, NO3: $0.01$, NH3: $0.001$ $mol~m^{-3}$.
 
-## Task1: Basic coupled model
+## Task 1: Basic coupled model
 
 Open the template file that describes the dynamics of Organic carbon and DIC. (in Rstudio: "File -> new file -> R markdown -> from template -> RTM porous 1D").
 
-Change this model so that it describes the oxic mineralisation and nitrification, and their effects on C, O2, NO3, NH3. 
+Change this model so that it describes the oxic mineralisation and nitrification, and their effects on C, $O_2$, $NO_3$, $NH_3$. 
 
-* Add ammonia, O2 and Nitrate as state variables - you can use the dynamics of DIC as a template as this is also a dissolved substance.
+* Add ammonia, oxygen and nitrate as state variables - you can use the dynamics of DIC as a template as this is also a dissolved substance.
 
-     - add the new parameters: rNit = 10 $d^{-1}$, kO2 = 0.001 mol $m^{-3}$, bwO2 = 0.3 mol $m^{-3}$, bwNO3 = 0.01 mol $m^{-3}$, bwNH3 = 0.001 mol $m^{-3}$.
-     - you will now model 4 species (rather than 2) => *nspec = 4*
-     - you will need to change the species *names* (4 species), and unpack the new state variables at the beginning of the derivative function in the correct order
-     - you will need to estimate the sediment diffusion coefficients for the new dissolved substances.
-     - implement transport of O2, NH3, NO3, using these diffusion coefficients (note: they are dissolved substances)
-     - implement the oxic mineralisation and nitrification, and use them to estimate the mass balances.
+     - add the new parameters to the parameter vector: rNit = 10 $d^{-1}$, kO2 = 0.001 $mol~m^{-3}$, bwO2 = 0.3 $mol~m^{-3}$, bwNO3 = 0.01 $mol~m^{-3}$, bwNH3 = 0.001 $mol~m^{-3}$.
+     - you model 4 species (rather than 2) => *nspec = 4*
+     - you need to change the species *names* (4 species), and unpack the new state variables at the beginning of the derivative function in the correct order.
+     - you need to estimate the sediment diffusion coefficients for the new dissolved substances.
+     - implement transport of $O_2$, $NH_3$, $NO_3^-$, using these diffusion coefficients (note: they are dissolved substances).
+     - implement the oxic mineralisation and nitrification, and use their rates to estimate the mass balances.
      - Remove the DIC state variable
 
-* run the model for three cases, C deposition (depoPOC) = 1$e^{-3}$ $m^{-2}d^{-1}$, the default, and depoPOC = 1$e^{-2}$ mol $m^{-2}d^{-1}$ and depoPOC = 2$e^{-2}$ mol $m^{-2}d^{-1}$.
+* run the model for three cases, C deposition (depoPOC) = 1$e^{-3}$ $mol~m^{-2}d^{-1}$, the default, and depoPOC = 1$e^{-2}$ $mol~m^{-2}d^{-1}$ and depoPOC = 2$e^{-2}$ $mol~m^{-2}d^{-1}$.
 
 
-* Plot the profiles of C, O2, NO3, NH3 versus sediment depth for these two runs.
+* Plot the profiles of C, $O_2$, $NO_3^-$, $NH_3$ versus sediment depth for these two runs.
 
-## Task2: Add denitrification
+## Task 2: Add denitrification
 
-Once oxygen is exhausted, nitrate is used as an electron acceptor for carbon mineralisation. This pathway, the denitrification is an important process as it produces $N_2$, which is a loss of reactive N. 
+Where oxygen is exhausted, nitrate is used as an electron acceptor for carbon mineralisation. This pathway, the denitrification is an important process as it produces $N_2$, which is a gas, and thus this process leads to a loss of reactive N. 
 
 The biochemical reaction for the denitrification is:
 $$Denitri: \qquad (CH_2O)_1(NH_3)_{NC}(H_3PO_4)_{PC} + 4/5 HNO_3 \rightarrow CO_2 + 2/5 N_2 + _{NC} \cdot NH_3 + _{PC} \cdot H_3PO_4 + 7/5 H_2O$$
@@ -70,35 +68,35 @@ $$Denitri: \qquad (CH_2O)_1(NH_3)_{NC}(H_3PO_4)_{PC} + 4/5 HNO_3 \rightarrow CO_
 The assumptions are:
 
 * The denitrification is inhibited by $O_2$ -use previously defined parameter $k_{O_2}$ as half-saturation *inhibition* constant.
-* the denitrification is limited by nitrate (Monod kinetics, half-saturation *limitation* constant $k_{NO3}$ = 0.0001 mol $m^{-3}$) and first-order to organic carbon (rate parameter rMin = 0.01 $d^{-1}$).
+* the denitrification is limited by nitrate (Monod kinetics, half-saturation *limitation* constant $k_{NO3}$ = 0.0001 $mol~m^{-3}$) and first-order to organic carbon (rate parameter rMin = 0.01 $d^{-1}$).
 
-Adapt the mass balance of C, NH3 and NO3 by this process
+Adapt the mass balance of $C$, $NH_3$ and $NO_3^-$ by this process.
 
 ## Task3: Add sulphate reduction
 
-When nitrate is exhausted, sulphate will be consumed, producing sulphide. The biogeochemical reaction for the sulphate reduction is:
+When nitrate is exhausted, sulphate ($SO_4^{2-}$) will be consumed, producing sulphide. The biogeochemical reaction for the sulphate reduction is:
 $$SO4reduction: \qquad (CH_2O)_1(NH_3)_{NC}(H_3PO_4)_{PC} + 0.5 SO_4^{2-} + 0.5 H^+ \rightarrow CO_2 + 0.5 HS^- + _{NC} \cdot NH_3 + _{PC} \cdot H_3PO_4 + H_2O$$
 
-Sulphide will react with oxygen to form sulphate:
+Sulphide reacts with oxygen to form sulphate:
 
 $$Reox: \qquad HS^- + 2 O_2  \rightarrow SO_4^{2-}+H^+$$
 
 Add these two processes to your model.
 
-* The sulphate reduction is limited by sulphate ($k_{SO4}$ = 0.1 mol $m^{-3}$) and inhibited by both oxygen ($k_{O_2}$) and nitrate ($k_{NO_3}$). It is first-order with respect to carbon (parameter $rMin$)
+* The sulphate reduction is limited by sulphate ($k_{SO4}$ = 0.1 $mol~m^{-3}$) and inhibited by both oxygen ($k_{O_2}$) and nitrate ($k_{NO_3}$). It is first-order with respect to carbon (parameter $rMin$)
 * The sulphide reoxidation is limited by oxygen (half-saturation oxygen concentration ($k_{O_2}$) and first-order to sulphide, rate parameter rOX = 10 $d^{-1}$.
-* The bottom water concentrations for sulphate and sulphide are bwSO4 = 28 and bwHS = 0 mol $m^{-3}$ respectively.
+* The bottom water concentrations for sulphate and sulphide are bwSO4 = 28 and bwHS = 0 $mol~m^{-3}$ respectively.
 
 ## Task 4: mineralisation pathways
 
-For each of the three runs : what is the relative contribution of the oxic mineralisation, denitrification and sulphate reduction to the total mineralisation.
+For each of the three runs : calculate the relative contribution of the oxic mineralisation, denitrification and sulphate reduction to the total mineralisation.
 
 ## Task 5: O2 budget
 
 Create a budget for $O_2$ for the three runs.
 
-Which processes consume most oxygen in the three runs?
+Which processes consume most oxygen in each of these scenarios??
 
-## Task 6: S budget
+## Task 6: Sulfur budget
 
 If you have time, it is also interesting to create a S budget. Here you can for instance look at the amount of sulphate that is recycled within the sediment, in comparison with the amount of sulphate that fluxes in the sediment from the overlying water.

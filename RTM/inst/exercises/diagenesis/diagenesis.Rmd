@@ -1,5 +1,5 @@
 ---
-title: "The coupled cycles of carbon, nitrogen, oxygen and sulfur in marine sediments"
+title: "The coupled Cycles of Carbon, Nitrogen, Oxygen and Sulfur in Marine Sediments"
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 author: "Karline Soetaert and Lubos Polerecky"
 date: "March 2021"
