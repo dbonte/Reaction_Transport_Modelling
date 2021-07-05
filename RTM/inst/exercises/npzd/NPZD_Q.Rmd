@@ -1,20 +1,12 @@
 ---
 title: 'NPZD model: Nutrients, Phytoplankton, Zooplankton and Detritus in a Marine Bay'
-subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 author: "Karline Soetaert and Lubos Polerecky"
 date: "March 2021"
 output: 
   pdf_document:
     default
 ---
-
-```{echo = FALSE, include = FALSE}
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Nutrients, Phytoplankton, Zooplankton, Detritus: modeling exercise}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-```
 
 # Problem formulation
 

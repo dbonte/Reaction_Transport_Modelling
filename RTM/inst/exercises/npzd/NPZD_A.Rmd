@@ -1,3 +1,13 @@
+---
+title: 'NPZD model of a marine bay'
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
+author: "Karline Soetaert and Lubos Polerecky"
+date: "March 2021"
+output: 
+  pdf_document:
+    default
+---
+
 \newpage
 
 # Answers: The NPZD model

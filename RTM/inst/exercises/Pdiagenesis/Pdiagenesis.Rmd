@@ -1,6 +1,6 @@
 ---
 title: "Reactive transport in porous media: a simple model of phosphorus cycling in marine sediments"
-subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 author: "Karline Soetaert and Lubos Polerecky"
 date: "March 2021"
 output:

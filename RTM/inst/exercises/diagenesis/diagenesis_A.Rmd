@@ -1,0 +1,303 @@
+---
+title: "The coupled Cycles of Carbon, Nitrogen, Oxygen and Sulfur in Marine Sediments"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
+date: '2021'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Answers 
+
+## Mass balance equations
+
+The updated mass balance equations are:
+$$\frac{\partial C}{\partial t} = \frac{1}{1-\phi} \frac{\partial}{\partial x}[(1-\phi) D_b \frac{ \partial C}{\partial x}] - OxicMin - Denitri - SO4reduction$$
+$$\frac{\partial O_2}{\partial t} = \frac{1}{\phi} \frac{\partial}{\partial x}[\phi D_{O2} \frac{ \partial O_2}{\partial x}]- OxicMin \times f_{2L} - 2 \times Nitri - 2 \times Reox$$
+$$\frac{\partial NH_3}{\partial t} = \frac{1}{\phi} \frac{\partial}{\partial x}[\phi D_{NH_3} \frac{ \partial NH_3}{\partial x}] +16/106 \times (OxicMin + Denitri + SO4reduction)\times f_{2L} - Nitri$$
+$$\frac{\partial NO_3^-}{\partial t} = \frac{1}{\phi} \frac{\partial}{\partial x}[\phi D_{NO_3^-} \frac{ \partial NO_3^-}{\partial x}] + Nitri - 0.8 \times Denitri$$
+$$\frac{\partial SO_4^{2-}}{\partial t} = \frac{1}{\phi} \frac{\partial}{\partial x}[\phi D_{SO_4^{2-}} \frac{ \partial SO_4^{2-}}{\partial x}] + Reox - 0.5 \times SO4reduction \times f_{2L}$$
+$$\frac{\partial HS^-}{\partial t} = \frac{1}{\phi} \frac{\partial}{\partial x}[\phi D_{HS^{-}} \frac{ \partial HS^{-}}{\partial x}] - Reox + 0.5 \times SO4reduction \times f_{2L}$$
+
+## Rate expressions
+
+$$OxicMin = rMin \times \frac{[O_2]}{[O_2]+k_{O_2}} \times [C]$$
+$$Nitri = rNit \times \frac{[O_2]}{[O_2]+k_{O_2}} \times [NH_3]$$
+$$Denitri = rMin \times \frac{k_{O_2}}{[O_2]+k_{O_2}} \times \frac{[NO_3^-]}{[NO_3^-]+k_{NO_3}} \times [C]$$
+$$SO4reduction = rMin \times \frac{k_{O_2}}{[O_2]+k_{O_2}} \times \frac{k_{NO_3}}{[NO_3^-]+k_{NO_3}} \times \frac{[SO_4^{2-}]}{[SO_4^{2-}]+k_{SO_4}} \times [C]$$
+$$Reox = rOx \times \frac{[O_2]}{[O_2]+k_{O_2}} \times [H_S^-]$$
+
+# R implementation
+
+```{r, message = FALSE}
+require(marelac)
+require(ReacTran)
+```
+
+### The model grid and associated properties
+
+```{r}
+# spatial domain: total length of 0.20 m, 200 boxes
+Length    <- 0.20   # [m]
+N         <- 200
+
+# grid with an exponentially increasing grid size, first cell 0.05 cm (5e-4m)
+Grid      <- setup.grid.1D(L = Length, N = N, dx.1 = 0.05/100)
+
+# function describing the variation of porosity (volume fraction of LIQUID) with depth
+porFun.L  <- function(x, por.SWI, por.deep, porcoef)
+  return( por.deep + (por.SWI-por.deep)*exp(-x*porcoef) )
+
+# function describing the SOLID volume fraction (svf = 1-porosity)
+porFun.S  <- function(x, por.SWI, por.deep, porcoef)
+  return( 1-porFun.L(x, por.SWI, por.deep, porcoef) )
+
+# calculate porosity and svf on the grid (mid-points and box interfaces, etc.)
+porLiquid <- setup.prop.1D(func=porFun.L, grid=Grid, por.SWI=0.9, por.deep=0.7, porcoef=100)
+porSolid  <- setup.prop.1D(func=porFun.S, grid=Grid, por.SWI=0.9, por.deep=0.7, porcoef=100)
+
+# Sediment diffusion coefficient for O2, NO3-, NH3, SO4 and HS (m2/d)
+diff.O2   <- diffcoeff(S=35, t=20)$O2  * 3600*24  # m2/s to m2/d
+diff.NH3  <- diffcoeff(S=35, t=20)$NH3 * 3600*24  # m2/s to m2/d
+diff.NO3  <- diffcoeff(S=35, t=20)$NO3 * 3600*24  # m2/s to m2/d
+diff.SO4  <- diffcoeff(S=35, t=20)$SO4 * 3600*24  # m2/s to m2/d
+diff.HS   <- diffcoeff(S=35, t=20)$HS  * 3600*24  # m2/s to m2/d
+
+porInt    <- porLiquid$int                         # porosity at the box interfaces            
+diffO2    <- diff.O2 /(1-log(porInt^2))            # corrected for tortuosity
+diffNO3   <- diff.NO3/(1-log(porInt^2))            # corrected for tortuosity
+diffNH3   <- diff.NH3/(1-log(porInt^2))            # corrected for tortuosity
+diffSO4   <- diff.SO4/(1-log(porInt^2))            # corrected for tortuosity
+diffHS    <- diff.HS /(1-log(porInt^2))            # corrected for tortuosity
+```
+
+## Other model parameters
+
+```{r}
+parms <- c(
+ Dbio     = 5e-4/365,   # [m2/d]      bioturbation mixing coefficient
+ v_adv    = 5e-6,       # [m/d]       sediment advection velocity   
+ rMin     = 0.005,      # [/d]        POC mineralisation rate constant
+ depoPOC  = 1e-3,       # [mol/m2/d]  POC deposition rate (flux at SWI)
+ rNit     = 10,         # [/d]        Nitrification rate constant
+ rOx      = 10,         # [/d]        HS reoxidation rate constant
+ kO2      = 0.001,      # [mol/m3]    half-saturation O2 concentration
+ kNO3     = 0.0001,     # [mol/m3]    half-saturation NO3 concentration  
+ kSO4     = 0.1,        # [mol/m3]    half-saturation SO4 concentration  
+ bwO2     = 0.300,      # [mol/m3]    O2 concentration at SWI
+ bwNO3    = 0.010,      # [mol/m3]    NO3 concentration at SWI
+ bwNH3    = 0.001,      # [mol/m3]    NH3 concentration at SWI
+ bwSO4    = 28,         # [mol/m3]    SO4 concentration at SWI
+ bwHS     = 0           # [mol/m3]    HS concentration at SWI
+)
+```
+
+## Definition and initialisation of state variables
+
+```{r}
+names    <- c("POC", "O2", "NH3", "NO3", "SO4", "HS")
+nspec    <- length(names)
+POC.ini  <- rep(0, length = N)      # initial conditions 
+O2.ini   <- rep(0, length = N)
+NH3.ini  <- rep(0, length = N)
+NO3.ini  <- rep(0, length = N)
+SO4.ini  <- rep(0, length = N)
+HS.ini   <- rep(0, length = N)
+state    <- c(POC.ini, O2.ini, NH3.ini, NO3.ini, SO4.ini, HS.ini)
+```
+
+## Definition of the model function
+
+```{r}
+Diamodel <- function (t, state, pars)   # state is a LONG vector
+{
+  with (as.list(pars),{ 
+    
+    # unpack state variables
+    POC <- state[     1 :   N ]    # first N elements: POC
+    O2  <- state[  (N+1):(2*N)]    # next N elements:  O2
+    NH3 <- state[(2*N+1):(3*N)]    # next N elements:  NH3
+    NO3 <- state[(3*N+1):(4*N)]    # next N elements:  NO3
+    SO4 <- state[(4*N+1):(5*N)]    # next N elements:  SO4
+    HS  <- state[(5*N+1):(6*N)]    # next N elements:  HS
+
+    # === transport rates ===
+    # note: zero gradient by default at lower boundaries
+ 
+    # solid substances, VF = solid volume fraction = 1-porosity!    
+    tran.POC <- tran.1D(C = POC, flux.up = depoPOC,  # upper boundary: flux 
+                        dx = Grid, VF = porSolid,    # grid and volume fraction (1-por)
+                        D = Dbio, v = v_adv)         # mixing (bioturbation) and advection
+
+    # dissolved substances, VF = liquid volume fraction = porosity!
+    tran.O2 <- tran.1D(C = O2, C.up = bwO2,          # upper boundary: concentration
+                        dx = Grid, VF = porLiquid,   # grid and volume fraction (por)
+                        D = diffO2, v = v_adv)       # diffusive mixing and advection
+    
+    tran.NH3 <- tran.1D(C = NH3, C.up = bwNH3,       
+                        dx = Grid, VF = porLiquid,   
+                        D = diffNH3, v = v_adv)      
+    
+    tran.NO3 <- tran.1D(C = NO3, C.up = bwNO3,       
+                        dx = Grid, VF = porLiquid,   
+                        D = diffNO3, v = v_adv)      
+    
+    tran.SO4 <- tran.1D(C = SO4, C.up = bwSO4,       
+                        dx = Grid, VF = porLiquid,   
+                        D = diffSO4, v = v_adv)      
+    
+    tran.HS  <- tran.1D(C = HS,  C.up = bwHS,        
+                        dx = Grid, VF = porLiquid,   
+                        D = diffHS,  v = v_adv)      
+
+    # === reaction rates ===
+    
+    # [mol/m3 SOLID/d] (per volume of solid)
+    OxicMin      <- rMin *  O2/(O2+kO2)                                    * POC   
+    Denitri      <- rMin * kO2/(O2+kO2) *  NO3/(NO3+kNO3)                  * POC   
+    SO4reduction <- rMin * kO2/(O2+kO2) * kNO3/(NO3+kNO3) * SO4/(SO4+kSO4) * POC   
+    Mineralisation  <- OxicMin  + Denitri + SO4reduction
+    
+    # [mol/m3 LIQUID/d] (per volume of liquid) 
+    Nitri   <- rNit * O2/(O2+kO2) *NH3     
+    Reox    <- rOx  * O2/(O2+kO2) *HS     
+    
+    # === mass balances : dC/dt = transport + reactions ===
+    
+    # solid substances [mol/m3 SOLID/d]  
+    dPOC.dt   <- ( tran.POC$dC                          # transport
+                 - OxicMin - Denitri - SO4reduction)    # reactions, 
+    
+    # dissolved substances  [mol/m3 LIQUID/d]
+    poro      <- porLiquid$mid
+    f2Liquid  <- (1-poro)/poro  # to convert from /solid to /liquid
+    
+    dO2.dt    <- ( tran.O2$dC  - 2*Nitri - 2*Reox - OxicMin*f2Liquid )
+    dNH3.dt   <- ( tran.NH3$dC - Nitri + 16/106*(OxicMin + Denitri + SO4reduction)*f2Liquid )  
+    dNO3.dt   <- ( tran.NO3$dC + Nitri - 4/5*Denitri*f2Liquid )
+    dSO4.dt   <- ( tran.SO4$dC - 0.5*SO4reduction*f2Liquid + Reox)
+    dHS.dt    <- ( tran.HS$dC  + 0.5*SO4reduction*f2Liquid - Reox)
+
+    # === depth-integrated rates: [mol/m2 BULK/d] 
+    TotalOxic   <- sum(OxicMin       *Grid$dx*porSolid$mid)
+    TotalDenit  <- sum(Denitri       *Grid$dx*porSolid$mid)
+    TotalSO4red <- sum(SO4reduction  *Grid$dx*porSolid$mid)
+    TotalMin    <- sum(Mineralisation*Grid$dx*porSolid$mid)
+
+    TotalNit    <- sum(Nitri        *Grid$dx*porLiquid$mid)
+    TotalReox   <- sum(Reox         *Grid$dx*porLiquid$mid)
+  
+    return(list(c(dPOC.dt, dO2.dt, dNH3.dt, dNO3.dt, dSO4.dt, dHS.dt),  # time-derivatives
+          OxicMin        = OxicMin,      # rate profiles
+          Denitri        = Denitri,
+          SO4reduction   = SO4reduction,
+          Mineralisation = Mineralisation,
+          Nitri          = Nitri,
+          Reox           = Reox,
+      
+        # part of mineralisation due to oxic min, denit, anoxic.
+          pOxic          = TotalOxic/TotalMin,  
+          pDenit         = TotalDenit/TotalMin,
+          pSO4red        = TotalSO4red/TotalMin,
+
+        # for creating budgets - all in [mol/m2 BULK/d]
+          TotalOxic      = TotalOxic,           
+          TotalDenit     = TotalDenit,
+          TotalSO4red    = TotalSO4red,
+          TotalMin       = TotalMin,    
+          TotalNit       = TotalNit,           
+          TotalReox      = TotalReox,
+          O2.SWI.Flux    = tran.O2$flux.up,    
+          O2.Deep.Flux   = tran.O2$flux.down,  
+          NH3.SWI.Flux   = tran.NH3$flux.up,    
+          NH3.Deep.Flux  = tran.NH3$flux.down,  
+          NO3.SWI.Flux   = tran.NO3$flux.up,    
+          NO3.Deep.Flux  = tran.NO3$flux.down,  
+          SO4.SWI.Flux   = tran.SO4$flux.up,    
+          SO4.Deep.Flux  = tran.SO4$flux.down,  
+          HS.SWI.Flux    = tran.HS$flux.up,    
+          HS.Deep.Flux   = tran.HS$flux.down,  
+          POC.SWI.Flux   = tran.POC$flux.up,   
+          POC.Deep.Flux  = tran.POC$flux.down))
+ })
+}
+```
+## Steady-state solution
+
+```{r}
+std <- steady.1D (y=state, func=Diamodel, parms=parms, 
+                  nspec=nspec, dimens=N, names=names,
+                  positive = TRUE)     # to have only positive values! 
+
+p1 <- parms
+p1["depoPOC"]  <- 1e-2 # [mol/m2/d]  POC deposition rate (flux at SWI)
+std1 <- steady.1D (y=state, func=Diamodel, parms=p1, 
+                  nspec=nspec, dimens=N, names=names, positive = TRUE)
+
+p2 <- parms
+p2["depoPOC"]  <- 2e-2 # [mol/m2/d]  POC deposition rate (flux at SWI)
+std2 <- steady.1D (y=state, func=Diamodel, parms=p2, 
+                  nspec=nspec, dimens=N, names=names, positive = TRUE)
+```
+
+
+### Plotting
+
+```{r, fig.width=8, fig.height=8}
+plot(std, std1, std2, xyswap=TRUE, grid=Grid$x.mid, ylim=c(0.1,0), lty=1, lwd=2, las=1)
+plot(std, std1, std2, which = c("OxicMin", "Denitri","SO4reduction",
+          "Mineralisation", "Nitri", "Reox"), xyswap=TRUE, 
+           grid=Grid$x.mid, ylim=c(0.1,0), lty=1, lwd=2, las=1)
+```
+
+## Mineralisation pathways
+
+```{r}
+toselect <- c("pOxic", "pDenit", "pSO4red", "TotalMin")
+
+PATH   <- std[toselect]
+PATH1  <- std1[toselect]
+PATH2  <- std2[toselect]
+data.frame(std=unlist(PATH), std1=unlist(PATH1), std2=unlist(PATH2))
+```
+
+## O2 Budget
+
+```{r}
+toselect <- c("TotalOxic", "TotalNit", "TotalReox", "O2.SWI.Flux", "O2.Deep.Flux")
+fac <- 365000  # to mmol/yr
+BUDGET   <- std[toselect]
+BUDGET1  <- std1[toselect]
+BUDGET2  <- std2[toselect]
+O2budget <- rbind(std=unlist(BUDGET), std1=unlist(BUDGET1), std2=unlist(BUDGET2))*fac
+
+O2BUDG <-
+  data.frame(FluxIn = O2budget[,"O2.SWI.Flux"],
+           FluxOut = -O2budget[,"O2.Deep.Flux"],
+           O2consInOxicMin = -O2budget[,"TotalOxic"],
+           O2consInNitri = -O2budget[,"TotalNit"]*2,   # 2 moles per mole of NH3 nitrified
+           O2consInReox = -O2budget[,"TotalReox"]*2)
+O2BUDG
+rowSums(O2BUDG)
+```
+
+## S budget
+
+```{r}
+toselect <- c("TotalSO4red", "TotalReox", "SO4.SWI.Flux", "SO4.Deep.Flux", 
+              "HS.SWI.Flux", "HS.Deep.Flux")
+fac <- 365000  # to mmol/yr
+BUDGET   <- std[toselect]
+BUDGET1  <- std1[toselect]
+BUDGET2  <- std2[toselect]
+SBUDG <- rbind(std=unlist(BUDGET), std1=unlist(BUDGET1), std2=unlist(BUDGET2))*fac
+SBUDG[,"TotalSO4red"] <- SBUDG[,"TotalSO4red"]*0.5  # 0.5 moles of SO4 per mole of C
+SBUDG
+
+```
+

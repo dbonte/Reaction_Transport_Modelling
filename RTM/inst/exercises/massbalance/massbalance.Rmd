@@ -1,6 +1,6 @@
 ---
 title: "Mass Balance Equations"
-subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 date: "June 2021"
 output: 
   pdf_document:

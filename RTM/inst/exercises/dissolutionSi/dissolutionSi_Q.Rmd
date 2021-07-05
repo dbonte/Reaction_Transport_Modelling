@@ -1,13 +1,9 @@
 ---
 title: "Dissolution of spherical silica particles"
-subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 author: "Lubos Polerecky & Karline Soetaert"
 date: "February 2021"
 output: pdf_document
-vignette: >
-  %\VignetteIndexEntry{Dissolution of spherical silica particles: modeling exercise}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{utf8}
 ---
 
 

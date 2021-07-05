@@ -1,6 +1,6 @@
 ---
 title: 'Local Equilibrium Chemistry in R --- part II: Two Equilibrium Reactions'
-subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 author: "Karline Soetaert and Lubos Polerecky"
 date: "February 2021"
 output:

@@ -5,17 +5,9 @@ date: '2021'
 output:
   pdf_document: default
   html_document: default
-subtitle: Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere
+subtitle: Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere
 ---
 
-
-```{echo = FALSE, include = FALSE}
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Creating conceptual models: modeling exercises}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)

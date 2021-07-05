@@ -1,4 +1,15 @@
-
+---
+title: 'Rate expressions in biogeochemistry: detritus mineralization by bacteria'
+author: "Karline Soetaert and Lubos Polerecky"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
+date: "March 2021"
+output: 
+  pdf_document:
+    toc: no 
+  header-includes: 
+    \usepackage{float} 
+    \floatplacement{figure}{H} 
+---
 # Detritus decay by bacteria model - Answers
 
 ## Mass balances

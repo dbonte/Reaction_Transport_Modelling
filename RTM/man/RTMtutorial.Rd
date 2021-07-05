@@ -4,15 +4,15 @@
 \alias{RTMreader}
 \title{Reaction Transport Modelling Course: tutorials, exercises and readers with accessory material}
 \usage{
-RTMtutorial (x = c("introduction", "why", "conceptual", "massbalance", "largescale", 
-      "chemical", "equilibrium", "enzymatic", "partitioning", "ecology", 
-      "transportProcesses", "transportFluxes", "transportPorous", 
-      "transportBoundaries", "Rcode"))
+RTMtutorial (x = c("introduction", "why", "conceptual", "massbalance",     
+     "Rmodels", "largescale", "chemical", "equilibrium", "enzymatic",    
+     "partitioning", "ecology", "transportProcesses", "transportFluxes", 
+     "transportPorous", "transportBoundaries", "transportR"))
     
 RTMexercise(x = c("modelersR", "conceptual", "massbalance", "carbonCycle",                                 
       "ozone", "dissolutionSi", "equilibriumNH3", "equilibriumHCO3",                                    
       "equilibriumOMD", "detritus", "COVID", "npzd", "crops_weeds",                                    
-      "riverAnoxia", "Pdiagenesis"), type = c("HTML", "PDF", "RMD", "WORD"))  
+      "riverAnoxia", "Pdiagenesis", "diagenesis"), type = c("HTML", "PDF", "RMD", "WORD"))  
       
 RTMreader (x = c("events", "forcings", "observations", 
       "fitting", "multidimensional_visualisation", 

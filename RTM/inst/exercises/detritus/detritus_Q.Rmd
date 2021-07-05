@@ -1,7 +1,7 @@
 ---
 title: 'Rate expressions in biogeochemistry: Detritus Mineralization by Bacteria'
 author: "Karline Soetaert and Lubos Polerecky"
-subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 date: "March 2021"
 output: 
   pdf_document:
@@ -10,14 +10,6 @@ output:
     \usepackage{float} 
     \floatplacement{figure}{H} 
 ---
-
-```{echo = FALSE, include = FALSE}
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Detritus Mineralisation by Bacteria: modeling exercise}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-```
 
 # Modelling detritus mineralization by bacteria
 

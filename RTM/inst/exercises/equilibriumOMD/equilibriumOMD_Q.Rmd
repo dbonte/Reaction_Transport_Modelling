@@ -1,6 +1,6 @@
 ---
 title: 'Local Equilibrium Chemistry in R --- part III: Mixed Equilibrium-Irreversible Reactions'
-subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 author: "Karline Soetaert and Lubos Polerecky"
 date: "February 2021"
 output:
@@ -8,14 +8,6 @@ output:
     number_sections: false
   html_document: default
 ---
-
-```{echo = FALSE, include = FALSE}
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Equilibrium chemistry III, mixed equilibrium-irreversible reactions: modeling exercise}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-```
 
 # Problem
 In part I and II of the Reader "Local equilibrium chemistry in R", we have shown how to model pH dynamics in a rather simple solution: water that only contains dissolved ammonia or dissolved carbonate. The task here is to show how to model pH dynamics in a more complex solution, namely water that contains dissolved ammonia as well as dissolved carbonate. An important step will be the generalization of the concept of alkalinity to include contributions from both the carbonate and ammonium ions. We illustrate the model by studying pH dynamics in water induced by organic matter degradation. Additionally, we revisit the ammonia degassing model originally developed in Part I of the Reader.

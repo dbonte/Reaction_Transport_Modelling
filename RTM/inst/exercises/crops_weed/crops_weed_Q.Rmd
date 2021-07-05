@@ -1,6 +1,6 @@
 ---
 title: "Farmer's dilemma---Optimisation of Crop Cultures in the Presence of Weeds"
-subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 author: "Karline Soetaert and Lubos Polerecky"
 date: "March 2021"
 output:
@@ -9,15 +9,6 @@ output:
   word_document:
     toc: yes
 ---
-
-
-```{echo = FALSE, include = FALSE}
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Cultivating crops in the presence of weeds: modeling exercise}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-```
 
 # Introduction
 

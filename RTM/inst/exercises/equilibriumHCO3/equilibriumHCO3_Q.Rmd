@@ -1,6 +1,6 @@
 ---
 title: 'Local Equilibrium Chemistry in R --- part II: Two Equilibrium Reactions'
-subtitle: "Exercises Accompanying the Course Reaction Transport Modeling in the Hydrosphere"
+subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 author: "Karline Soetaert and Lubos Polerecky"
 date: "February 2021"
 output:
@@ -12,7 +12,7 @@ output:
 ```{echo = FALSE, include = FALSE}
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Equilibrium chemistry II, two equilibrium reactions: modeling exercise}
+  %\VignetteIndexEntry{Equilibrium chemistry II, two equilibrium reactions: modelling exercise}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ```
