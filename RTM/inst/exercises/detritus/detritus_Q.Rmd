@@ -1,6 +1,6 @@
 ---
 title: 'Rate expressions in biogeochemistry: Detritus Mineralization by Bacteria'
-author: "Karline Soetaert and Lubos Polerecky"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 date: "March 2021"
 output: 
@@ -28,9 +28,7 @@ You already made the conceptual diagram for this problem. Now you need to find r
 
 Detritus in the marine system is degraded by the action of heterotrophic bacteria. This is not a one-step process: bacteria cannot 'eat' detritus! You will make a model that is closer to the reality of the process. 
 
-The model considers that particulate detritus (POC) is first hydrolysed by the action of bacterial exoenzymes to high-molecular-weight dissolved organic carbon (HMWC). This in turn is attacked by bacterial enzymes to yield low-molecular-weight dissolved organic carbon (LMWC), which can then be taken up by the bacteria (BACT) to grow on it.
-
-The conceptual diagram of this model is shown in Figure 1:
+The model considers that particulate detritus (POC) is first hydrolysed by the action of bacterial exoenzymes to high-molecular-weight dissolved organic carbon (HMWC). This in turn is attacked by bacterial enzymes to yield low-molecular-weight dissolved organic carbon (LMWC), which can then be taken up by the bacteria (BACT) to grow on it. The conceptual diagram of this model is shown in Figure 1.
 
 ## Tasks
 
@@ -41,23 +39,21 @@ The parameters are:
 
 |   parameter    | 	value	       |  Description                            | units                         | 
 |----------------| --------------| --------------------------------------- | ----------------------------- |
-| rmaxPOC	       | 0.75          | maximal rate of hydrolysis of POC       |	$d^{-1}$                     |
-| rmaxHMWC	     | 0.5           | maximal rate of hydrolysis of HMWC      |	$d^{-1}$                     |
-| rupmax	       | 2	           | maximal uptake rate of LMWC by bacteria | $d^{-1}$                      |
-| ksPOC	         | 0.10	         | Monod ct for POC hydrolysis             | $molC~m^{-3}$                 |
-| ksHMWC	       | 0.005         | Monod ct for HMWC hydrolysis            | $molC~m^{-3}$                 |
-| ksLMWC         | 0.0005        | Monod ct for LMWC uptake by bacteria    | $molC~m^{-3}$                 |
-| rBas	         | 0.1	         | basal respiration rate                  | $d^{-1}$                      |
+| rPOC	         | 0.75          | rate constant of hydrolysis of POC      |	$d^{-1}$                     |
+| rHMWC	         | 0.5           | rate constant of hydrolysis of HMWC      |	$d^{-1}$                     |
+| rup   	       | 2	           | uptake rate constant of LMWC by bacteria | $d^{-1}$                      |
+| ksPOC	         | 0.10	         | Monod ct for POC hydrolysis             | $mol~C~m^{-3}$                 |
+| ksHMWC	       | 0.005         | Monod ct for HMWC hydrolysis            | $mol~C~m^{-3}$                 |
+| ksLMWC         | 0.0005        | Monod ct for LMWC uptake by bacteria    | $mol~C~m^{-3}$                 |
+| rBas	         | 0.1	         | basal respiration rate constant         | $d^{-1}$                      |
 | pResp	         | 0.5           | fraction of LMWC uptake respired        |	-                            |
-| rClos	         | 50	           | quadratic mortality ct for bacteria     | $(molC~m^{-3})^{-1}~d^{-1}$   |
-| fluxPOC        | 0.0005        | constant influx of POC                  | $molC~m^{-3}~d^{-1}$          |
+| rClos	         | 50	           | quadratic mortality rate constant for bacteria     | $(mol~C~m^{-3})^{-1}~d^{-1}$   |
+| fluxPOC        | 0.0005        | constant influx of POC                  | $mol~C~m^{-3}~d^{-1}$          |
 
 * Check the dimensionality of your model.
 
 ## If you have time
 
-* Use the model template file *RTM_0D.Rmd* to implement this model\footnote{you can download this file from Rstudio: "File->new File->Rmarkdown..->from template->RTM_0D". First rename the file (e.g. *Detritus.Rmd*). 
-Do not forget to change the heading of this file.}. 
+* Use the model template file *RTM_0D.Rmd* to implement this model.\footnote{You can obtain this file from Rstudio: File $\rightarrow$ new File $\rightarrow$ Rmarkdown $\rightarrow$ from template $\rightarrow$ RTM\_0D. Save this file under a different name. Do not forget to change the heading of this file.}
 
-The initial conditions are: POC = 0.1, HMWC = 0.005, LMWC = 0.00015, BACT = 0.005 mol $m^{-3}$.
-
+* The initial conditions are: POC = 0.1, HMWC = 0.005, LMWC = 0.00015, BACT = 0.005, all in $mol~C~m^{-3}$.

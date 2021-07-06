@@ -1,6 +1,6 @@
 ---
 title: 'Rate expressions in biogeochemistry: detritus mineralization by bacteria'
-author: "Karline Soetaert and Lubos Polerecky"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 date: "March 2021"
 output: 
@@ -14,6 +14,7 @@ output:
 ```{r child = 'detritus_Q.Rmd'}
 ```
 
+\newpage
 ```{r child = 'detritus_A.Rmd'}
 ```
 
