@@ -1,5 +1,6 @@
 ---
 title: "Mass Balance Equations"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 date: "June 2021"
 output: 
@@ -7,7 +8,9 @@ output:
     toc: no 
   header-includes: 
     \usepackage{float} 
-    \floatplacement{figure}{H} 
+    \floatplacement{figure}{th}
+fontsize: 11pt
+linestretch: 1.15 
 ---
 
 ```{r child = 'massbalance_Q.Rmd'}
