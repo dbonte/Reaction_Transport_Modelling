@@ -10,8 +10,6 @@ output:
     toc: yes
   word_document:
     toc: yes
-fontsize: 11pt
-linestretch: 1.15
 ---
 
 ```{r child = 'carbonCycle_Q.Rmd'}

@@ -1,13 +1,13 @@
 ---
 title: 'Chemistry: Ozone in the troposphere'
-author: "Karline Soetaert and Lubos Polerecky"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 date: "February 2021"
 output:
   pdf_document: default
   html_document: default
 ---
-\newpage
+
 # Answers
 
 ## Rate expressions

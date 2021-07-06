@@ -1,6 +1,6 @@
 ---
 title: 'Chemistry: Ozone Dynamics in the Troposphere'
-author: "Karline Soetaert and Lubos Polerecky"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 date: "February 2021"
 output:
@@ -58,8 +58,7 @@ $k_1 = k_{1a}+k_{1b} \cdot I_{h\nu}(t)$, where $I_{h\nu}(t)$ denotes the light i
 $$k_{1a} = 10^{-30}~d^{-1},$$ 
 $$k_{1b} = 1~(\mu mol~photons~m^{-2}~s^{-1})^{-1}~d^{-1}.$$
 
-* Implement this model in *R*. You can start with the R-markdown template model file *RTM_0D.Rmd* \footnote{you can download this file from Rstudio: "File->new File->Rmarkdown..->from template->RTM_0D". Save this file under a different name, do not forget to change the heading of this file.}. 
-Use the following initial conditions:
+* Implement this model in R. You can start with the R-markdown template file *RTM_0D.Rmd* to implement this model.\footnote{You can obtain this file from Rstudio: File $\rightarrow$ new File $\rightarrow$ Rmarkdown $\rightarrow$ from template $\rightarrow$ RTM\_0D. Save this file under a different name. Do not forget to change the heading of this file.} Use the following initial conditions:
      - $[O] = 0$, $[NO] = 1.3\times 10^8$, $[NO2] = 5\times 10^{11}$, $[O3] = 8\times 10^{11}$
      - Do these values match the units assumed in your model?
 

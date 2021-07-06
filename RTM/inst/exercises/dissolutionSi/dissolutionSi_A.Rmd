@@ -1,7 +1,7 @@
 ---
 title: "Dissolution of spherical silica particles"
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
-author: "Lubos Polerecky & Karline Soetaert"
+author: "Lubos Polerecky & Karline Soetaert, Utrecht University"
 date: "February 2021"
 output: pdf_document
 ---
@@ -37,7 +37,7 @@ k_2 = 4\pi k_p \times \left( \frac{N}{V}\right)^{1/3} \times \left( \frac{MW}{\f
 $$
 Note that the dissolution/precipitation rate does not linearly depend on the solid silica concentration, but on this quantity raised to the power of 2/3.
 
-## Task 2. Implementation into R.
+## Task 2. Implementation in R
 
 First, we define model parameters and initial conditions:
 
