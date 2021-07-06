@@ -1,14 +1,13 @@
 ---
 title: "Local Equilibrium Chemistry in R --- part I: One Equilibrium Reaction"
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
-author: "Karline Soetaert and Lubos Polerecky"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 date: "March 2021"
 output:
   pdf_document:
     number_sections: true
   html_document: default
 ---
-
 
 ```{echo = FALSE, include = FALSE}
 output: rmarkdown::html_vignette
@@ -22,9 +21,9 @@ vignette: >
 
 Suppose we have a system with chemical species A, B and AB (such as dissolved NH$_3$, H$^+$ and NH$_4^+$, respectively) that undergo the following processes: 
 
-   - (i) species AB can dissociate into A and B at a rate controlled by the rate constant $k_f$ ("forward reaction"), 
-   - (ii) species A and B can react to form species AB at a rate controlled by the rate constant $k_b$ ("backward reaction"), and 
-   - (iii) species A is removed from the system at a rate controlled by the rate constant $\lambda$ ("net removal process"). 
+   - species AB can dissociate into A and B at a rate controlled by the rate constant $k_f$ ("forward reaction"), 
+   - species A and B can react to form species AB at a rate controlled by the rate constant $k_b$ ("backward reaction"), and 
+   - species A is removed from the system at a rate controlled by the rate constant $\lambda$ ("net removal process"). 
   
 In class you have seen that if the equilibration process 
 $$AB \leftrightarrow A + B$$
@@ -71,9 +70,9 @@ To solve this model numerically, we will assume the following parameter values:
 | $k_b$         | $2 \times 10^6$| $(mol~m^{-3})^{-1}~s^{-1}$ |
 | $\lambda$     | 0.1            | $s^{-1}$    |
 
-These parameters imply an equilibrium constant of $K_{eq}=0.5e^{-3}$  $mol~m^{-3}$.
+These parameters imply an equilibrium constant of $K_{eq}=0.5\times 10^{-3}~mol~m^{-3}$.
 
-Additionally, we will assume that *total* concentration of species A ($[Atot] = [A] + [AB]$) is 0.070 $mol~m^{-3}$, the *total* concentration of species B ($[Btot] = [B] + [AB]$) is 0.06 $mol~m^{-3}$, and the *initial* concentration of species (state variable) B is 0.001 $mol~m^{-3}$. Using this information, the initial concentrations of the species (state variables) AB and A can easily be calculated as $[AB] = [Btot] - [B]$ and $[A] = [Atot] - [AB]$.
+Additionally, we will assume that *total* concentration of species A ($[Atot] = [A] + [AB]$) is $0.070~mol~m^{-3}$, the *total* concentration of species B ($[Btot] = [B] + [AB]$) is $0.06~mol~m^{-3}$, and the *initial* concentration of species (state variable) B is $0.001~mol~m^{-3}$. Using this information, the initial concentrations of the species (state variables) AB and A can easily be calculated as $[AB] = [Btot] - [B]$ and $[A] = [Atot] - [AB]$.
 
 With that information, we make a model that considers explicitly both the rapid equilibration process and the slower net removal process. That is, we model the dynamics of species A, B and AB based on the mass balance equations (1). We also calculate the *total* concentrations of elements A and B (*Atot* and *Btot*), and the quotient $Q=[A]\cdot[B]/[AB]$, as output variables. As noted above, the quotient is useful because it tells us *how far from equilibrium the system* (described by state variables A, B and AB) *is*. We run the model for 1 millisecond and 10 seconds to illustrate what happens on the time scales of the fast equilibration and slow removal processes.
 
@@ -142,7 +141,7 @@ First, we run the model for 1 ms to illustrate how fast the equilibrium is reach
 ```{r, warning = FALSE, message = FALSE, fig.width=10, fig.height=5}
 times     <- seq(from=0, to=1e-3, length.out = 1000)
 out.full  <- ode(y=yini.full, times=times, func=FullModel, parms=parms)
-plot(out.full, mfrow=c(2,3), ylab="mol/m3")
+plot(out.full, mfrow=c(2,3), ylab="mol/m3", xlab="time (s)")
 ```
 
 Now, we run the model for 10 s to illustrate the effects on the time-scale of the slow removal process. As we can see from the quotient, on this time-scale the species A, B and AB can be considered to be always in an equilibrium.
@@ -150,7 +149,7 @@ Now, we run the model for 10 s to illustrate the effects on the time-scale of th
 ```{r, fig.width=10, fig.height=5}
 times     <- seq(from=0, to=10, length.out=1000)
 out.full  <- ode(y=yini.full, times=times, func=FullModel, parms=parms)
-plot(out.full, mfrow=c(2,3), ylab="mol/m3")
+plot(out.full, mfrow=c(2,3), ylab="mol/m3", xlab="time (s)")
 ```
 
 
@@ -358,19 +357,11 @@ Here you will check your understanding of the concepts introduced above by model
 
 ## Task
 
-Consider a water body with an initial pH of 8 ($pH = -log([H^+])$, where $[H^+]$ is the concentration of protons in $mol~L^{-1}$!) and an initial concentration of *total* dissolved ammonia ($NH_x = NH_3 + NH_4^+$) of 1 $mol~m^{-3}$. Dissolved ammonia species NH$_3$ is degassing according to the first-order kinetics (assume a rate constant of 1 $d^{-1}$). 
+Consider a water body with an initial pH of 8 ($pH = -log([H^+])$, where $[H^+]$ is the concentration of protons in $mol~L^{-1}$!) and an initial concentration of *total* dissolved ammonia ($NH_x = NH_3 + NH_4^+$) of $1~mol~m^{-3}$. Dissolved ammonia species NH$_3$ is degassing according to the first-order kinetics (assume a rate constant of 1 $d^{-1}$). 
 
 Write a model that will predict the change of water pH, along with the change of [$NH_x$], as a function of time due to ammonia (NH$_3$) degassing. 
 
 Assume that the equilibration process $NH_4^+ \leftrightarrow NH_3 + H^+$ is much faster than the degasing (equilibrium constant for this process is approximately $K_{eq} = 5.38\times 10^{-10}\, mol \, L^{-1}$). Thus, you can use the local equilibrium assumption to solve the model. Additionally, assume that degassing of ammonia is the *only* process that affects the water pH. That is, assume that other chemical species, such as dissolved CO$_2$, which would be a strong buffer counter-acting the pH changes induced by ammonia degassing, are *not* present in the water. This last assumption is required to make the model simple and focused on one process: ammonia degassing.
 
-You can start with the R-markdown template model file *RTM_equilibrium.Rmd* \footnote{you can download this file from Rstudio: "File->new File->Rmarkdown..->from template->RTM_equilibrium". Save this file under a different name, do not forget to change the heading of this file.}
+You can start with the R-markdown template file *RTM_0D.Rmd* to implement this model.\footnote{You can obtain this file from Rstudio: File $\rightarrow$ new File $\rightarrow$ Rmarkdown $\rightarrow$ from template $\rightarrow$ RTM\_0D. Save this file under a different name. Do not forget to change the heading of this file.}
 
-# References
-
-R Core Team (2020). R: A language and environment for statistical computing. R Foundation for
-  Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
-  
-Karline Soetaert, Thomas Petzoldt, R. Woodrow Setzer (2010). Solving Differential Equations in R:
-  Package deSolve. Journal of Statistical Software, 33(9), 1--25. URL
-  http://www.jstatsoft.org/v33/i09/ DOI 10.18637/jss.v033.i09
