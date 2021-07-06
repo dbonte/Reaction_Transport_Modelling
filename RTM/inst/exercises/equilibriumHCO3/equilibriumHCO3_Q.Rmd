@@ -1,7 +1,7 @@
 ---
 title: 'Local Equilibrium Chemistry in R --- part II: Two Equilibrium Reactions'
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
-author: "Karline Soetaert and Lubos Polerecky"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 date: "February 2021"
 output:
   pdf_document:
@@ -65,20 +65,9 @@ Assume that the system is in an equilibrium, and that the concentrations $[DIC]$
 This will be somewhat laborious, but rather straight forward. 
 
 ## Task 5: Application to atmospheric CO2 exchange
-Consider seawater with a pH of 8 and a DIC concentration of $2~mmol~L^{-1}$. Assume that dissolved $CO_2$ is added to the water at a rate $0.1~mmol~L^{-1}~d^{-1}$, and that this is a slow process in comparison to the equilibration reactions 1 and 2. Additionally, assume that the reactions 1, 2 and the slow process with rate $R_C$ are the only processes in the system.
+Consider seawater with a pH of 8 and a DIC concentration of $2~mmol~L^{-1}$. Assume that dissolved $CO_2$ is added to the water at a rate $0.1~mmol~L^{-1}~d^{-1}$, and that this is a slow process in comparison to the equilibration reactions 1 and 2. Additionally, assume that the reactions 1, 2 and the slow process with the rate $R_C$ are the only processes in the system.
 
-* Write a model to predict the dynamics of the carbonate species, alkalinity and pH due to this process. You can start with the R-markdown template model file *RTM_equilibrium.Rmd* \footnote{you can download this file from Rstudio: "File->new File->Rmarkdown..->from template->RTM_equilibrium". Save this file under a different name, do not forget to change the heading of this file.}
+* Write a model to predict the dynamics of the carbonate species, alkalinity and pH due to this process. You can start with the R-markdown template model file *RTM_equilibrium.Rmd*.\footnote{You can obtain this file from Rstudio: File $\rightarrow$ new File $\rightarrow$ Rmarkdown $\rightarrow$ from template $\rightarrow$ RTM\_equilibrium. Save this file under a different name, do not forget to change the heading of this file.}
 
-Implement the model for the temperature of 20 $^\circ$C, salinity of 35, and pressure of 1 bar. For these conditions, the dissociation constants $K_1$ and $K_2$ are given above. You can start with the R-markdown template model file *RTMtemplate0D.Rmd* to implement this model\footnote{you can download this file from Rstudio: "File->new File->Rmarkdown..->from template->RTMtemplate0D"}. Save this file under a different name, do not forget to change the heading of this file.
+Implement the model for the temperature of 20 $^\circ$C, salinity of 35, and pressure of 1 bar. For these conditions, the dissociation constants $K_1$ and $K_2$ are given above. You can start with the R-markdown template model file *RTMtemplate0D.Rmd* to implement this model.\footnote{You can obtain this file from Rstudio: File $\rightarrow$ new File $\rightarrow$ Rmarkdown $\rightarrow$ from template $\rightarrow$ RTMtemplate0D. Save this file under a different name, do not forget to change the heading of this file.}
 
-# References
-
-Jean-Pierre Gattuso, Jean-Marie Epitalon, Heloise Lavigne and James Orr (2020). seacarb:
-  Seawater Carbonate Chemistry. R package version 3.2.13.
-  https://CRAN.R-project.org/package=seacarb
-  
-Andreas F. Hofmann, Karline Soetaert, Jack J. Middelburg and Filip J. R. Meysman, 2010,
-  AquaEnv - An Aquatic Acid-Base Modelling Environment in R.  
-  Aquatic Geochemistry DOI 10.1007/s10498-009-9084-1,
-  https://CRAN.R-project.org/package=AquaEnv
-  

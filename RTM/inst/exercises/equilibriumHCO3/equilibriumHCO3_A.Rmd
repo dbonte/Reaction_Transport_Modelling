@@ -1,14 +1,14 @@
 ---
-title: 'Local equilibrium chemistry in R --- part II'
+title: 'Local equilibrium chemistry in R --- part II: Two Equilibrium Reactions'
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
-author: "Karline Soetaert and Lubos Polerecky"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 date: "February 2021"
 output:
   pdf_document:
     number_sections: false
   html_document: default
 ---
-\newpage
+
 # Answers
 
 ## Task 1: Mass balance equations of the carbonate system
