@@ -1,5 +1,5 @@
 ---
-title: "Earth's global C cycle: the CO2 Problem and Mitigation Strategies"
+title: "Earth's global C cycle: the $CO_2$ Problem and Mitigation Strategies"
 author: "Lubos Polerecky and Karline Soetaert"
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 date: "February 2021"

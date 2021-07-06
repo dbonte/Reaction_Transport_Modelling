@@ -1,5 +1,5 @@
 ---
-title: "Earth's global C cycle: the CO2 Problem and Mitigation Strategies"
+title: "Earth's global C cycle: the $CO_2$ Problem and Mitigation Strategies"
 author: "Lubos Polerecky and Karline Soetaert"
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
 date: "February 2021"
@@ -10,6 +10,8 @@ output:
     toc: yes
   word_document:
     toc: yes
+fontsize: 11pt
+linestretch: 1.15
 ---
 
 ```{r child = 'carbonCycle_Q.Rmd'}
