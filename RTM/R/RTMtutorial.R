@@ -53,7 +53,7 @@ openRmdFile <- function(file, type) {
 RTMexercise <- function(x = c("modelersR", "conceptual", "massbalance",
     "carbonCycle", "ozone", "dissolutionSi", "equilibriumNH3", "equilibriumHCO3",
     "equilibriumOMD", "detritus", "COVID", "npzd", "crops_weed", 
-    "riverAnoxia", "Pdiagenesis", "diagenesis"), 
+    "estuaryAnoxia", "Pdiagenesis", "diagenesis"), 
     type = c("HTML", "PDF", "RMD", "WORD")) {
 
   LL <- as.character(formals(RTMexercise)$x[-1])
@@ -73,7 +73,7 @@ RTMexercise <- function(x = c("modelersR", "conceptual", "massbalance",
       "The COVID pandemic (population dynamics)", 
       "NPZD model (marine ecosystem model)",
       "Crops and weed competition (agricultural model) including economics",
-      "Anoxia in a river (1-D reaction transport model)",    
+      "Anoxia in an estuary (1-D reaction transport model)",    
       "Simple phosphorus diagenesis in a marine sediment (porous medium)",
       "Complex diagenesis in a marine sediment (C, N, O2, S)"
       ))
@@ -98,7 +98,7 @@ RTMexercise <- function(x = c("modelersR", "conceptual", "massbalance",
 RTManswer <- function(x = c("modelersR", "conceptual", "massbalance",
     "carbonCycle", "ozone", "dissolutionSi", "equilibriumNH3", "equilibriumHCO3",
     "equilibriumOMD", "detritus", "COVID", "npzd", "crops_weed", 
-    "riverAnoxia", "Pdiagenesis", "diagenesis"), 
+    "estuaryAnoxia", "Pdiagenesis", "diagenesis"), 
     type = c("HTML", "PDF", "RMD", "WORD")) {
 
   LL <- as.character(formals(RTMexercise)$x[-1])
