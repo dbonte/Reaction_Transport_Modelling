@@ -1,7 +1,7 @@
 ---
 title: "Modelling the COVID-19 pandemic"
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
-author: "Karline Soetaert and Lubos Polerecky"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 date: "March 2021"
 output:
   pdf_document:
@@ -213,9 +213,4 @@ legend("top", col = 1:4, lty = 1,
 
 The simulations performed above are only realistic at the start of the pandemic. This is because they assume that the model parameters remain constant. However, in reality the parameters are frequently changed because the society *does* take measures, which themselves evolve in time. While such changes in parameter values are perfectly possible to implement in *R*, it would go far beyond the scope of this introductory course in modelling to explore them. Nevertheless, the exercise gives you a "taste" of how models can help design strategies in this type of circumstances.
 
-But: as we have mentioned several times, models are just an abstraction of reality, and they cannot capture everything! This is perfectly represented by the following cartoon (from https://www.nytimes.com/2020/09/10/health/university-illinois-covid.html):
-
-![Do not take this modelling too seriously.](10virus-illinois-xkcd-mobileMasterAt3x.png)
-
-You can see how to make a model of a COVID pandemic in the video from the following link:
-https://www.youtube.com/watch?v=4-gjEhk7wfU
+But: as we have mentioned several times, models are just an abstraction of reality, and they cannot capture everything!

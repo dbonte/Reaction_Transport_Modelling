@@ -1,13 +1,16 @@
 ---
-title: "Modelling the COVID-19 Pandemic"
-subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
-author: "Karline Soetaert and Lubos Polerecky"
+title: "Modelling the COVID-19 pandemic"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 date: "March 2021"
 output:
-  pdf_document:
-    toc: no
+  html_document:
+    toc: yes
+    df_print: paged
   word_document:
     toc: yes
+  pdf_document:
+    toc: no
+subtitle: Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere
 ---
 
 # The COVID-19 pandemic
@@ -22,7 +25,7 @@ The measures taken by the governments in the European countries to a large exten
 
 Typically, the models used to investigate the spread of infectious diseases are called S.I.R. models. They describe the number of *S*usceptible, *I*nfected and *R*ecovered individuals in a population. Susceptible individuals are vulnerable to get the disease but are not (yet) infected. Infected individuals can recover, but some will die from the disease. Recovered individuals, at least initially, cannot become infected anymore.
 
-![Conceptual scheme of the simplest SIR model.](SIR.png){width=70%}
+![Conceptual scheme of the simplest SIR model.](SIR.png){width=10cm}
 
 As spreading the infection is *not* something that is actively pursued by the infected individuals, the *infection rate* can be modeled as if it were an *elementary chemical reaction*. That is, the infection rate depends on the probability of infected and susceptible people interacting, and the probability that an infection occurs as a result of this interaction. Thus, we describe the infection rate (in units of $ind.~d^{-1}$, where $ind$ stands for the number of individuals) with the following rate expression: 
 $$Infection = b \cdot I \cdot S.$$
@@ -45,7 +48,7 @@ These equations imply that the rate constants $g$ and $m$ represent the *fractio
 ## 1. Implement the simple S.I.R. model in R
 
 The above model is the simplest S.I.R. model possible. It is not very realistic, and not very handy to be used as a decision-making tool. Nevertheless, you should start with implementing this model in *R* (R core team 2020) and solve it with the deSolve package (Soetaert et al., 2010).
-Use the template R markdown file *RTM_0D.Rmd* to implement this model\footnote{you can download this file from Rstudio: "File->new File->Rmarkdown..->from template->RTM_0D". Save this file under a different name, e.g., SIR.Rmd. Do not forget to change the heading of this file.}.
+Use the template R markdown file *RTM_0D.Rmd* to implement this model.\footnote{You can obtain this file from Rstudio: File $\rightarrow$ new File $\rightarrow$ Rmarkdown $\rightarrow$ from template $\rightarrow$ RTM\_0D. Save this file under a different name. Do not forget to change the heading of this file.}
 
 * Run the model for 365 days, using the following parameters (not patterned to the covid pandemic!):
 

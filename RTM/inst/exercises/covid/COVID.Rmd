@@ -1,13 +1,18 @@
 ---
 title: "Modelling the COVID-19 pandemic"
-subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
-author: "Karline Soetaert and Lubos Polerecky"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 date: "March 2021"
 output:
   pdf_document:
     toc: no
-  word_document:
+  html_document:
     toc: yes
+    df_print: paged
+  header-includes: 
+    \usepackage{float} 
+    \floatplacement{figure}{ht}
+  word_document:
+subtitle: Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere
 ---
 
 ```{r child = 'COVID_Q.Rmd'}
