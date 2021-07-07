@@ -1,21 +1,21 @@
 ---
 title: "Farmer's dilemma---optimisation of crop cultures in the presence of weeds and in response to eutrophication"
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
-author: "Karline Soetaert and Lubos Polerecky"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 date: "March 2021"
 output:
   pdf_document:
-    toc: yes
-  word_document:
-    toc: yes
+    toc: no
 ---
 
 ```{r child = 'crops_weed_Q.Rmd'}
 ```
 
+\newpage
 ```{r child = 'crops_weed_A.Rmd'}
 ```
 
+\newpage
 ```{r child = 'crops_weed_A_econ.Rmd'}
 ```
 

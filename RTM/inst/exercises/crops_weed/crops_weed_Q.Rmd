@@ -1,13 +1,11 @@
 ---
 title: "Farmer's dilemma---Optimisation of Crop Cultures in the Presence of Weeds"
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
-author: "Karline Soetaert and Lubos Polerecky"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 date: "March 2021"
 output:
   pdf_document:
-    toc: yes
-  word_document:
-    toc: yes
+    toc: no
 ---
 
 # Introduction
@@ -15,7 +13,7 @@ output:
 In the chemical, biogeochemical and ecological models that you have solved thus far, state variables were defined in terms of *concentrations* (volumetric or areal) or *biomass*, and the models were formulated through differential equations that describe the rate of change in these state variables as a function of the sinks and sources.
 In economics, problems can be formulated in a similar way---as differential equations---but here one is interested in the changes in costs and profits. In this exercise, you will implement the model of crops and weeds that you have seen earlier, and expand it to additionally include an *economic* perspective. 
 
-Note that this exercise should be considered as a demonstration of how to give models an "economic touch"! It is *not* meant to be very realistic, or turn you into a millionaire.\footnote{Although if it does, we hope that you will remember how you got there! ;-)} Our choices of the parameters for the P dynamics are very roughly estimated, and the costs assumed in the model may well be totally wrong.
+Note that this exercise should be considered as a demonstration of how to give models an economic "touch". It is *not* meant to be very realistic, or turn you into a millionaire.\footnote{Although if it does, we hope that you will remember how you got there! ;-)} Our choices of the parameters for the P dynamics are very roughly estimated, and the costs assumed in the model may well be totally wrong.
 
 # Problem formulation
 
@@ -40,6 +38,7 @@ Given that phosphorus is the limiting nutrient, the state variables are expresse
 
 The continuous P addition is implemented as a parameter (*Paddition*) while the fertilization at the start is imposed as the initial condition, i.e., by having a larger concentration of P in the upper soil layer. 
 
+\newpage
 ## Tasks
 
 First, create suitable rate expressions for the flows of P in the system. 
@@ -62,7 +61,7 @@ First, create suitable rate expressions for the flows of P in the system.
 |  N           | 25     | Density of crop plants         | $ind~m^{-2}$          |                
 |  P2WW        | 62000  | Convert P to wet weight        | $g~ww~(mol~P)^{-1}$   |                
 
-Implement the model with continuous fertilization in R, using the above parameter values. You can start with the R-markdown template model file *RTM_0D.Rmd* to implement this model\footnote{you can download this file from Rstudio: "File->new File->Rmarkdown..->from template->RTM_0D". Save this file under a different name, do not forget to change the heading of this file.}.
+Implement the model with continuous fertilization in R, using the above parameter values. You can start with the R-markdown template model file *RTM_0D.Rmd* to implement this model.\footnote{You can obtain this file from Rstudio: File $\rightarrow$ new File $\rightarrow$ Rmarkdown $\rightarrow$ from template $\rightarrow$ RTM\_0D. Save this file under a different name. Do not forget to change the heading of this file.}
 
 
 * Assume the following initial concentrations of P for the crop, weed and the two soil layers (all in units of $mol~P~m^{-2}$): $WEED = 0.001$, $CROP = 0.005$, $P1 = 0.1$, and $P2 = 0.1$.
