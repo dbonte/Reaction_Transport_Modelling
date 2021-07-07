@@ -1,7 +1,7 @@
 ---
 title: 'NPZD model: Nutrients, Phytoplankton, Zooplankton and Detritus in a Marine Bay'
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
-author: "Karline Soetaert and Lubos Polerecky"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 date: "March 2021"
 output: 
   pdf_document:
@@ -20,14 +20,14 @@ In this exercise, you start by making an NPZD model, which you will then extend 
 
 The conceptual scheme of the NPZD model is given in Figure 1.
 
-![Conceptual diagram of an NPZD model.](NPZD.jpg){width=60%}
+![Conceptual diagram of an NPZD model.](NPZD.png){width=8cm}
 
 
 # Assumptions of the NPZD model
 
 The following assumptions are made: 
 
-*	All state variables are expressed in $molN~m^{-3}$.
+*	All state variables are expressed in $mol~N~m^{-3}$.
 *	DIN is the limiting nutrient. 
 *	Solar radiation (light) is a forcing function that drives photosynthesis, and it changes seasonally. 
 * A fraction of the light is photosynthetically active radation (PAR). PAR decreases exponentially with water depth (with the extinction coefficient of 0.05 $m^{-1}$).  The algae perceive --- on average --- the PAR in the *middle* of the water column.\footnote{This corresponds well to the average light intensity through the water-column.}
@@ -51,9 +51,9 @@ The following assumptions are made:
 | depth	         | 10        | water depth                      | $m$                         |
 | rUptake	       | 1.0	     | Nitrogen uptake rate constant    | $d^{-1}$                    |
 | ksPAR	         | 140	     | Monod ct for light limitation    | $\mu Einst~m^{-2}s^{-1}$    |
-| ksDIN	         | 1$e^{-3}$ | Monod ct for nutrient limitation | $mol~N~m^{-3}$              |
+| ksDIN	         | $1\times 10^{-3}$ | Monod ct for nutrient limitation | $mol~N~m^{-3}$              |
 | rGrazing	     | 1.0	     | Grazing rate constant            | $d^{-1}$                    |
-| ksGrazing	     | 1$e^{-3}$ | Monod ct for grazing             | $mol~N~m^{-3}$              |
+| ksGrazing	     | $1\times 10^{-3}$ | Monod ct for grazing             | $mol~N~m^{-3}$              |
 | pFaeces	       | 0.3	     | Part of ingestion to faeces      | $-$                         |
 | rMortality     | 400    	 | Mortality rate constant          | $(mol~N~m^{-3})^{-1}d^{-1}$ |
 | rExcretion     | 0.1	     | Excretion rate constant (to DIN) | $d^{-1}$                    |
@@ -70,7 +70,7 @@ The following assumptions are made:
 | DET       	 | 	0.005	 | $mol~N~m^{-3}$  |
 
 
-* Implement the model in R, using the R+markdown file *RTM_npzd.Rmd* to start with (this file already contains the statement that estimates the light intensity as a function of the time of the year and the depth of the water column)\footnote{you can download this file from Rstudio: "File->new File->Rmarkdown..->from template->NAME  Save this file under a different name, do not forget to change the heading of this file.}. First rename this file to *NPZD.Rmd*.
+* Implement the model in R, using the R+markdown file *RTM_npzd.Rmd* to start with (this file already contains the statement that estimates the light intensity as a function of the time of the year and the depth of the water column).\footnote{You can download this file from Rstudio: File $\rightarrow$ new File $\rightarrow$ Rmarkdown $\rightarrow$ from template $\rightarrow$ RTM\_npzd.} First, change the heading and rename this file to *NPZD.Rmd*.
 *	Run the model and inspect the output.
 
 ##	Step 2. NPZD2 --- expand the NPZD model with sediment detritus

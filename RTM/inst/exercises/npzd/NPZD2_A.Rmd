@@ -1,18 +1,16 @@
 ---
-title: 'NPZD model of a marine bay'
+title: 'NPZD model: Nutrients, Phytoplankton, Zooplankton and Detritus in a Marine Bay'
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
-author: "Karline Soetaert and Lubos Polerecky"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 date: "March 2021"
 output: 
   pdf_document:
     default
 ---
 
-\newpage
-
 # The NPZD2 model
 
-![Concentual diagram of the NPZD2 model (includes bottom detritus)](NPZD2.jpg){width=60%}
+![Concentual diagram of the NPZD2 model (includes bottom detritus).](NPZD2.png){width=10cm}
 
 Figure 2 shows the conceptual diagram that includes both the free-floating and bottom detritus fractions.
 
@@ -21,8 +19,8 @@ It is most logical to express the pelagic (water) constituents per volume of wat
 Consequently, most rates featuring in the mass balance of pelagic state variables are in $mol~N~m^{-3}~d^{-1}$, while the rates for the benthic state variable are in $mol~N~m^{-2}~d^{-1}$. 
 
 An exception is the sinking of phytoplankton and detritus:
-$$R8 = sinkVelocity*PHYTO$$
-$$R9 = sinkVelocity*DET$$
+$$R8 = sinkVelocity\times PHYTO$$
+$$R9 = sinkVelocity\times DET$$
 With *sinkVelocity* expressed in $m~d^{-1}$, the fluxes R8 and R9 are expressed in $mol~N~m^{-2}~d^{-1}$. 
 
 For the mass balance equations of phytoplankton and detritus, we will need to convert between volumetric ($m^{-3}$) and areal ($m^{-2}$) units.
@@ -30,10 +28,10 @@ For the mass balance equations of phytoplankton and detritus, we will need to co
 Consequently, the mass balances for the phytoplankton and pelagic and bottom detritus are:
 $$\frac{dPHYTO}{dt} = R1-R2-R8/depth$$
 $$\frac{dDET}{dt} = R4+R6-R7-R9/depth$$
-$$\frac{dBOTTOMDET}{dt} = R8+R9-R10$$
+$$\frac{dBOT\_DET}{dt} = R8+R9-R10$$
 
 The mineralisation rate of bottom detritus is expressed as 
-$$R10 = mineralisationRate*BOTDET$$
+$$R10 = rMineralisation\times BOT\_DET$$
 and has units of $mol~N~m^{-2}~d^{-1}$. This will need to be converted to units of $mol~N~m^{-3}~d^{-1}$ to update the mass balance of pelagic DIN. 
 
 

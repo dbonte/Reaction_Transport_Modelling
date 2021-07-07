@@ -1,22 +1,29 @@
 ---
-title: 'NPZD model of a marine bay'
+title: 'NPZD model: Nutrients, Phytoplankton, Zooplankton and Detritus in a Marine Bay'
 subtitle: "Exercises Accompanying the Course Reaction Transport Modelling in the Hydrosphere"
-author: "Karline Soetaert and Lubos Polerecky"
+author: "Karline Soetaert and Lubos Polerecky, Utrecht University"
 date: "March 2021"
 output: 
   pdf_document:
-    default
+    toc: no
+  html_document:
+    toc: yes
+    df_print: paged
+  header-includes: 
+    \usepackage{float} 
+    \floatplacement{figure}{ht}
 ---
 
 ```{r child = 'NPZD_Q.Rmd'}
 ```
 
+\newpage
 ```{r child = 'NPZD_A.Rmd'}
 ```
 
+\newpage
 ```{r child = 'NPZD2_A.Rmd'}
 ```
-
 
 # References
 
