@@ -1,0 +1,111 @@
+---
+title: 'Virusses in the aquatic environment'
+subtitle: "Exercises Accompanying the Course Environmental Modelling"
+author: "Karline Soetaert and Dries Bonte"
+date: "July 2021"
+output: 
+  pdf_document:
+    default
+---
+
+# Answers
+
+## Units
+
+A reasonable unit for the state variables is number of cells per ml. 
+
+## Mass balances and rate expressions
+
+* Healthy (uninfected) algal cells (*H*) are created by cell division, which is described using a carrying capacity expression; the rate of cell division is specified by rate parameter *lambda* (units  [$d^{-1}$]); the carrying capacity *k*, has units of [$cells~ml^{-1}$]. 
+
+* Healthy cells die at a constant daily rate *rho* (units [$d^{-1}$]) and become infected. As infection depends on random encounter of virions and algae, the latter process is proportional to the product of the number of healthy cells, H, times the number of virions, V; the proportionality parameter *beta* has units of [$(cells~ml^{-1})^{-1}d^{-1}$]. 
+
+* The mass balance equation for uninfected cells is thus:
+
+$$\frac{dH}{dt} = CellDivision - CellDeath - Infection$$
+
+* Infected cells (*I*) die at a constant daily rate *delta* (units [$d^{-1}$]) by bursting; *n*, the burst size, is the number of virions that are released during lysis of one infected algal cell; *c* is the first-order rate at which virions disappear ([$d^{-1}$]).
+* Mass balances for infected cells and virions are thus:
+
+$$\frac{dI}{dt} = - Bursting + Infection$$
+$$\frac{dV}{dt} = n*Bursting  - VirusDeath - Infection$$
+
+
+The combined equations are:
+$$\frac{dH}{dt} = lambda * H * (1 - H/k) - rho * H - beta * H * V$$
+$$\frac{dI}{dt} = beta * H * V - delta*I$$
+$$\frac{dV}{dt} = n * delta * I - c * V - beta * H * V$$
+
+## parameters
+
+and where:
+
+| parameter | Value   | Units     | Description |
+|-----------| --------|-----------|-------------|
+| lambda    |	1	      |$d^{-1}$   | Division rate constant of healthy cells  |
+| rho	      | 0.15  	|$d^{-1}$   | Death rate constant of healthy cells     |
+| delta 	  | 0.55  	|$d^{-1}$  	| Burst rate constant of infected cells    |
+| beta	    | 0.00002	|$(cells~ml^{-1})^{-1}d^{-1}$| Infection rate constant |
+| c	        | 5.5	    |$d^{-1}$   | Death rate constant of virusses          |
+| k	        | 1e5	    |$cells~ml^{-1}$ | Algal carrying capacity             |
+| n  	      | 100	    |$virus~cell^{-1}$ | Burst size                        |
+
+
+## R-implementation
+
+Here is the code specifying the model:
+
+```{r, eval = TRUE, cache = FALSE, echo = TRUE, warning=FALSE, message=FALSE}
+require(deSolve)  # package with solution methods
+
+# state variables, units = cells /ml
+state <- c(H = 100, I = 150, V = 50000)
+
+# parameters 
+parms <- c(
+  lambda = 1,     # [/d] division rate constant of healthy algal cells
+  rho = 0.15,     # [/d] death rate constant of healthy cells
+  delta = 0.55,   # [/d] burst rate constant of infected cells
+  beta = 0.00002, # [(cells/ml)^-1 d-1] infection rate constant
+  c = 5.5,        # [/d] death rate constant of virus
+  k = 1e5,        # [cells/ml] carrying capacity
+  n = 100         # [virus/cell] burst size
+)
+
+# Model function
+VirusDynamics <- function(t, state, params) {
+  with (as.list(c(state, params)), {
+
+   # Rate expressions [cells/ml/d]
+    CellDivision  <- lambda*H*(1-H/k)
+    CellDeath     <- rho * H
+    Infection     <- beta * H * V
+    Bursting      <- delta*I
+    VirusDeath    <- c*V
+ 
+   # Mass balances [cells/ml/d]
+    dH <- CellDivision - CellDeath - Infection
+    dI <- - Bursting + Infection
+    dV <- n*Bursting - VirusDeath - Infection
+    
+    list(c(dH, dI, dV), Cells = H + I, Bursting = Bursting, 
+      Infection = Infection, logV = log(V), logC = log(H+I))
+  })
+
+}
+```
+
+and the model solution
+
+```{r, fig.height = 10, fig.width = 10}
+# output time
+outtimes <- seq(from = 0, to = 365, length.out = 1000)  # run for 365 days
+
+# solve this model, using the ode function from deSolve
+out <- ode(y = state, parms = parms, func = VirusDynamics, times = outtimes)
+
+plot(out, mfrow = c(3, 3))
+plot(out[,c(4,5)], type = "l", main = "phase-plane view", 
+      xlab = "Virusses", ylab = "Algae")
+```
+
