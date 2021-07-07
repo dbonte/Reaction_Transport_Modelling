@@ -52,7 +52,7 @@ openRmdFile <- function(file, type) {
 
 RTMexercise <- function(x = c("modelersR", "conceptual", "massbalance",
     "carbonCycle", "ozone", "dissolutionSi", "equilibriumNH3", "equilibriumHCO3",
-    "equilibriumOMD", "detritus", "COVID", "npzd", "crops_weeds", 
+    "equilibriumOMD", "detritus", "COVID", "npzd", "crops_weed", 
     "riverAnoxia", "Pdiagenesis", "diagenesis"), 
     type = c("HTML", "PDF", "RMD", "WORD")) {
 
