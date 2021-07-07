@@ -11,7 +11,7 @@ RTMtutorial (x = c("introduction", "why", "conceptual", "massbalance",
     
 RTMexercise(x = c("modelersR", "conceptual", "massbalance", "carbonCycle",                                 
       "ozone", "dissolutionSi", "equilibriumNH3", "equilibriumHCO3",                                    
-      "equilibriumOMD", "detritus", "COVID", "npzd", "crops_weeds",                                    
+      "equilibriumOMD", "detritus", "COVID", "npzd", "crops_weed",                                    
       "riverAnoxia", "Pdiagenesis", "diagenesis"), type = c("HTML", "PDF", "RMD", "WORD"))  
       
 RTMreader (x = c("events", "forcings", "observations", 
